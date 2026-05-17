@@ -2,7 +2,7 @@
   "name": "proyecto_final_carrera",
   "version": "1.0.0",
   "description": "Codigo fuente del Proyecto Final de Carrera 2026",
-  "main": "main.js",
+  "main": "electron/main.js",
   "directories": {
     "doc": "docs"
   },
