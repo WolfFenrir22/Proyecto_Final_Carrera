@@ -1,0 +1,31 @@
+/* Vista de bienvenida - HACADIS
+   Estilos extraídos desde login.html para mantener el HTML más limpio.
+   Se mantiene la configuración de Tailwind dentro del HTML para evitar romper las clases personalizadas. */
+
+body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+.mask-linear {
+            mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent, black);
+            -webkit-mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent, black);
+            mask-composite: intersect;
+            -webkit-mask-composite: source-in;
+        }
+
+.welcome-grid-bg {
+    background-image: linear-gradient(#ffffff10 1px, transparent 1px), linear-gradient(90deg, #ffffff10 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.material-symbols-filled {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

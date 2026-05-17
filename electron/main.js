@@ -15,7 +15,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadFile(path.join(__dirname, "..", "src", "pages", "dashboard.html"));
+  mainWindow.loadFile(path.join(__dirname, "..", "src", "pages", "bienvenida.html"));
 }
 
 app.whenReady().then(() => {
