@@ -1,0 +1,27 @@
+{
+  "name": "proyecto_final_carrera",
+  "version": "1.0.0",
+  "description": "Codigo fuente del Proyecto Final de Carrera 2026",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WolfFenrir22/Proyecto_Final_Carrera.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/WolfFenrir22/Proyecto_Final_Carrera/issues"
+  },
+  "homepage": "https://github.com/WolfFenrir22/Proyecto_Final_Carrera#readme",
+  "devDependencies": {
+    "electron": "^42.1.0"
+  }
+}
