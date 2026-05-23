@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-
-<html class="light" lang="es"><head>
-<title>HACADIS - Dashboard</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
+<html class="light" lang="es">
+ <head>
+  <title>
+   HACADIS - Dashboard
+  </title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+   tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -98,277 +101,429 @@
                 },
             },
         }
-    </script>
-
-<link rel="stylesheet" href="assets/css/app.css">
-</head>
-<body class="bg-background text-on-background min-h-screen">
-<!-- TopAppBar -->
-<header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800">
-<div class="flex items-center gap-stack-md">
-<span class="text-xl font-bold text-blue-800 dark:text-blue-400 tracking-tighter">Guardian</span>
-</div>
-<div class="flex items-center gap-gutter">
-<div class="hidden md:flex items-center gap-stack-lg">
-<span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-blue-700 dark:text-blue-300 font-bold">Dashboard</span>
-<span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">Tools</span>
-<span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">Academy</span>
-</div>
-<div class="flex items-center gap-stack-md">
-<span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full">System: Protected</span>
-<button class="bg-error text-on-error font-bold text-xs px-4 py-2 rounded-lg shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-1">
-<span class="material-symbols-outlined text-sm">emergency</span>
-                    PANIC BUTTON
-                </button>
-<div class="flex items-center gap-2 text-gray-500">
-<span class="material-symbols-outlined cursor-pointer hover:bg-gray-50 p-1 rounded-full transition-colors" data-icon="notifications">notifications</span>
-<span class="material-symbols-outlined cursor-pointer hover:bg-gray-50 p-1 rounded-full transition-colors" data-icon="help_outline">help_outline</span>
-</div>
-</div>
-</div>
-</header>
-<!-- Sidebar Layout -->
-<div class="flex">
-<!-- SideNavBar -->
-<aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-white dark:bg-slate-900 h-screen w-64 border-r border-gray-100 dark:border-gray-800 hidden md:flex">
-<div class="px-6 mb-stack-lg">
-<h2 class="text-lg font-black text-blue-800 dark:text-blue-400">Guardian</h2>
-<p class="text-[14px] text-gray-500 font-['Public_Sans']">Safety by Design</p>
-</div>
-<nav class="flex-1 px-4 space-y-2">
-<a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold border-r-4 border-blue-800 dark:border-blue-400 cursor-pointer transition-all duration-200">
-    <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-    <span class="font-['Public_Sans'] text-[14px]">Dashboard</span>
-</a>
-
-<a href="diagnostico.html" class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
-    <span class="material-symbols-outlined" data-icon="security">security</span>
-    <span class="font-['Public_Sans'] text-[14px]">Tools</span>
-</a>
-
-<a href="entrenamiento.html" class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
-    <span class="material-symbols-outlined" data-icon="school">school</span>
-    <span class="font-['Public_Sans'] text-[14px]">Academy</span>
-</a>
-<div class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-['Public_Sans'] text-[14px]">Settings</span>
-</div>
-</nav>
-<div class="px-4 mt-auto">
-<button class="w-full py-3 bg-primary text-on-primary font-label-md rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-sm" data-icon="policy">policy</span>
-                    Security Audit
-                </button>
-<div class="mt-stack-md flex items-center gap-3 px-2">
-<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
-<img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional individual with a friendly expression in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpFSM4a_XaxbE1M8MN-Hc9jzOEqgVHD6ruIlY2kUoVYZoPRqrUtYEUmSFed7KGahTup2NCyFahs9OtedFfBBc4W76RQFuTYVoJqwrvNHsKwGR2SNBdYWHNeFA7kpBAklX3-yYbDLSKzesXLqSnjd8n3OgfBYiXWxL_btQuxYnmKMcdrch_I99jWgKwvvrajoFfQ1cApTJvESPQap3UjcvxH5rWMWsGOiFL69UtTL6-flgu4VmUTigj_rkWoSmEE4Q_99IEij2F7xhP"/>
-</div>
-<div class="overflow-hidden">
-<p class="text-label-md truncate">Fabio Sotelo</p>
-<p class="text-caption text-gray-500 truncate">Premium Plan</p>
-</div>
-</div>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background">
-<div class="max-w-container-max mx-auto space-y-stack-lg">
-<!-- Semáforo de Actualizaciones / Hero Section -->
-<section class="relative overflow-hidden rounded-xl bg-white shadow-[0_16px_32px_-12px_rgba(0,40,142,0.12)] border border-gray-100 p-8 flex flex-col md:flex-row items-center justify-between gap-gutter">
-<div class="relative z-10 space-y-stack-sm text-center md:text-left">
-<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/30 text-secondary font-semibold rounded-full text-sm">
-<span class="flex h-2 w-2 rounded-full bg-secondary"></span>
-                            Sistemas Protegidos
-                        </div>
-<h1 class="font-h1 text-h1 text-primary">Todo al día, Fabio.</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">No se han detectado amenazas críticas en las últimas 24 horas. Tu escudo digital está operando al 100%.</p>
-<div class="pt-stack-md flex gap-stack-md justify-center md:justify-start">
-<button class="bg-primary text-on-primary font-label-md px-6 py-3 rounded-lg flex items-center gap-2 transition-all hover:shadow-lg">
-<span class="material-symbols-outlined">refresh</span>
-                                Escanear ahora
-                            </button>
-<button class="border border-outline-variant text-primary font-label-md px-6 py-3 rounded-lg hover:bg-surface-container transition-all">
-                                Ver historial
-                            </button>
-</div>
-</div>
-<div class="relative w-full md:w-1/3 flex justify-center">
-<!-- Abstract Visual Shield -->
-<div class="relative w-48 h-48 flex items-center justify-center">
-<div class="absolute inset-0 bg-secondary/10 rounded-full blur-3xl"></div>
-<div class="relative z-10 w-32 h-32 bg-white rounded-full shadow-xl flex items-center justify-center border-4 border-secondary">
-<span class="material-symbols-outlined text-secondary text-6xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
-</div>
-</div>
-</div>
-</section>
-<!-- Bento Grid Status Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-<!-- Card: Ultimo Backup -->
-<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col justify-between group hover:shadow-md transition-all">
-<div class="flex items-start justify-between">
-<div class="p-3 bg-surface-container rounded-lg text-primary">
-<span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
-</div>
-<span class="text-caption text-gray-400">Hace 2 horas</span>
-</div>
-<div class="mt-stack-lg">
-<h3 class="font-h3 text-h3 mb-2">Gestor de Recordatorios</h3>
-<p class="text-body-md text-on-surface-variant">Último respaldo completado con éxito en la bóveda segura.</p>
-</div>
-<button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
-                            Configurar frecuencia <span class="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</div>
-<!-- Card: Robustez de Credenciales -->
-<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
-<div class="flex items-start justify-between">
-<div class="p-3 bg-tertiary-fixed text-tertiary-container rounded-lg">
-<span class="material-symbols-outlined" data-icon="password">password</span>
-</div>
-<div class="flex flex-col items-end">
-<span class="text-h3 font-bold text-tertiary-container">84%</span>
-<span class="text-caption text-tertiary">Puntuación</span>
-</div>
-</div>
-<div class="mt-stack-lg flex-1">
-<h3 class="font-h3 text-h3 mb-2">Evaluador de Robustez</h3>
-<div class="w-full bg-surface-container rounded-full h-2 mt-4">
-<div class="bg-tertiary-container h-2 rounded-full w-[84%]"></div>
-</div>
-<p class="text-caption mt-4 text-on-surface-variant">3 contraseñas sugeridas para actualización por antigüedad.</p>
-</div>
-<button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
-                            Optimizar ahora <span class="material-symbols-outlined text-sm">chevron_right</span>
-</button>
-</div>
-<!-- Card: Brechas de Datos -->
-<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
-<div class="flex items-start justify-between">
-<div class="p-3 bg-error-container text-error rounded-lg">
-<span class="material-symbols-outlined" data-icon="gpp_maybe">gpp_maybe</span>
-</div>
-<span class="px-2 py-1 bg-error-container text-error text-[10px] font-bold rounded">ALERTA</span>
-</div>
-<div class="mt-stack-lg flex-1">
-<h3 class="font-h3 text-h3 mb-2">Verificador de Brechas</h3>
-<p class="text-body-md text-on-surface-variant">Se detectó tu correo en 1 nueva filtración masiva (Ene 2024).</p>
-</div>
-<button class="mt-stack-lg bg-error/10 text-error font-label-md py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-error/20 transition-all">
-                            Ver detalles de riesgo
-                        </button>
-</div>
-</div>
-<!-- Academia de Defensa Digital Section -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-<!-- Progress Summary -->
-<div class="lg:col-span-2 bg-primary-container text-on-primary rounded-xl p-8 flex flex-col md:flex-row gap-gutter relative overflow-hidden">
-<div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
-<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">school</span>
-</div>
-<div class="relative z-10 flex-1 space-y-stack-md">
-<h2 class="font-h2 text-h2 text-on-primary">Academia de Defensa</h2>
-<p class="text-on-primary-container font-body-md">Has completado el 65% de tu entrenamiento básico en ciberseguridad. ¡Sigue así!</p>
-<div class="space-y-2">
-<div class="flex justify-between text-caption">
-<span>Progreso General</span>
-<span>65%</span>
-</div>
-<div class="w-full bg-on-primary-container/20 rounded-full h-3">
-<div class="bg-secondary-fixed h-3 rounded-full w-[65%]"></div>
-</div>
-</div>
-<div class="flex flex-wrap gap-stack-sm pt-4">
-<div class="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-lg border border-white/10">
-<span class="material-symbols-outlined text-sm">check_circle</span>
-<span class="text-caption">Phishing (Completado)</span>
-</div>
-<div class="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg border border-white/20">
-<span class="material-symbols-outlined text-sm">pending</span>
-<span class="text-caption">2FA Avanzado (En curso)</span>
-</div>
-</div>
-</div>
-<div class="relative z-10 flex items-center justify-center">
-<button class="bg-surface-bright text-primary font-bold px-8 py-4 rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all">
-                                Continuar curso
-                            </button>
-</div>
-</div>
-<!-- Panic Card (High Focus) -->
-<div class="bg-surface-container-lowest border-2 border-dashed border-error/30 rounded-xl p-6 flex flex-col items-center text-center justify-center space-y-stack-md">
-<div class="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-error text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
-</div>
-<div>
-<h3 class="font-h3 text-h3 text-on-background">Respuesta Rápida</h3>
-<p class="text-caption text-on-surface-variant px-4">¿Algo no va bien? Activa el protocolo de contención inmediata para bloquear tus cuentas.</p>
-</div>
-<button class="w-full bg-error text-on-error font-h3 py-4 rounded-xl shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
-                            BOTÓN DE PÁNICO
-                        </button>
-</div>
-</div>
-<!-- Recent Activity (Asymmetric Detail) -->
-<section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-<div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center">
-<h3 class="font-h3 text-h3">Actividad Reciente</h3>
-<button class="text-primary font-label-md hover:underline">Ver registro completo</button>
-</div>
-<div class="divide-y divide-gray-50">
-<div class="px-8 py-4 flex items-center gap-gutter hover:bg-gray-50 transition-colors">
-<div class="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-sm">login</span>
-</div>
-<div class="flex-1">
-<p class="text-body-md font-medium">Inicio de sesión exitoso</p>
-<p class="text-caption text-gray-500">Chrome en Windows 11 • Madrid, ES</p>
-</div>
-<span class="text-caption text-gray-400">Hoy, 09:24 AM</span>
-</div>
-<div class="px-8 py-4 flex items-center gap-gutter hover:bg-gray-50 transition-colors">
-<div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-sm">shield</span>
-</div>
-<div class="flex-1">
-<p class="text-body-md font-medium">Análisis de vulnerabilidades finalizado</p>
-<p class="text-caption text-gray-500">0 riesgos encontrados en 4,203 archivos</p>
-</div>
-<span class="text-caption text-gray-400">Ayer, 11:45 PM</span>
-</div>
-<div class="px-8 py-4 flex items-center gap-gutter hover:bg-gray-50 transition-colors">
-<div class="w-10 h-10 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-sm">sync</span>
-</div>
-<div class="flex-1">
-<p class="text-body-md font-medium">Sincronización de bóveda</p>
-<p class="text-caption text-gray-500">22 credenciales actualizadas</p>
-</div>
-<span class="text-caption text-gray-400">Ayer, 04:12 PM</span>
-</div>
-</div>
-</section>
-</div>
-</main>
-</div>
-<!-- BottomNavBar for Mobile -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center py-3 px-2 z-50">
-<button class="flex flex-col items-center gap-1 text-blue-700">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
-<span class="text-[10px] font-bold">Dashboard</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-gray-400">
-<span class="material-symbols-outlined">security</span>
-<span class="text-[10px]">Tools</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-gray-400">
-<span class="material-symbols-outlined">school</span>
-<span class="text-[10px]">Academy</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-gray-400">
-<span class="material-symbols-outlined">settings</span>
-<span class="text-[10px]">Settings</span>
-</button>
-</nav>
-</body></html>
+  </script>
+  <link href="assets/css/app.css" rel="stylesheet"/>
+ </head>
+ <body class="bg-background text-on-background min-h-screen">
+  <!-- TopAppBar -->
+  <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800">
+   <div class="flex items-center gap-stack-md">
+    <span class="text-xl font-bold text-blue-800 dark:text-blue-400 tracking-tighter">
+     Guardian
+    </span>
+   </div>
+   <div class="flex items-center gap-gutter">
+    <div class="hidden md:flex items-center gap-stack-lg">
+     <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-blue-700 dark:text-blue-300 font-bold">
+      Dashboard
+     </span>
+     <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">
+      Tools
+     </span>
+     <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">
+      Academy
+     </span>
+    </div>
+    <div class="flex items-center gap-stack-md">
+     <span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full">
+      System: Protected
+     </span>
+     <button class="bg-error text-on-error font-bold text-xs px-4 py-2 rounded-lg shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-1">
+      <span class="material-symbols-outlined text-sm">
+       emergency
+      </span>
+      PANIC BUTTON
+     </button>
+     <div class="flex items-center gap-2 text-gray-500">
+      <span class="material-symbols-outlined cursor-pointer hover:bg-gray-50 p-1 rounded-full transition-colors" data-icon="notifications">
+       notifications
+      </span>
+      <span class="material-symbols-outlined cursor-pointer hover:bg-gray-50 p-1 rounded-full transition-colors" data-icon="help_outline">
+       help_outline
+      </span>
+     </div>
+    </div>
+   </div>
+  </header>
+  <!-- Sidebar Layout -->
+  <div class="flex">
+   <!-- SideNavBar -->
+   <aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-white dark:bg-slate-900 h-screen w-64 border-r border-gray-100 dark:border-gray-800 hidden md:flex">
+    <div class="px-6 mb-stack-lg">
+     <h2 class="text-lg font-black text-blue-800 dark:text-blue-400">
+      Guardian
+     </h2>
+     <p class="text-[14px] text-gray-500 font-['Public_Sans']">
+      Safety by Design
+     </p>
+    </div>
+    <nav class="flex-1 px-4 space-y-2">
+     <a class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold border-r-4 border-blue-800 dark:border-blue-400 cursor-pointer transition-all duration-200" href="dashboard.html">
+      <span class="material-symbols-outlined" data-icon="dashboard">
+       dashboard
+      </span>
+      <span class="font-['Public_Sans'] text-[14px]">
+       Dashboard
+      </span>
+     </a>
+     <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200" href="diagnostico.html">
+      <span class="material-symbols-outlined" data-icon="security">
+       security
+      </span>
+      <span class="font-['Public_Sans'] text-[14px]">
+       Tools
+      </span>
+     </a>
+     <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200" href="entrenamiento.html">
+      <span class="material-symbols-outlined" data-icon="school">
+       school
+      </span>
+      <span class="font-['Public_Sans'] text-[14px]">
+       Academy
+      </span>
+     </a>
+     <div class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
+      <span class="material-symbols-outlined" data-icon="settings">
+       settings
+      </span>
+      <span class="font-['Public_Sans'] text-[14px]">
+       Settings
+      </span>
+     </div>
+    </nav>
+    <div class="px-4 mt-auto">
+     <button class="w-full py-3 bg-primary text-on-primary font-label-md rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-sm" data-icon="policy">
+       policy
+      </span>
+      Security Audit
+     </button>
+     <div class="mt-stack-md flex items-center gap-3 px-2">
+      <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+       <img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional individual with a friendly expression in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpFSM4a_XaxbE1M8MN-Hc9jzOEqgVHD6ruIlY2kUoVYZoPRqrUtYEUmSFed7KGahTup2NCyFahs9OtedFfBBc4W76RQFuTYVoJqwrvNHsKwGR2SNBdYWHNeFA7kpBAklX3-yYbDLSKzesXLqSnjd8n3OgfBYiXWxL_btQuxYnmKMcdrch_I99jWgKwvvrajoFfQ1cApTJvESPQap3UjcvxH5rWMWsGOiFL69UtTL6-flgu4VmUTigj_rkWoSmEE4Q_99IEij2F7xhP"/>
+      </div>
+      <div class="overflow-hidden">
+       <p class="text-label-md truncate">
+        Fabio Sotelo
+       </p>
+       <p class="text-caption text-gray-500 truncate">
+        Premium Plan
+       </p>
+      </div>
+     </div>
+    </div>
+   </aside>
+   <!-- Main Content Canvas -->
+   <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background">
+    <div class="max-w-container-max mx-auto space-y-stack-lg">
+     <!-- Semáforo de Actualizaciones / Hero Section -->
+     <section class="relative overflow-hidden rounded-xl bg-white shadow-[0_16px_32px_-12px_rgba(0,40,142,0.12)] border border-gray-100 p-8 flex flex-col md:flex-row items-center justify-between gap-gutter">
+      <div class="relative z-10 space-y-stack-sm text-center md:text-left">
+       <div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/30 text-secondary font-semibold rounded-full text-sm">
+        <span class="flex h-2 w-2 rounded-full bg-secondary">
+        </span>
+        Sistemas Protegidos
+       </div>
+       <h1 class="font-h1 text-h1 text-primary">
+        Todo al d&iacute;a, Fabio.
+       </h1>
+       <p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+        No se han detectado amenazas cr&iacute;ticas en las &uacute;ltimas 24 horas. Tu escudo digital est&aacute; operando al 100%.
+       </p>
+       <div class="pt-stack-md flex gap-stack-md justify-center md:justify-start">
+        <button class="bg-primary text-on-primary font-label-md px-6 py-3 rounded-lg flex items-center gap-2 transition-all hover:shadow-lg">
+         <span class="material-symbols-outlined">
+          refresh
+         </span>
+         Escanear ahora
+        </button>
+        <button class="border border-outline-variant text-primary font-label-md px-6 py-3 rounded-lg hover:bg-surface-container transition-all">
+         Ver historial
+        </button>
+       </div>
+      </div>
+      <div class="relative w-full md:w-1/3 flex justify-center">
+       <!-- Abstract Visual Shield -->
+       <div class="relative w-48 h-48 flex items-center justify-center">
+        <div class="absolute inset-0 bg-secondary/10 rounded-full blur-3xl">
+        </div>
+        <div class="relative z-10 w-32 h-32 bg-white rounded-full shadow-xl flex items-center justify-center border-4 border-secondary">
+         <span class="material-symbols-outlined text-secondary text-6xl" style="font-variation-settings: 'FILL' 1;">
+          verified_user
+         </span>
+        </div>
+       </div>
+      </div>
+     </section>
+     <!-- Bento Grid Status Cards -->
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+      <!-- Card: Ultimo Backup -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col justify-between group hover:shadow-md transition-all">
+       <div class="flex items-start justify-between">
+        <div class="p-3 bg-surface-container rounded-lg text-primary">
+         <span class="material-symbols-outlined" data-icon="cloud_upload">
+          cloud_upload
+         </span>
+        </div>
+        <span class="text-caption text-gray-400">
+         Hace 2 horas
+        </span>
+       </div>
+       <div class="mt-stack-lg">
+        <h3 class="font-h3 text-h3 mb-2">
+         Gestor de Recordatorios
+        </h3>
+        <p class="text-body-md text-on-surface-variant">
+         &Uacute;ltimo respaldo completado con &eacute;xito en la b&oacute;veda segura.
+        </p>
+       </div>
+       <button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
+        Configurar frecuencia
+        <span class="material-symbols-outlined text-sm">
+         chevron_right
+        </span>
+       </button>
+      </div>
+      <!-- Card: Robustez de Credenciales -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
+       <div class="flex items-start justify-between">
+        <div class="p-3 bg-tertiary-fixed text-tertiary-container rounded-lg">
+         <span class="material-symbols-outlined" data-icon="password">
+          password
+         </span>
+        </div>
+        <div class="flex flex-col items-end">
+         <span class="text-h3 font-bold text-tertiary-container">
+          84%
+         </span>
+         <span class="text-caption text-tertiary">
+          Puntuaci&oacute;n
+         </span>
+        </div>
+       </div>
+       <div class="mt-stack-lg flex-1">
+        <h3 class="font-h3 text-h3 mb-2">
+         Evaluador de Robustez
+        </h3>
+        <div class="w-full bg-surface-container rounded-full h-2 mt-4">
+         <div class="bg-tertiary-container h-2 rounded-full w-[84%]">
+         </div>
+        </div>
+        <p class="text-caption mt-4 text-on-surface-variant">
+         3 contrase&ntilde;as sugeridas para actualizaci&oacute;n por antig&uuml;edad.
+        </p>
+       </div>
+       <button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
+        Optimizar ahora
+        <span class="material-symbols-outlined text-sm">
+         chevron_right
+        </span>
+       </button>
+      </div>
+      <!-- Card: Brechas de Datos -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
+       <div class="flex items-start justify-between">
+        <div class="p-3 bg-error-container text-error rounded-lg">
+         <span class="material-symbols-outlined" data-icon="gpp_maybe">
+          gpp_maybe
+         </span>
+        </div>
+        <span class="px-2 py-1 bg-error-container text-error text-[10px] font-bold rounded">
+         ALERTA
+        </span>
+       </div>
+       <div class="mt-stack-lg flex-1">
+        <h3 class="font-h3 text-h3 mb-2">
+         Verificador de Brechas
+        </h3>
+        <p class="text-body-md text-on-surface-variant">
+         Se detect&oacute; tu correo en 1 nueva filtraci&oacute;n masiva (Ene 2024).
+        </p>
+       </div>
+       <button class="mt-stack-lg bg-error/10 text-error font-label-md py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-error/20 transition-all">
+        Ver detalles de riesgo
+       </button>
+      </div>
+     </div>
+     <!-- Academia de Defensa Digital Section -->
+     <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+      <!-- Progress Summary -->
+      <div class="lg:col-span-2 bg-primary-container text-on-primary rounded-xl p-8 flex flex-col md:flex-row gap-gutter relative overflow-hidden">
+       <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+        <span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">
+         school
+        </span>
+       </div>
+       <div class="relative z-10 flex-1 space-y-stack-md">
+        <h2 class="font-h2 text-h2 text-on-primary">
+         Academia de Defensa
+        </h2>
+        <p class="text-on-primary-container font-body-md">
+         Has completado el 65% de tu entrenamiento b&aacute;sico en ciberseguridad. &iexcl;Sigue as&iacute;!
+        </p>
+        <div class="space-y-2">
+         <div class="flex justify-between text-caption">
+          <span>
+           Progreso General
+          </span>
+          <span>
+           65%
+          </span>
+         </div>
+         <div class="w-full bg-on-primary-container/20 rounded-full h-3">
+          <div class="bg-secondary-fixed h-3 rounded-full w-[65%]">
+          </div>
+         </div>
+        </div>
+        <div class="flex flex-wrap gap-stack-sm pt-4">
+         <div class="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-lg border border-white/10">
+          <span class="material-symbols-outlined text-sm">
+           check_circle
+          </span>
+          <span class="text-caption">
+           Phishing (Completado)
+          </span>
+         </div>
+         <div class="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg border border-white/20">
+          <span class="material-symbols-outlined text-sm">
+           pending
+          </span>
+          <span class="text-caption">
+           2FA Avanzado (En curso)
+          </span>
+         </div>
+        </div>
+       </div>
+       <div class="relative z-10 flex items-center justify-center">
+        <button class="bg-surface-bright text-primary font-bold px-8 py-4 rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all">
+         Continuar curso
+        </button>
+       </div>
+      </div>
+      <!-- Panic Card (High Focus) -->
+      <div class="bg-surface-container-lowest border-2 border-dashed border-error/30 rounded-xl p-6 flex flex-col items-center text-center justify-center space-y-stack-md">
+       <div class="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center">
+        <span class="material-symbols-outlined text-error text-4xl" style="font-variation-settings: 'FILL' 1;">
+         bolt
+        </span>
+       </div>
+       <div>
+        <h3 class="font-h3 text-h3 text-on-background">
+         Respuesta R&aacute;pida
+        </h3>
+        <p class="text-caption text-on-surface-variant px-4">
+         &iquest;Algo no va bien? Activa el protocolo de contenci&oacute;n inmediata para bloquear tus cuentas.
+        </p>
+       </div>
+       <button class="w-full bg-error text-on-error font-h3 py-4 rounded-xl shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
+        BOT&Oacute;N DE P&Aacute;NICO
+       </button>
+      </div>
+     </div>
+     <!-- Recent Activity (Asymmetric Detail) -->
+     <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center">
+       <h3 class="font-h3 text-h3">
+        Actividad Reciente
+       </h3>
+       <button class="text-primary font-label-md hover:underline">
+        Ver registro completo
+       </button>
+      </div>
+      <div class="divide-y divide-gray-50">
+       <div class="px-8 py-4 flex items-center gap-gutter hover:bg-gray-50 transition-colors">
+        <div class="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
+         <span class="material-symbols-outlined text-sm">
+          login
+         </span>
+        </div>
+        <div class="flex-1">
+         <p class="text-body-md font-medium">
+          Inicio de sesi&oacute;n exitoso
+         </p>
+         <p class="text-caption text-gray-500">
+          Chrome en Windows 11 &bull; Madrid, ES
+         </p>
+        </div>
+        <span class="text-caption text-gray-400">
+         Hoy, 09:24 AM
+        </span>
+       </div>
+       <div class="px-8 py-4 flex items-center gap-gutter hover:bg-gray-50 transition-colors">
+        <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+         <span class="material-symbols-outlined text-sm">
+          shield
+         </span>
+        </div>
+        <div class="flex-1">
+         <p class="text-body-md font-medium">
+          An&aacute;lisis de vulnerabilidades finalizado
+         </p>
+         <p class="text-caption text-gray-500">
+          0 riesgos encontrados en 4,203 archivos
+         </p>
+        </div>
+        <span class="text-caption text-gray-400">
+         Ayer, 11:45 PM
+        </span>
+       </div>
+       <div class="px-8 py-4 flex items-center gap-gutter hover:bg-gray-50 transition-colors">
+        <div class="w-10 h-10 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+         <span class="material-symbols-outlined text-sm">
+          sync
+         </span>
+        </div>
+        <div class="flex-1">
+         <p class="text-body-md font-medium">
+          Sincronizaci&oacute;n de b&oacute;veda
+         </p>
+         <p class="text-caption text-gray-500">
+          22 credenciales actualizadas
+         </p>
+        </div>
+        <span class="text-caption text-gray-400">
+         Ayer, 04:12 PM
+        </span>
+       </div>
+      </div>
+     </section>
+    </div>
+   </main>
+  </div>
+  <!-- BottomNavBar for Mobile -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center py-3 px-2 z-50">
+   <button class="flex flex-col items-center gap-1 text-blue-700">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">
+     dashboard
+    </span>
+    <span class="text-[10px] font-bold">
+     Dashboard
+    </span>
+   </button>
+   <button class="flex flex-col items-center gap-1 text-gray-400">
+    <span class="material-symbols-outlined">
+     security
+    </span>
+    <span class="text-[10px]">
+     Tools
+    </span>
+   </button>
+   <button class="flex flex-col items-center gap-1 text-gray-400">
+    <span class="material-symbols-outlined">
+     school
+    </span>
+    <span class="text-[10px]">
+     Academy
+    </span>
+   </button>
+   <button class="flex flex-col items-center gap-1 text-gray-400">
+    <span class="material-symbols-outlined">
+     settings
+    </span>
+    <span class="text-[10px]">
+     Settings
+    </span>
+   </button>
+  </nav>
+ </body>
+</html>

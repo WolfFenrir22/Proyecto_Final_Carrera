@@ -14,6 +14,31 @@ body { font-family: 'Public Sans', sans-serif; }
             direction: ltr;
         }
 
+.hades-welcome-bg {
+    background:
+        radial-gradient(
+            circle at 50% 28%,
+            rgba(96, 165, 250, 0.34) 0%,
+            rgba(59, 130, 246, 0.22) 24%,
+            rgba(30, 64, 175, 0.14) 45%,
+            rgba(8, 30, 92, 0.92) 72%,
+            #06163f 100%
+        ),
+        linear-gradient(
+            135deg,
+            #061b5c 0%,
+            #0a2b88 45%,
+            #123fa5 100%
+        );
+}
+
+.welcome-grid-bg {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
 .mask-linear {
             mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent, black);
             -webkit-mask-image: linear-gradient(to top, transparent, black), linear-gradient(to left, transparent, black);
@@ -21,11 +46,54 @@ body { font-family: 'Public Sans', sans-serif; }
             -webkit-mask-composite: source-in;
         }
 
-.welcome-grid-bg {
-    background-image: linear-gradient(#ffffff10 1px, transparent 1px), linear-gradient(90deg, #ffffff10 1px, transparent 1px);
-    background-size: 40px 40px;
-}
-
 .material-symbols-filled {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* estilos para los bloques de informacion  */
+
+.welcome-info-card {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.welcome-info-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(133, 248, 196, 0.18),
+        rgba(184, 196, 255, 0.08),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.welcome-info-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(133, 248, 196, 0.45);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+}
+
+.welcome-info-card:hover::before {
+    opacity: 1;
+}
+
+.welcome-info-card:hover .material-symbols-outlined {
+    transform: scale(1.08);
+}
+
+.welcome-info-card .material-symbols-outlined {
+    transition: transform 0.25s ease;
+}
+
+/*********************************************************/
