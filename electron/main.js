@@ -16,6 +16,7 @@ function createWindow() {
         minWidth: 1100,
         minHeight: 700,
         title: "HADES",
+        icon: path.join(__dirname, "..", "src", "assets", "img", "logo_hades.ico"),
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
             contextIsolation: true,

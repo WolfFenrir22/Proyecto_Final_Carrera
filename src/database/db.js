@@ -1,10 +1,13 @@
-// Importa el módulo "path" de Node.js --> Sirve para construir rutas de archivos compatibles con el sistema operativo.
+// Importa el módulo "path" de Node.js.
+// Sirve para construir rutas de archivos compatibles con el sistema operativo.
 const path = require("path");
 
-// Importa "app" desde Electron --> Se usa para obtener rutas internas de la aplicación, como la carpeta donde guardar datos locales.
+// Importa "app" desde Electron.
+// Se usa para obtener rutas internas de la aplicación, como la carpeta donde guardar datos locales.
 const { app } = require("electron");
 
-// Importa la librería sqlite3 y activa el modo verbose --> El modo verbose muestra información más detallada si ocurre algún error.
+// Importa la librería sqlite3 y activa el modo verbose.
+// El modo verbose muestra información más detallada si ocurre algún error.
 const sqlite3 = require("sqlite3").verbose();
 
 // Variable global donde se guardará la conexión activa a la base de datos.
@@ -35,7 +38,7 @@ function initDatabase() {
 
     // serialize asegura que las consultas dentro de este bloque se ejecuten en orden.
     db.serialize(() => {
-        // se Ejecuta una sentencia SQL para crear la tabla "usuarios" si todavía no existe.
+        // Ejecuta una sentencia SQL para crear la tabla "usuarios" si todavía no existe.
         db.run(`
             CREATE TABLE IF NOT EXISTS usuarios (
                 id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,

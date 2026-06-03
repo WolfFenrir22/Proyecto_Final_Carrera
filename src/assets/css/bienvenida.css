@@ -50,7 +50,7 @@ body { font-family: 'Public Sans', sans-serif; }
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* estilos para los bloques de informacion  */
+/*############estilos para los bloques de informacion#################*/
 
 .welcome-info-card {
     position: relative;
@@ -96,4 +96,24 @@ body { font-family: 'Public Sans', sans-serif; }
     transition: transform 0.25s ease;
 }
 
-/*********************************************************/
+/*########################################################*/
+
+/*######### TRANSICIÓN DE PÁGINA BIENVENIDA A DASHBOARD */
+.page-transition-out {
+    animation: fadeOutToDashboard 0.55s ease forwards;
+}
+
+@keyframes fadeOutToDashboard {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-18px) scale(0.98);
+        filter: blur(4px);
+    }
+}
+/*###################################################*/

@@ -2,7 +2,7 @@
 <html class="light" lang="es">
  <head>
   <title>
-   HACADIS - Dashboard
+   HADES - Dashboard
   </title>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -107,32 +107,41 @@
  <body class="bg-background text-on-background min-h-screen">
   <!-- TopAppBar -->
   <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800">
-   <div class="flex items-center gap-stack-md">
+    
+    <div class="flex items-center gap-stack-md">
+        <img
+            src="../assets/img/logo_hades_v2.jpg"
+            alt="Logo de HADES"
+            class="w-8 h-8 object-contain"/>
     <span class="text-xl font-bold text-blue-800 dark:text-blue-400 tracking-tighter">
-     Guardian
+     HADES
     </span>
    </div>
    <div class="flex items-center gap-gutter">
+
+<!--        
     <div class="hidden md:flex items-center gap-stack-lg">
      <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-blue-700 dark:text-blue-300 font-bold">
-      Dashboard
+      Principal
      </span>
      <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">
-      Tools
+      Diagnostico
      </span>
      <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">
-      Academy
+      Entrenamiento
      </span>
     </div>
+-->
     <div class="flex items-center gap-stack-md">
      <span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full">
-      System: Protected
+      Sistema: Protegido
      </span>
      <button class="bg-error text-on-error font-bold text-xs px-4 py-2 rounded-lg shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">
-       emergency
+       Emergencia
       </span>
-      PANIC BUTTON
+      <!-- BOT&Oacute;N DE P&Aacute;NICO -->
+      BOTÓN DE PÁNICO
      </button>
      <div class="flex items-center gap-2 text-gray-500">
       <span class="material-symbols-outlined cursor-pointer hover:bg-gray-50 p-1 rounded-full transition-colors" data-icon="notifications">
@@ -148,71 +157,107 @@
   <!-- Sidebar Layout -->
   <div class="flex">
    <!-- SideNavBar -->
-   <aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-white dark:bg-slate-900 h-screen w-64 border-r border-gray-100 dark:border-gray-800 hidden md:flex">
-    <div class="px-6 mb-stack-lg">
-     <h2 class="text-lg font-black text-blue-800 dark:text-blue-400">
-      Guardian
-     </h2>
-     <p class="text-[14px] text-gray-500 font-['Public_Sans']">
-      Safety by Design
-     </p>
-    </div>
-    <nav class="flex-1 px-4 space-y-2">
-     <a class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold border-r-4 border-blue-800 dark:border-blue-400 cursor-pointer transition-all duration-200" href="dashboard.html">
-      <span class="material-symbols-outlined" data-icon="dashboard">
-       dashboard
-      </span>
-      <span class="font-['Public_Sans'] text-[14px]">
-       Dashboard
-      </span>
-     </a>
-     <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200" href="diagnostico.html">
-      <span class="material-symbols-outlined" data-icon="security">
-       security
-      </span>
-      <span class="font-['Public_Sans'] text-[14px]">
-       Tools
-      </span>
-     </a>
-     <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200" href="entrenamiento.html">
-      <span class="material-symbols-outlined" data-icon="school">
-       school
-      </span>
-      <span class="font-['Public_Sans'] text-[14px]">
-       Academy
-      </span>
-     </a>
-     <div class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
-      <span class="material-symbols-outlined" data-icon="settings">
-       settings
-      </span>
-      <span class="font-['Public_Sans'] text-[14px]">
-       Settings
-      </span>
-     </div>
-    </nav>
-    <div class="px-4 mt-auto">
-     <button class="w-full py-3 bg-primary text-on-primary font-label-md rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-      <span class="material-symbols-outlined text-sm" data-icon="policy">
-       policy
-      </span>
-      Security Audit
-     </button>
-     <div class="mt-stack-md flex items-center gap-3 px-2">
-      <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
-       <img alt="User profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional individual with a friendly expression in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpFSM4a_XaxbE1M8MN-Hc9jzOEqgVHD6ruIlY2kUoVYZoPRqrUtYEUmSFed7KGahTup2NCyFahs9OtedFfBBc4W76RQFuTYVoJqwrvNHsKwGR2SNBdYWHNeFA7kpBAklX3-yYbDLSKzesXLqSnjd8n3OgfBYiXWxL_btQuxYnmKMcdrch_I99jWgKwvvrajoFfQ1cApTJvESPQap3UjcvxH5rWMWsGOiFL69UtTL6-flgu4VmUTigj_rkWoSmEE4Q_99IEij2F7xhP"/>
-      </div>
-      <div class="overflow-hidden">
-       <p class="text-label-md truncate">
-        Fabio Sotelo
-       </p>
-       <p class="text-caption text-gray-500 truncate">
-        Premium Plan
-       </p>
-      </div>
-     </div>
-    </div>
-   </aside>
+    <aside class="fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-8 z-40 bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-gray-800 hidden md:flex">
+
+        <!-- Espacio superior opcional -->
+        <!--
+        <div class="px-6 mb-stack-lg">
+            <h2 class="text-lg font-black text-blue-800 dark:text-blue-400">
+                HADES
+            </h2>
+
+            <p class="text-[14px] text-gray-500 font-['Public_Sans']">
+                Safety by Design
+            </p>
+        </div>
+        -->
+
+        <nav class="flex-1 px-4 space-y-2">
+            <a
+                class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold border-r-4 border-blue-800 dark:border-blue-400 cursor-pointer transition-all duration-200"
+                href="dashboard.html"
+            >
+                <span class="material-symbols-outlined" data-icon="dashboard">
+                    dashboard
+                </span>
+
+                <span class="font-['Public_Sans'] text-[14px]">
+                    Principal
+                </span>
+            </a>
+
+            <a
+                class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200"
+                href="diagnostico.html"
+            >
+                <span class="material-symbols-outlined" data-icon="security">
+                    security
+                </span>
+
+                <span class="font-['Public_Sans'] text-[14px]">
+                    Diagnóstico
+                </span>
+            </a>
+
+            <a
+                class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200"
+                href="entrenamiento.html"
+            >
+                <span class="material-symbols-outlined" data-icon="school">
+                    school
+                </span>
+
+                <span class="font-['Public_Sans'] text-[14px]">
+                    Entrenamiento
+                </span>
+            </a>
+
+            <!--
+            <div class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
+                <span class="material-symbols-outlined" data-icon="settings">
+                    settings
+                </span>
+
+                <span class="font-['Public_Sans'] text-[14px]">
+                    Settings
+                </span>
+            </div>
+            -->
+        </nav>
+
+        <div class="px-4 mt-auto">
+            <button class="w-full py-3 bg-primary text-on-primary font-label-md rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm" data-icon="policy">
+                    policy
+                </span>
+
+                Próximamente
+            </button>
+
+            <div class="mt-stack-md flex items-center gap-3 px-2">
+                <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+                    <img
+                        alt="User profile"
+                        class="w-full h-full object-cover"
+                        data-alt="close-up portrait of a professional individual with a friendly expression in a modern office environment"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpFSM4a_XaxbE1M8MN-Hc9jzOEqgVHD6ruIlY2kUoVYZoPRqrUtYEUmSFed7KGahTup2NCyFahs9OtedFfBBc4W76RQFuTYVoJqwrvNHsKwGR2SNBdYWHNeFA7kpBAklX3-yYbDLSKzesXLqSnjd8n3OgfBYiXWxL_btQuxYnmKMcdrch_I99jWgKwvvrajoFfQ1cApTJvESPQap3UjcvxH5rWMWsGOiFL69UtTL6-flgu4VmUTigj_rkWoSmEE4Q_99IEij2F7xhP"
+                    />
+                </div>
+
+<!--   RECORDAR ASOCIAR AL USUARIO EN SESIÓN   -->
+                <div class="overflow-hidden">
+                    <p class="text-label-md truncate">
+                        Fabio Sotelo 
+                    </p>
+
+                    <p class="text-caption text-gray-500 truncate">
+                        Premium Plan
+                    </p>
+                </div>
+<!--  -------------------------------------------  -->
+            </div>
+        </div>
+    </aside>
    <!-- Main Content Canvas -->
    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background">
     <div class="max-w-container-max mx-auto space-y-stack-lg">
@@ -257,6 +302,7 @@
      </section>
      <!-- Bento Grid Status Cards -->
      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+
       <!-- Card: Ultimo Backup -->
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col justify-between group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
@@ -284,6 +330,7 @@
         </span>
        </button>
       </div>
+
       <!-- Card: Robustez de Credenciales -->
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
@@ -320,6 +367,7 @@
         </span>
        </button>
       </div>
+
       <!-- Card: Brechas de Datos -->
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
@@ -344,6 +392,7 @@
         Ver detalles de riesgo
        </button>
       </div>
+      
      </div>
      <!-- Academia de Defensa Digital Section -->
      <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">

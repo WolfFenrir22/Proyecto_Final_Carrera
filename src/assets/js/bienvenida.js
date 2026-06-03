@@ -84,18 +84,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     botonCambiarUsuario.addEventListener("click", async () => {
-        const confirmar = confirm("¿Quieres borrar el nombre guardado y usar otro?");
+    const confirmar = confirm("¿Querés borrar el nombre guardado y usar otro?");
 
-        if (!confirmar) {
-            return;
-        }
+    if (!confirmar) {
+        return;
+    }
 
-        try {
-            await window.hadesAPI.eliminarUsuario();
-            mostrarFormularioUsuario();
-        } catch (error) {
-            mensajeError.textContent = "No se pudo cambiar el usuario.";
-            mensajeError.classList.remove("hidden");
-        }
-    });
+    try {
+        await window.hadesAPI.eliminarUsuario();
+        mostrarFormularioUsuario();
+    } catch (error) {
+        mensajeError.textContent = "No se pudo cambiar el usuario.";
+        mensajeError.classList.remove("hidden");
+    }
+});
+
+    botonIniciar.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        document.body.classList.add("page-transition-out");
+
+        setTimeout(() => {
+            window.location.href = botonIniciar.getAttribute("href");
+        }, 550);
+        });
 });
