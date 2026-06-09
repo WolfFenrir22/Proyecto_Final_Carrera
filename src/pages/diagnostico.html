@@ -2,7 +2,7 @@
 <html class="light" lang="es">
  <head>
   <title>
-   HACADIS - Diagn&oacute;stico
+   HADES - Diagn&oacute;stico
   </title>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -108,16 +108,16 @@
   <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800">
    <div class="flex items-center gap-4">
     <span class="text-xl font-bold text-blue-800 dark:text-blue-400 tracking-tighter">
-     Guardian
+     Hades
     </span>
    </div>
    <div class="flex items-center gap-6">
     <div class="flex items-center gap-4 text-gray-500 dark:text-gray-400 font-['Public_Sans'] text-sm font-medium tracking-tight">
      <span class="flex items-center gap-1 text-secondary">
       <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">
-       check_circle
+       check_circle <!-- emoticón de check -->
       </span>
-      System: Protected
+      Sistema: Protegido
      </span>
      <button class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors p-2 rounded-full">
       <span class="material-symbols-outlined">
@@ -131,19 +131,23 @@
      </button>
     </div>
     <button class="bg-error text-white px-4 py-2 rounded-lg font-bold text-xs tracking-widest active:scale-[0.98] transition-transform duration-150 shadow-lg shadow-error/20">
-     PANIC BUTTON
+     Bot&oacute;n de Emergencia
     </button>
    </div>
   </header>
   <aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-white dark:bg-slate-900 h-screen w-64 border-r border-gray-100 dark:border-gray-800 font-['Public_Sans'] text-[14px] leading-relaxed">
-   <div class="px-6 mb-8">
+   
+    <!-- 
+    <div class="px-6 mb-8">
     <h2 class="text-lg font-black text-blue-800 dark:text-blue-400">
-     Guardian
+     Hades
     </h2>
     <p class="text-xs text-outline opacity-70">
-     Safety by Design
+     Ayudar y Concientizar
     </p>
    </div>
+    -->
+   
    <nav class="flex-1 space-y-1 px-3">
     <a class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold border-r-4 border-blue-800 dark:border-blue-400 cursor-pointer transition-all duration-200" href="dashboard.html">
      <span class="material-symbols-outlined" data-icon="dashboard">
@@ -158,7 +162,7 @@
       security
      </span>
      <span class="font-['Public_Sans'] text-[14px]">
-      Tools
+      Diagnostico
      </span>
     </a>
     <a class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200" href="entrenamiento.html">
@@ -166,9 +170,10 @@
       school
      </span>
      <span class="font-['Public_Sans'] text-[14px]">
-      Academy
+      Entrenamiento
      </span>
     </a>
+<!--    
     <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200" href="#">
      <span class="material-symbols-outlined">
       settings
@@ -176,22 +181,23 @@
      <span>
       Settings
      </span>
-    </a>
+     </a>
+-->
    </nav>
    <div class="px-4 mt-auto">
     <button class="w-full bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md hover:bg-primary-container transition-colors">
      <span class="material-symbols-outlined">
       verified_user
      </span>
-     Security Audit
+     Proximamente
     </button>
     <div class="mt-6 flex items-center gap-3 px-2">
      <div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
       <img alt="User profile" data-alt="professional headshot of a friendly man with a subtle smile in a bright airy studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCqS8q1BBNKKMjHfMq2ExWKS7Up62GkL3KHbbv3RZ80VnQux4xlCt8i4CALLxugKJf2d-EEC9e8jdUhr_BIy6Ali9UP7ncQxj6vWWtjh-uAaUcpFhlYnZEbA3cfHgot-j-wuQl8CaZfkr_ycibLhucCEWLen3I5TtJEnrEW-yPl4Wn-XfGm_aitbVHYlmjJpxgM36O4oCfTKYEQ83zqY39d-UAN4EwPUbcZ6VsLdfyPt7TQwek4GF8QXpk9z38xnN1tDuJRry3DuKH"/>
      </div>
-     <div>
+     <div> <!-- Recordar relacionar con el usuario en sesión!!!!!!!! -->
       <p class="font-label-md text-on-surface">
-       Alex Rivera
+       Fabio Sotelo
       </p>
       <p class="text-[10px] text-outline uppercase tracking-wider">
        Premium Plan
@@ -200,6 +206,9 @@
     </div>
    </div>
   </aside>
+
+  <!--######################################################-->
+  <!--############# Contenido Principal ####################-->
   <main class="ml-64 p-12 max-w-container-max mx-auto">
    <header class="mb-stack-lg">
     <h1 class="font-h1 text-h1 text-on-background mb-stack-sm">
@@ -210,102 +219,240 @@
     </p>
    </header>
    <div class="bento-grid">
+
+<!--  ###################### INICIO DE EVALUADOR DE PASSWORD #############################  -->
+
     <section class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl p-8 shadow-[0_16px_32px_-12px_rgba(0,40,142,0.12)] border border-white">
-     <div class="flex items-center justify-between mb-8">
-      <div>
-       <h3 class="font-h3 text-h3 text-on-background flex items-center gap-2">
-        <span class="material-symbols-outlined text-primary">
-         key
-        </span>
-        Evaluador de Robustez de Credenciales
-       </h3>
-       <p class="text-on-surface-variant font-body-md mt-1">
-        Verifique la fortaleza de sus contrase&ntilde;as contra ataques modernos.
-       </p>
-      </div>
-     </div>
-     <div class="space-y-6">
-      <div class="relative">
-       <label class="block text-label-md font-label-md text-on-surface mb-2">
-        Ingrese su Contrase&ntilde;a
-       </label>
-       <div class="relative group">
-        <input class="w-full bg-white border-2 border-surface-variant focus:border-primary focus:ring-0 rounded-xl px-6 py-4 transition-all font-mono text-lg" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" type="password"/>
-        <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary">
-         <span class="material-symbols-outlined">
-          visibility
-         </span>
-        </button>
-       </div>
-      </div>
-      <div class="grid grid-cols-4 gap-2">
-       <div class="h-2 rounded-full bg-secondary">
-       </div>
-       <div class="h-2 rounded-full bg-secondary">
-       </div>
-       <div class="h-2 rounded-full bg-secondary">
-       </div>
-       <div class="h-2 rounded-full bg-surface-variant">
-       </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-       <div class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4">
-        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">
-         check_circle
-        </span>
+    <div class="flex items-center justify-between mb-8">
         <div>
-         <p class="font-label-md text-on-surface">
-          Longitud Adecuada
-         </p>
-         <p class="text-caption text-outline">
-          M&iacute;nimo 12 caracteres
-         </p>
+            <h3 class="font-h3 text-h3 text-on-background flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">
+                    key
+                </span>
+                Evaluador de Robustez de Credenciales
+            </h3>
+
+            <p class="text-on-surface-variant font-body-md mt-1">
+                Verificá la fortaleza de una contraseña sin almacenarla en el sistema.
+            </p>
         </div>
-       </div>
-       <div class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4">
-        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">
-         check_circle
-        </span>
+    </div>
+
+    <div class="space-y-6">
+        <div class="relative">
+            <label
+                for="inputPassword"
+                class="block text-label-md font-label-md text-on-surface mb-2"
+            >
+                Ingresá una contraseña
+            </label>
+
+            <div class="relative group">
+                <input
+                    id="inputPassword"
+                    class="w-full bg-white border-2 border-surface-variant focus:border-primary focus:ring-0 rounded-xl px-6 py-4 transition-all font-mono text-lg"
+                    placeholder="Ingrese una contraseña para evaluar"
+                    type="password"
+                    autocomplete="off"
+                />
+
+                <button
+                    id="btnVerPassword"
+                    type="button"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant hover:text-primary transition-colors"
+                >
+                    <span
+                        id="iconoVerPassword"
+                        class="material-symbols-outlined"
+                    >
+                        visibility
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra dinámica de robustez -->
         <div>
-         <p class="font-label-md text-on-surface">
-          Caracteres Especiales
-         </p>
-         <p class="text-caption text-outline">
-          Contiene s&iacute;mbolos y n&uacute;meros
-         </p>
+            <div class="w-full bg-surface-container rounded-full h-3 overflow-hidden">
+                <div
+                    id="barraPassword"
+                    class="h-3 rounded-full bg-error transition-all duration-300"
+                    style="width: 0%;"
+                ></div>
+            </div>
+
+            <div class="flex items-center justify-between mt-3">
+                <p
+                    id="nivelPassword"
+                    class="text-sm font-semibold text-outline"
+                >
+                    Nivel: Sin evaluar
+                </p>
+
+                <p
+                    id="porcentajePassword"
+                    class="text-sm font-bold text-primary"
+                >
+                    0%
+                </p>
+            </div>
         </div>
-       </div>
-       <div class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4">
-        <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">
-         cancel
-        </span>
-        <div>
-         <p class="font-label-md text-on-surface">
-          Complejidad de May&uacute;sculas
-         </p>
-         <p class="text-caption text-outline">
-          Faltan letras en may&uacute;scula
-         </p>
+
+        <!-- Criterios de evaluación -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+                id="criterioLongitud"
+                class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4"
+            >
+                <span
+                    class="material-symbols-outlined text-error"
+                    style="font-variation-settings: 'FILL' 1;"
+                >
+                    cancel
+                </span>
+
+                <div>
+                    <p class="font-label-md text-on-surface">
+                        Longitud adecuada
+                    </p>
+
+                    <p class="text-caption text-outline">
+                        Mínimo 12 caracteres
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="criterioMayuscula"
+                class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4"
+            >
+                <span
+                    class="material-symbols-outlined text-error"
+                    style="font-variation-settings: 'FILL' 1;"
+                >
+                    cancel
+                </span>
+
+                <div>
+                    <p class="font-label-md text-on-surface">
+                        Uso de mayúsculas
+                    </p>
+
+                    <p class="text-caption text-outline">
+                        Incluye al menos una letra mayúscula
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="criterioMinuscula"
+                class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4"
+            >
+                <span
+                    class="material-symbols-outlined text-error"
+                    style="font-variation-settings: 'FILL' 1;"
+                >
+                    cancel
+                </span>
+
+                <div>
+                    <p class="font-label-md text-on-surface">
+                        Uso de minúsculas
+                    </p>
+
+                    <p class="text-caption text-outline">
+                        Incluye al menos una letra minúscula
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="criterioNumero"
+                class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4"
+            >
+                <span
+                    class="material-symbols-outlined text-error"
+                    style="font-variation-settings: 'FILL' 1;"
+                >
+                    cancel
+                </span>
+
+                <div>
+                    <p class="font-label-md text-on-surface">
+                        Uso de números
+                    </p>
+
+                    <p class="text-caption text-outline">
+                        Incluye al menos un número
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="criterioSimbolo"
+                class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4"
+            >
+                <span
+                    class="material-symbols-outlined text-error"
+                    style="font-variation-settings: 'FILL' 1;"
+                >
+                    cancel
+                </span>
+
+                <div>
+                    <p class="font-label-md text-on-surface">
+                        Caracteres especiales
+                    </p>
+
+                    <p class="text-caption text-outline">
+                        Incluye símbolos como @, #, $, %, &, !
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="criterioPatron"
+                class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4"
+            >
+                <span
+                    class="material-symbols-outlined text-error"
+                    style="font-variation-settings: 'FILL' 1;"
+                >
+                    cancel
+                </span>
+
+                <div>
+                    <p class="font-label-md text-on-surface">
+                        Sin patrones comunes
+                    </p>
+
+                    <p class="text-caption text-outline">
+                        Evita 123, admin, password o secuencias simples
+                    </p>
+                </div>
+            </div>
         </div>
-       </div>
-       <div class="p-4 rounded-xl bg-surface-container-low flex items-center gap-4 border-2 border-primary/10">
-        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-         <span class="text-primary font-bold text-xs">
-          92%
-         </span>
+
+        <!-- Recomendación generada -->
+        <div class="mt-6 p-4 rounded-xl bg-primary-fixed text-on-primary-fixed">
+            <p class="font-label-md mb-1">
+                Recomendación
+            </p>
+
+            <p
+                id="recomendacionPassword"
+                class="text-sm"
+            >
+                Ingresá una contraseña para recibir sugerencias.
+            </p>
         </div>
-        <div>
-         <p class="font-label-md text-on-surface">
-          Score de Entrop&iacute;a
-         </p>
-         <p class="text-caption text-outline">
-          Nivel: Muy Seguro
-         </p>
-        </div>
-       </div>
-      </div>
-     </div>
-    </section>
+    </div>
+</section>
+
+<!--  ###################### FIN DE EVALUADOR DE PASSWORD#############################  -->
+
+  <!--  ###################### INICIO DE VERIFICADOR DE BRECHAS #############################  -->
+
     <section class="col-span-12 lg:col-span-4 bg-primary text-white rounded-xl p-8 shadow-xl flex flex-col justify-between overflow-hidden relative">
      <div class="relative z-10">
       <h3 class="font-h3 text-h3 mb-4">
@@ -363,117 +510,177 @@
       </span>
      </div>
     </section>
+    <!--  ###################### FIN DE VERIFICADOR DE BRECHAS #############################  -->
+
+    <!--  ###################### INICIO DE GESTOR DE BACKUPS #############################  -->
     <section class="col-span-12 bg-surface-container-low rounded-xl p-10 border border-outline-variant/30">
-     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-      <div>
-       <div class="flex items-center gap-3 mb-2">
-        <span class="p-3 bg-secondary-container text-on-secondary-container rounded-2xl">
-         <span class="material-symbols-outlined text-[32px]">
-          cloud_sync
-         </span>
-        </span>
-        <h3 class="font-h3 text-h3 text-on-background">
-         Gestor de Recordatorios de Backups
-        </h3>
-       </div>
-       <p class="text-on-surface-variant font-body-md ml-16">
-        Nunca pierda su informaci&oacute;n valiosa. Configure ciclos de respaldo autom&aacute;ticos.
-       </p>
-      </div>
-      <button class="bg-primary text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all">
-       <span class="material-symbols-outlined">
-        add_task
-       </span>
-       Nuevo Recordatorio
-      </button>
-     </div>
-     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-       <div>
-        <div class="flex justify-between items-start mb-4">
-         <div class="bg-blue-50 p-2 rounded-lg text-primary">
-          <span class="material-symbols-outlined">
-           photo_library
-          </span>
-         </div>
-         <span class="text-[10px] font-bold text-secondary bg-secondary-container px-2 py-1 rounded-full">
-          ACTIVO
-         </span>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="p-3 bg-secondary-container text-on-secondary-container rounded-2xl">
+                        <span class="material-symbols-outlined text-[32px]">
+                            cloud_sync
+                        </span>
+                    </span>
+
+                    <h3 class="font-h3 text-h3 text-on-background">
+                        Gestor de Recordatorios de Backups
+                    </h3>
+                </div>
+
+                <p class="text-on-surface-variant font-body-md ml-16">
+                    Registrá recordatorios para mantener actualizadas tus copias de seguridad.
+                </p>
+            </div>
         </div>
-        <h4 class="font-bold text-on-background mb-1">
-         Fotos Familiares
-        </h4>
-        <p class="text-caption text-outline mb-4">
-         Google Photos &amp; iCloud Drive
-        </p>
-       </div>
-       <div class="space-y-4">
-        <div class="flex items-center gap-2">
-         <span class="material-symbols-outlined text-sm text-outline">
-          calendar_month
-         </span>
-         <span class="text-xs text-on-surface">
-          Cada domingo, 10:00 PM
-         </span>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Formulario de nuevo recordatorio -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div class="mb-6">
+                    <div class="bg-blue-50 p-2 rounded-lg text-primary w-fit mb-4">
+                        <span class="material-symbols-outlined">
+                            add_task
+                        </span>
+                    </div>
+
+                    <h4 class="font-bold text-on-background mb-1">
+                        Nuevo recordatorio
+                    </h4>
+
+                    <p class="text-caption text-outline">
+                        Cargá un respaldo y su frecuencia.
+                    </p>
+                </div>
+
+                <form id="formBackup" class="space-y-4">
+                    <div>
+                        <label
+                            for="nombreBackup"
+                            class="block text-label-md font-label-md text-on-surface mb-2"
+                        >
+                            Elemento a respaldar
+                        </label>
+
+                        <input
+                            id="nombreBackup"
+                            type="text"
+                            maxlength="80"
+                            class="w-full bg-white border-2 border-surface-variant focus:border-primary focus:ring-0 rounded-xl px-4 py-3 transition-all"
+                            placeholder="Ej: Fotos familiares"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            for="ubicacionBackup"
+                            class="block text-label-md font-label-md text-on-surface mb-2"
+                        >
+                            Ubicación del respaldo
+                        </label>
+
+                        <input
+                            id="ubicacionBackup"
+                            type="text"
+                            maxlength="80"
+                            class="w-full bg-white border-2 border-surface-variant focus:border-primary focus:ring-0 rounded-xl px-4 py-3 transition-all"
+                            placeholder="Ej: Google Drive"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            for="frecuenciaBackup"
+                            class="block text-label-md font-label-md text-on-surface mb-2"
+                        >
+                            Frecuencia
+                        </label>
+
+                        <select
+                            id="frecuenciaBackup"
+                            class="w-full bg-white border-2 border-surface-variant focus:border-primary focus:ring-0 rounded-xl px-4 py-3 transition-all"
+                        >
+                            <option value="diario">Diario</option>
+                            <option value="semanal" selected>Semanal</option>
+                            <option value="mensual">Mensual</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label
+                            for="ultimoBackup"
+                            class="block text-label-md font-label-md text-on-surface mb-2"
+                        >
+                            Último backup realizado
+                        </label>
+
+                        <input
+                            id="ultimoBackup"
+                            type="date"
+                            class="w-full bg-white border-2 border-surface-variant focus:border-primary focus:ring-0 rounded-xl px-4 py-3 transition-all"
+                        />
+                    </div>
+
+                    <p
+                        id="mensajeBackup"
+                        class="hidden text-sm text-error font-medium"
+                    ></p>
+
+                    <button
+                        type="submit"
+                        class="w-full bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                    >
+                        <span class="material-symbols-outlined">
+                            save
+                        </span>
+                        Guardar recordatorio
+                    </button>
+                </form>
+            </div>
+
+            <!-- Lista dinámica de recordatorios -->
+            <div class="lg:col-span-2">
+                
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h4 class="font-bold text-on-background">
+                        Recordatorios activos
+                    </h4>
+
+                    <p class="text-caption text-outline">
+                        Se muestran los respaldos registrados para el usuario actual.
+                    </p>
+                </div>
+
+                <span
+                    id="cantidadBackups"
+                    class="text-[11px] font-bold text-secondary bg-secondary-container px-3 py-1 rounded-full"
+                >
+                    0 activos
+                </span>
         </div>
-        <div class="w-full bg-surface-container rounded-full h-1.5">
-         <div class="bg-primary h-1.5 rounded-full w-4/5">
-         </div>
+
+                <div
+                    id="listaBackups"
+                    class="grid grid-cols-1 md:grid-cols-2 gap-6"
+                >
+                    <div class="bg-white/40 border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-8">
+                        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-outline">
+                            <span class="material-symbols-outlined text-3xl">
+                                cloud_off
+                            </span>
+                        </div>
+
+                        <p class="mt-4 font-label-md text-outline text-center">
+                            Todavía no hay recordatorios cargados.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="text-[10px] text-outline text-right">
-         Pr&oacute;ximo: en 2 d&iacute;as
-        </p>
-       </div>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-       <div>
-        <div class="flex justify-between items-start mb-4">
-         <div class="bg-tertiary-fixed p-2 rounded-lg text-tertiary">
-          <span class="material-symbols-outlined">
-           work
-          </span>
-         </div>
-         <span class="text-[10px] font-bold text-secondary bg-secondary-container px-2 py-1 rounded-full">
-          ACTIVO
-         </span>
-        </div>
-        <h4 class="font-bold text-on-background mb-1">
-         Documentos Trabajo
-        </h4>
-        <p class="text-caption text-outline mb-4">
-         Dropbox Business
-        </p>
-       </div>
-       <div class="space-y-4">
-        <div class="flex items-center gap-2">
-         <span class="material-symbols-outlined text-sm text-outline">
-          calendar_month
-         </span>
-         <span class="text-xs text-on-surface">
-          Diario, 06:00 PM
-         </span>
-        </div>
-        <div class="w-full bg-surface-container rounded-full h-1.5">
-         <div class="bg-secondary h-1.5 rounded-full w-full">
-         </div>
-        </div>
-        <p class="text-[10px] text-secondary text-right font-bold">
-         Completado hoy
-        </p>
-       </div>
-      </div>
-      <div class="bg-white/40 border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-8 group cursor-pointer hover:bg-white hover:border-primary transition-all">
-       <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-outline group-hover:text-primary transition-colors">
-        <span class="material-symbols-outlined text-3xl">
-         add
-        </span>
-       </div>
-       <p class="mt-4 font-label-md text-outline group-hover:text-primary">
-        Programar Respaldo
-       </p>
-      </div>
-     </div>
-    </section>
+</section>
+    <!--  ###################### FIN DE GESTOR DE BACKUPS #############################  -->
+      
    </div>
    <section class="mt-stack-lg bg-surface-container-highest rounded-2xl p-1 overflow-hidden">
     <div class="bg-white rounded-[1.25rem] p-8 flex flex-col md:flex-row items-center gap-10">
@@ -491,7 +698,7 @@
        Mantenga 3 copias de sus datos, en 2 formatos diferentes, y 1 copia fuera de su ubicaci&oacute;n f&iacute;sica principal.
       </p>
       <a class="text-primary font-bold flex items-center gap-2 hover:underline" href="#">
-       Aprender m&aacute;s en Guardian Academy
+       Aprender m&aacute;s en Hades Academy
        <span class="material-symbols-outlined text-sm">
         arrow_forward
        </span>
@@ -504,12 +711,13 @@
    <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
     <div class="flex items-center gap-2">
      <span class="text-lg font-bold text-blue-800 opacity-50">
-      Guardian
+      Hades
      </span>
      <span class="text-caption">
-      &copy; 2024 Seguridad por Dise&ntilde;o.
+      &copy; 2026 Seguridad por Dise&ntilde;o.
      </span>
     </div>
+    <!-- #########REVISAR LOS ATAJOS DEL FOOTER######### -->
     <div class="flex gap-8 text-caption">
      <a class="hover:text-primary transition-colors" href="#">
       Pol&iacute;tica de Privacidad
@@ -521,7 +729,9 @@
       Soporte T&eacute;cnico
      </a>
     </div>
+    <!-- ############################################### -->
    </div>
   </footer>
+   <script src="../assets/js/diagnostico.js"></script>
  </body>
 </html>

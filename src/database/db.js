@@ -47,6 +47,21 @@ function initDatabase() {
                 ultimo_acceso TEXT NOT NULL
             )
         `);
+
+        db.run(`
+            CREATE TABLE IF NOT EXISTS recordatorios_backup (
+                id_recordatorio INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_usuario INTEGER NOT NULL,
+                nombre TEXT NOT NULL,
+                ubicacion TEXT NOT NULL,
+                frecuencia TEXT NOT NULL,
+                ultimo_backup TEXT,
+                proximo_backup TEXT,
+                activo INTEGER NOT NULL DEFAULT 1,
+                fecha_creacion TEXT NOT NULL,
+                FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+        )
+    `);
     });
 
     // Devuelve la conexión a la base de datos.
@@ -241,6 +256,192 @@ function eliminarUsuarioPrincipal() {
     });
 }
 
+//#######################Funciones para manejar recordatorios de backup#################################
+function calcularProximoBackup(fechaBase, frecuencia) {
+    const fecha = new Date(fechaBase);
+
+    if (frecuencia === "diario") {
+        fecha.setDate(fecha.getDate() + 1);
+    } else if (frecuencia === "semanal") {
+        fecha.setDate(fecha.getDate() + 7);
+    } else if (frecuencia === "mensual") {
+        fecha.setMonth(fecha.getMonth() + 1);
+    }
+
+    return fecha.toISOString();
+}
+
+function guardarRecordatorioBackup(datos) {
+    const database = getDatabase();
+    const fechaActual = new Date().toISOString();
+
+    const proximoBackup = calcularProximoBackup(
+        datos.ultimo_backup || fechaActual,
+        datos.frecuencia
+    );
+
+    return new Promise((resolve, reject) => {
+        database.run(
+            `
+                INSERT INTO recordatorios_backup (
+                    id_usuario,
+                    nombre,
+                    ubicacion,
+                    frecuencia,
+                    ultimo_backup,
+                    proximo_backup,
+                    activo,
+                    fecha_creacion
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `,
+            [
+                datos.id_usuario,
+                datos.nombre,
+                datos.ubicacion,
+                datos.frecuencia,
+                datos.ultimo_backup || fechaActual,
+                proximoBackup,
+                1,
+                fechaActual
+            ],
+            function (error) {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve({
+                    id_recordatorio: this.lastID,
+                    id_usuario: datos.id_usuario,
+                    nombre: datos.nombre,
+                    ubicacion: datos.ubicacion,
+                    frecuencia: datos.frecuencia,
+                    ultimo_backup: datos.ultimo_backup || fechaActual,
+                    proximo_backup: proximoBackup,
+                    activo: 1,
+                    fecha_creacion: fechaActual
+                });
+            }
+        );
+    });
+}
+
+function obtenerRecordatoriosBackup(idUsuario) {
+    const database = getDatabase();
+
+    return new Promise((resolve, reject) => {
+        database.all(
+            `
+                SELECT
+                    id_recordatorio,
+                    id_usuario,
+                    nombre,
+                    ubicacion,
+                    frecuencia,
+                    ultimo_backup,
+                    proximo_backup,
+                    activo,
+                    fecha_creacion
+                FROM recordatorios_backup
+                WHERE id_usuario = ?
+                AND activo = 1
+                ORDER BY proximo_backup ASC
+            `,
+            [idUsuario],
+            (error, rows) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(rows || []);
+            }
+        );
+    });
+}
+
+function eliminarRecordatorioBackup(idRecordatorio) {
+    const database = getDatabase();
+
+    return new Promise((resolve, reject) => {
+        database.run(
+            `
+                UPDATE recordatorios_backup
+                SET activo = 0
+                WHERE id_recordatorio = ?
+            `,
+            [idRecordatorio],
+            (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(true);
+            }
+        );
+    });
+}
+
+function marcarBackupRealizado(idRecordatorio) {
+            const database = getDatabase();
+            const fechaActual = new Date().toISOString();
+
+            return new Promise((resolve, reject) => {
+                database.get(
+                    `
+                        SELECT
+                            id_recordatorio,
+                            frecuencia
+                        FROM recordatorios_backup
+                        WHERE id_recordatorio = ?
+                    `,
+                    [idRecordatorio],
+                    (error, recordatorio) => {
+                        if (error) {
+                            reject(error);
+                            return;
+                        }
+
+                        if (!recordatorio) {
+                            reject(new Error("No se encontró el recordatorio."));
+                            return;
+                        }
+
+                        const proximoBackup = calcularProximoBackup(
+                            fechaActual,
+                            recordatorio.frecuencia
+                        );
+
+                        database.run(
+                            `
+                                UPDATE recordatorios_backup
+                                SET
+                                    ultimo_backup = ?,
+                                    proximo_backup = ?
+                                WHERE id_recordatorio = ?
+                            `,
+                            [fechaActual, proximoBackup, idRecordatorio],
+                            (errorUpdate) => {
+                                if (errorUpdate) {
+                                    reject(errorUpdate);
+                                    return;
+                                }
+
+                                resolve({
+                                    id_recordatorio: idRecordatorio,
+                                    ultimo_backup: fechaActual,
+                                    proximo_backup: proximoBackup
+                                });
+                            }
+                        );
+                    }
+                );
+            });
+        }
+//############################################################################################
+
 // Exporta las funciones para que puedan ser usadas desde otros archivos,
 // por ejemplo desde electron/main.js.
 module.exports = {
@@ -248,5 +449,9 @@ module.exports = {
     obtenerUsuarioPrincipal,
     guardarUsuario,
     actualizarUltimoAcceso,
-    eliminarUsuarioPrincipal
+    eliminarUsuarioPrincipal,
+    guardarRecordatorioBackup,
+    obtenerRecordatoriosBackup,
+    eliminarRecordatorioBackup,
+    marcarBackupRealizado
 };

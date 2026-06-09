@@ -6,7 +6,11 @@ const {
     obtenerUsuarioPrincipal,
     guardarUsuario,
     actualizarUltimoAcceso,
-    eliminarUsuarioPrincipal
+    eliminarUsuarioPrincipal,
+    guardarRecordatorioBackup,
+    obtenerRecordatoriosBackup,
+    eliminarRecordatorioBackup,
+    marcarBackupRealizado
 } = require("../src/database/db");
 
 function createWindow() {
@@ -78,3 +82,21 @@ app.on("window-all-closed", () => {
         app.quit();
     }
 });
+
+//#######################Manejadores IPC para recordatorios de backup#################################
+ipcMain.handle("backup:guardar", async (event, datos) => {
+    return await guardarRecordatorioBackup(datos);
+});
+
+ipcMain.handle("backup:listar", async (event, idUsuario) => {
+    return await obtenerRecordatoriosBackup(idUsuario);
+});
+
+ipcMain.handle("backup:eliminar", async (event, idRecordatorio) => {
+    return await eliminarRecordatorioBackup(idRecordatorio);
+});
+
+ipcMain.handle("backup:realizado", async (event, idRecordatorio) => {
+    return await marcarBackupRealizado(idRecordatorio);
+});
+//############################################################################################
