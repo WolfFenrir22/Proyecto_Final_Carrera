@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Obtiene referencias a los elementos del DOM relacionados con la evaluación de la contraseña
+    // ##################Obtiene referencias a los elementos del DOM relacionados con la evaluación de la contraseña
     const inputPassword = document.getElementById("inputPassword");
     const btnVerPassword = document.getElementById("btnVerPassword");
     const iconoVerPassword = document.getElementById("iconoVerPassword");
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nivelPassword = document.getElementById("nivelPassword");
     const recomendacionPassword = document.getElementById("recomendacionPassword");
 
-    // Referencias a los criterios de evaluación
+    // #################Referencias a los criterios de evaluación
     const criterioLongitud = document.getElementById("criterioLongitud");
     const criterioMayuscula = document.getElementById("criterioMayuscula");
     const criterioMinuscula = document.getElementById("criterioMinuscula");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const criterioSimbolo = document.getElementById("criterioSimbolo");
     const criterioPatron = document.getElementById("criterioPatron");
 
-    // Referencias a los elementos del DOM relacionados con los recordatorios de backup
+    // #################Referencias a los elementos del DOM relacionados con los recordatorios de backup
     const formBackup = document.getElementById("formBackup");
     const nombreBackup = document.getElementById("nombreBackup");
     const ubicacionBackup = document.getElementById("ubicacionBackup");
@@ -26,9 +26,47 @@ document.addEventListener("DOMContentLoaded", () => {
     const listaBackups = document.getElementById("listaBackups");
     const cantidadBackups = document.getElementById("cantidadBackups");
 
-    if (!inputPassword) {
-        return;
-    }
+    //#################Funciones relacionadas con la evaluación de la contraseña #################
+    const formBrechas = document.getElementById("formBrechas");
+    const correoBrechas = document.getElementById("correoBrechas");
+    const botonBuscarBrechas = document.getElementById(
+        "botonBuscarBrechas"
+    );
+    const iconoBuscarBrechas = document.getElementById(
+        "iconoBuscarBrechas"
+    );
+    const textoBotonBrechas = document.getElementById(
+        "textoBotonBrechas"
+    );
+    const mensajeBrechas = document.getElementById("mensajeBrechas");
+    const resultadoBrechas = document.getElementById(
+        "resultadoBrechas"
+    );
+    const estadoInicialBrechas = document.getElementById(
+        "estadoInicialBrechas"
+    );
+    const iconoResultadoBrechas = document.getElementById(
+        "iconoResultadoBrechas"
+    );
+    const tituloResultadoBrechas = document.getElementById(
+        "tituloResultadoBrechas"
+    );
+    const descripcionResultadoBrechas = document.getElementById(
+        "descripcionResultadoBrechas"
+    );
+    const listaBrechas = document.getElementById("listaBrechas");
+    const recomendacionBrechas = document.getElementById(
+        "recomendacionBrechas"
+    );
+    const textoRecomendacionBrechas = document.getElementById(
+        "textoRecomendacionBrechas"
+    );
+
+    //##############################################################################
+
+  //  if (!inputPassword) {
+  //      return;
+  //  }
 
     const patronesComunes = [
         "123456",
@@ -226,21 +264,28 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    if (inputPassword) {
     inputPassword.addEventListener("input", () => {
         const resultado = evaluarPassword(inputPassword.value);
         actualizarVista(resultado);
     });
 
-    btnVerPassword.addEventListener("click", () => {
-        const passwordOculta = inputPassword.type === "password";
+    if (btnVerPassword && iconoVerPassword) {
+        btnVerPassword.addEventListener("click", () => {
+            const passwordOculta = inputPassword.type === "password";
 
-        inputPassword.type = passwordOculta ? "text" : "password";
-        iconoVerPassword.textContent = passwordOculta
-            ? "visibility_off"
-            : "visibility";
-    });
+            inputPassword.type = passwordOculta
+                ? "text"
+                : "password";
+
+            iconoVerPassword.textContent = passwordOculta
+                ? "visibility_off"
+                : "visibility";
+        });
+    }
 
     actualizarVista(evaluarPassword(""));
+}
     //#################Fin de la sección relacionada con la evaluación de la contraseña #################
 
 
@@ -599,6 +644,283 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 }
 
-iniciarModuloBackups();
+//iniciarModuloBackups();
 //#################Fin de la sección relacionada con los recordatorios de backup ###########################
+
+//#######################Funciones relacionadas con la verificación de brechas de seguridad#################################
+        function validarCorreo(correo) {
+            const expresionCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            return expresionCorreo.test(correo);
+        }
+
+        function mostrarMensajeBrechas(mensaje, tipo = "error") {
+            if (!mensajeBrechas) {
+                return;
+            }
+
+            mensajeBrechas.textContent = mensaje;
+            mensajeBrechas.classList.remove(
+                "hidden",
+                "bg-red-500/20",
+                "text-red-100",
+                "bg-blue-500/20",
+                "text-blue-100"
+            );
+
+            if (tipo === "informacion") {
+                mensajeBrechas.classList.add(
+                    "bg-blue-500/20",
+                    "text-blue-100"
+                );
+            } else {
+                mensajeBrechas.classList.add(
+                    "bg-red-500/20",
+                    "text-red-100"
+                );
+            }
+        }
+
+        function ocultarMensajeBrechas() {
+            if (!mensajeBrechas) {
+                return;
+            }
+
+            mensajeBrechas.textContent = "";
+            mensajeBrechas.classList.add("hidden");
+        }
+
+        function establecerCargaBrechas(cargando) {
+            botonBuscarBrechas.disabled = cargando;
+
+            if (
+                !botonBuscarBrechas ||
+                !textoBotonBrechas ||
+                !iconoBuscarBrechas
+            ){
+                return;
+            }
+
+            botonBuscarBrechas.disabled = cargando;
+
+            if (cargando) {
+                textoBotonBrechas.textContent = "BUSCANDO";
+                iconoBuscarBrechas.textContent = "progress_activity";
+                iconoBuscarBrechas.classList.add("animate-spin");
+            } else {
+                textoBotonBrechas.textContent = "BUSCAR";
+                iconoBuscarBrechas.textContent = "search";
+                iconoBuscarBrechas.classList.remove("animate-spin");
+            }
+        }
+
+        function limpiarResultadoBrechas() {
+            if (
+                !listaBrechas ||
+                !recomendacionBrechas ||
+                !textoRecomendacionBrechas
+            ) {
+                return;
+            }
+
+            listaBrechas.innerHTML = "";
+            recomendacionBrechas.classList.add("hidden");
+            textoRecomendacionBrechas.textContent = "";
+        }
+
+        function formatearFechaBrecha(fecha) {
+            if (!fecha) {
+                return "Fecha no informada";
+            }
+
+            const [anio, mes, dia] = fecha.split("-");
+
+            return `${dia}/${mes}/${anio}`;
+        }
+
+        function formatearCantidad(cantidad) {
+            return new Intl.NumberFormat("es-AR").format(cantidad || 0);
+        }
+
+        function limpiarResultadoBrechas() {
+            listaBrechas.innerHTML = "";
+            recomendacionBrechas.classList.add("hidden");
+            textoRecomendacionBrechas.textContent = "";
+        }
+
+        function mostrarCorreoSinBrechas() {
+            limpiarResultadoBrechas();
+
+            estadoInicialBrechas.classList.add("hidden");
+            resultadoBrechas.classList.remove("hidden");
+
+            iconoResultadoBrechas.textContent = "verified_user";
+            iconoResultadoBrechas.classList.remove("text-error");
+            iconoResultadoBrechas.classList.add("text-secondary-fixed");
+
+            tituloResultadoBrechas.textContent =
+                "No se encontraron brechas";
+
+            descripcionResultadoBrechas.textContent =
+                "El correo no aparece en las brechas devueltas por el servicio.";
+
+            recomendacionBrechas.classList.remove("hidden");
+
+            textoRecomendacionBrechas.textContent =
+                "Mantené contraseñas únicas, activá la autenticación en dos pasos y repetí la consulta periódicamente.";
+        }
+
+        function crearTarjetaBrecha(brecha) {
+            const tarjeta = document.createElement("article");
+
+            tarjeta.className =
+                "rounded-xl bg-white/10 border border-white/15 p-4";
+
+            const encabezado = document.createElement("div");
+            encabezado.className =
+                "flex items-start justify-between gap-3";
+
+            const informacion = document.createElement("div");
+
+            const titulo = document.createElement("h5");
+            titulo.className = "font-bold text-white";
+            titulo.textContent = brecha.titulo;
+
+            const dominio = document.createElement("p");
+            dominio.className = "text-xs text-white/60 mt-1";
+            dominio.textContent = brecha.dominio;
+
+            informacion.appendChild(titulo);
+            informacion.appendChild(dominio);
+
+            const fecha = document.createElement("span");
+            fecha.className =
+                "text-[10px] text-white/70 bg-white/10 px-2 py-1 rounded-full";
+            fecha.textContent = formatearFechaBrecha(brecha.fecha);
+
+            encabezado.appendChild(informacion);
+            encabezado.appendChild(fecha);
+
+            const cantidad = document.createElement("p");
+            cantidad.className = "text-xs text-white/70 mt-3";
+            cantidad.textContent =
+                `${formatearCantidad(brecha.cantidadAfectados)} cuentas afectadas`;
+
+            const datos = document.createElement("p");
+            datos.className = "text-xs text-white/70 mt-2";
+
+            if (brecha.datosExpuestos.length > 0) {
+                datos.textContent =
+                    `Datos expuestos: ${brecha.datosExpuestos.join(", ")}`;
+            } else {
+                datos.textContent =
+                    "No se informaron las categorías de datos expuestos.";
+            }
+
+            tarjeta.appendChild(encabezado);
+            tarjeta.appendChild(cantidad);
+            tarjeta.appendChild(datos);
+
+            return tarjeta;
+        }
+
+        function mostrarBrechasEncontradas(resultado) {
+            limpiarResultadoBrechas();
+
+            estadoInicialBrechas.classList.add("hidden");
+            resultadoBrechas.classList.remove("hidden");
+
+            iconoResultadoBrechas.textContent = "warning";
+            iconoResultadoBrechas.classList.remove(
+                "text-secondary-fixed"
+            );
+            iconoResultadoBrechas.classList.add("text-tertiary-fixed");
+
+            tituloResultadoBrechas.textContent =
+                "Se encontraron exposiciones";
+
+            descripcionResultadoBrechas.textContent =
+                `El correo apareció en ${resultado.cantidad} brecha(s) conocida(s).`;
+
+            resultado.brechas.forEach((brecha) => {
+                listaBrechas.appendChild(crearTarjetaBrecha(brecha));
+            });
+
+            recomendacionBrechas.classList.remove("hidden");
+
+            textoRecomendacionBrechas.textContent =
+                "Cambiá las contraseñas de los servicios afectados, evitá reutilizarlas y activá la autenticación en dos pasos.";
+        }
+
+        async function iniciarModuloBrechas() {
+            if (!formBrechas) {
+                return;
+            }
+
+            formBrechas.addEventListener("submit", async (event) => {
+                event.preventDefault();
+
+                ocultarMensajeBrechas();
+
+                const correo = correoBrechas.value.trim();
+
+                if (!validarCorreo(correo)) {
+                    mostrarMensajeBrechas(
+                        "Ingresá una dirección de correo válida."
+                    );
+                    return;
+                }
+
+                establecerCargaBrechas(true);
+
+                try {
+                    const resultado =
+                        await window.hadesAPI.verificarBrechasCorreo(correo);
+
+                    if (resultado.estado === "sin_brechas") {
+                        mostrarCorreoSinBrechas();
+                    } else {
+                        mostrarBrechasEncontradas(resultado);
+                    }
+                } catch (error) {
+                    console.error(
+                        "Error al verificar brechas:",
+                        error
+                    );
+
+                    mostrarMensajeBrechas(
+                        error.message ||
+                        "No se pudo completar la verificación."
+                    );
+                } finally {
+                    establecerCargaBrechas(false);
+                }
+            });
+        }
+
+//iniciarModuloBrechas();
+
+async function iniciarModulosDiagnostico() {
+    try {
+        await iniciarModuloBackups();
+        console.log("Módulo de backups iniciado.");
+    } catch (error) {
+        console.error(
+            "Error al iniciar el módulo de backups:",
+            error
+        );
+    }
+
+    try {
+        iniciarModuloBrechas();
+        console.log("Módulo de brechas iniciado.");
+    } catch (error) {
+        console.error(
+            "Error al iniciar el módulo de brechas:",
+            error
+        );
+    }
+}
+
+iniciarModulosDiagnostico();
 });
