@@ -770,6 +770,48 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Mantené contraseñas únicas, activá la autenticación en dos pasos y repetí la consulta periódicamente.";
         }
 
+            function traducirDatoExpuesto(dato) {
+        const traducciones = {
+            "Email addresses": "Direcciones de correo",
+            "Passwords": "Contraseñas",
+            "Usernames": "Nombres de usuario",
+            "Phone numbers": "Números de teléfono",
+            "Names": "Nombres completos",
+            "Dates of birth": "Fechas de nacimiento",
+            "Physical addresses": "Direcciones físicas",
+            "Geographic locations": "Ubicaciones geográficas",
+            "IP addresses": "Direcciones IP",
+            "Security questions and answers":
+                "Preguntas y respuestas de seguridad",
+            "Social media profiles": "Perfiles de redes sociales",
+            "Website activity": "Actividad en sitios web",
+            "Job titles": "Puestos laborales",
+            "Employers": "Empleadores",
+            "Genders": "Géneros",
+            "Payment histories": "Historiales de pago",
+            "Credit cards": "Tarjetas de crédito",
+            "Bank account numbers": "Números de cuentas bancarias",
+            "Account balances": "Saldos de cuentas",
+            "Partial credit card data":
+                "Datos parciales de tarjetas de crédito",
+            "Purchases": "Compras",
+            "Device information": "Información de dispositivos",
+            "Browser user agent details":
+                "Información del navegador",
+            "Authentication tokens":
+                "Tokens de autenticación",
+            "Password hints": "Pistas de contraseñas",
+            "Recovery email addresses":
+                "Correos electrónicos de recuperación",
+            "Email messages": "Mensajes de correo",
+            "Private messages": "Mensajes privados",
+            "Photos": "Fotografías",
+            "Biometric data": "Datos biométricos"
+        };
+
+        return traducciones[dato] || dato;
+    }
+
         function crearTarjetaBrecha(brecha) {
             const tarjeta = document.createElement("article");
 
@@ -809,13 +851,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const datos = document.createElement("p");
             datos.className = "text-xs text-white/70 mt-2";
 
-            if (brecha.datosExpuestos.length > 0) {
-                datos.textContent =
-                    `Datos expuestos: ${brecha.datosExpuestos.join(", ")}`;
-            } else {
-                datos.textContent =
-                    "No se informaron las categorías de datos expuestos.";
-            }
+            if (
+                    Array.isArray(brecha.datosExpuestos) &&
+                    brecha.datosExpuestos.length > 0
+                ) {
+                    const datosTraducidos = brecha.datosExpuestos.map(
+                        traducirDatoExpuesto
+                    );
+
+                    datos.textContent =
+                        `Datos expuestos: ${datosTraducidos.join(", ")}`;
+                } else {
+                    datos.textContent =
+                        "No se informaron las categorías de datos expuestos.";
+                }
 
             tarjeta.appendChild(encabezado);
             tarjeta.appendChild(cantidad);
