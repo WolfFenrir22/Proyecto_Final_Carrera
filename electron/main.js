@@ -10,7 +10,8 @@ const {
     guardarRecordatorioBackup,
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,
-    marcarBackupRealizado
+    marcarBackupRealizado,
+    guardarResultadoPhishing
 } = require("../src/database/db");
 
 // Clave de prueba de Have I Been Pwned.
@@ -345,4 +346,11 @@ app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         app.quit();
     }
+});
+
+// ============================================================
+// MANEJADOR DEL GUARDADO DE RESULTADOS DE PHISHING
+// ============================================================
+ipcMain.handle("phishing:guardarResultado", async (event, datos) => {
+    return await guardarResultadoPhishing(datos);
 });

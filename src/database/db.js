@@ -62,6 +62,23 @@ function initDatabase() {
                 FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
         )
     `);
+
+        db.run(`
+        CREATE TABLE IF NOT EXISTS simulaciones_phishing (
+            id_simulacion INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_usuario INTEGER NOT NULL,
+            id_escenario INTEGER NOT NULL,
+            tipo_escenario TEXT NOT NULL,
+            dificultad TEXT NOT NULL,
+            decision_usuario TEXT NOT NULL,
+            decision_correcta TEXT NOT NULL,
+            puntaje INTEGER NOT NULL,
+            aciertos INTEGER NOT NULL,
+            errores INTEGER NOT NULL,
+            fecha_simulacion TEXT NOT NULL,
+            FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+        )
+    `);
     });
 
     // Devuelve la conexión a la base de datos.
@@ -442,6 +459,56 @@ function marcarBackupRealizado(idRecordatorio) {
         }
 //############################################################################################
 
+//####Función que guarda el resultado de una simulación de phishing en la base de datos######
+function guardarResultadoPhishing(datos) {
+    const database = getDatabase();
+    const fechaActual = new Date().toISOString();
+
+    return new Promise((resolve, reject) => {
+        database.run(
+            `
+                INSERT INTO simulaciones_phishing (
+                    id_usuario,
+                    id_escenario,
+                    tipo_escenario,
+                    dificultad,
+                    decision_usuario,
+                    decision_correcta,
+                    puntaje,
+                    aciertos,
+                    errores,
+                    fecha_simulacion
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `,
+            [
+                datos.id_usuario,
+                datos.id_escenario,
+                datos.tipo_escenario,
+                datos.dificultad,
+                datos.decision_usuario,
+                datos.decision_correcta,
+                datos.puntaje,
+                datos.aciertos,
+                datos.errores,
+                fechaActual
+            ],
+            function (error) {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve({
+                    id_simulacion: this.lastID,
+                    ...datos,
+                    fecha_simulacion: fechaActual
+                });
+            }
+        );
+    });
+}
+
 // Exporta las funciones para que puedan ser usadas desde otros archivos,
 // por ejemplo desde electron/main.js.
 module.exports = {
@@ -453,5 +520,6 @@ module.exports = {
     guardarRecordatorioBackup,
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,
-    marcarBackupRealizado
+    marcarBackupRealizado,
+    guardarResultadoPhishing
 };
