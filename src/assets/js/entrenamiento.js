@@ -297,13 +297,17 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     //#########FIN Elementos del modal Academia############
 
+    //========== VARIABLES GLOBALES =====================
     let escenarioActual = null;
     let ultimoEscenarioId = null;
 
     let usuarioActual = null;
+    let triviaEvaluada = false;
 
     let casoEvaluado = false;
+    //===================================================
 
+    //============= VARIABLES INICIALIZADOS =============
     const totalCasosSesion = 5;
     let casoActualSesion = 1;
     let puntajeAcumuladoSesion = 0;
@@ -1360,6 +1364,8 @@ function renderizarTarjetasMitos() {
 }
 
 function renderizarTriviaSeguridad() {
+    triviaEvaluada = false;
+
     contenidoAcademia.innerHTML = "";
 
     const contenedorTrivia = document.createElement("div");
@@ -1456,6 +1462,14 @@ function renderizarTriviaSeguridad() {
 }
 
 function evaluarTriviaSeguridad() {
+    
+    if (triviaEvaluada) {
+        mostrarMensaje(
+            "Este test ya fue evaluado. Podés volver a abrir el Test de Nivel para realizarlo nuevamente."
+        );
+        return;
+    }
+
     let respuestasCorrectas = 0;
     let preguntasSinResponder = 0;
     const detalle = [];
@@ -1506,6 +1520,7 @@ function evaluarTriviaSeguridad() {
         porcentaje,
         detalle
     );
+    triviaEvaluada = true;
 }
 
 function obtenerNivelTrivia(porcentaje) {
@@ -1547,6 +1562,15 @@ function mostrarResultadoTrivia(
     }
 
     const nivel = obtenerNivelTrivia(porcentaje);
+
+    console.log("Intentando guardar resultado de trivia...");
+
+    guardarResultadoTriviaSeguridad(
+    respuestasCorrectas,
+    totalPreguntas,
+    porcentaje,
+    nivel.nivel
+    );
 
     const detalleHTML = detalle
         .map((item) => {
@@ -1633,6 +1657,40 @@ function mostrarResultadoTrivia(
         block: "start"
     });
 }
+
+async function guardarResultadoTriviaSeguridad(
+    respuestasCorrectas,
+    totalPreguntas,
+    porcentaje,
+    nivel
+) {
+    console.log("Entró a guardarResultadoTriviaSeguridad");
+
+    if (!usuarioActual || !window.hadesAPI?.guardarResultadoTrivia) {
+        console.warn(
+            "No se pudo guardar el resultado de la trivia porque no hay usuario o no está disponible la API."
+        );
+        return;
+    }
+
+    try {
+        await window.hadesAPI.guardarResultadoTrivia({
+            id_usuario: usuarioActual.id_usuario,
+            respuestas_correctas: respuestasCorrectas,
+            total_preguntas: totalPreguntas,
+            porcentaje,
+            nivel
+        });
+
+        console.log("Resultado de trivia guardado correctamente.");
+    } catch (error) {
+        console.error(
+            "No se pudo guardar el resultado de la trivia:",
+            error
+        );
+    }
+}
+
 
 function mostrarModalMito(mito) {
     if (

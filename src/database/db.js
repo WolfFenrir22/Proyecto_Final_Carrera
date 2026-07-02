@@ -79,6 +79,18 @@ function initDatabase() {
             FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
         )
     `);
+        db.run(`
+        CREATE TABLE IF NOT EXISTS resultados_trivia (
+            id_resultado INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_usuario INTEGER NOT NULL,
+            respuestas_correctas INTEGER NOT NULL,
+            total_preguntas INTEGER NOT NULL,
+            porcentaje INTEGER NOT NULL,
+            nivel TEXT NOT NULL,
+            fecha_resultado TEXT NOT NULL,
+            FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+        )
+    `);
     });
 
     // Devuelve la conexión a la base de datos.
@@ -509,6 +521,48 @@ function guardarResultadoPhishing(datos) {
     });
 }
 
+// ########Función que guarda el resultado de una trivia en la base de datos################.
+function guardarResultadoTrivia(datos) {
+    const database = getDatabase();
+    const fechaActual = new Date().toISOString();
+
+    return new Promise((resolve, reject) => {
+        database.run(
+            `
+                INSERT INTO resultados_trivia (
+                    id_usuario,
+                    respuestas_correctas,
+                    total_preguntas,
+                    porcentaje,
+                    nivel,
+                    fecha_resultado
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+            `,
+            [
+                datos.id_usuario,
+                datos.respuestas_correctas,
+                datos.total_preguntas,
+                datos.porcentaje,
+                datos.nivel,
+                fechaActual
+            ],
+            function (error) {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve({
+                    id_resultado: this.lastID,
+                    ...datos,
+                    fecha_resultado: fechaActual
+                });
+            }
+        );
+    });
+}
+
 // Exporta las funciones para que puedan ser usadas desde otros archivos,
 // por ejemplo desde electron/main.js.
 module.exports = {
@@ -521,5 +575,6 @@ module.exports = {
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,
     marcarBackupRealizado,
-    guardarResultadoPhishing
+    guardarResultadoPhishing,
+    guardarResultadoTrivia
 };

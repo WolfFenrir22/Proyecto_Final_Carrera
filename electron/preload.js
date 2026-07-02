@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld("hadesAPI", {
     eliminarRecordatorioBackup: (idRecordatorio) => ipcRenderer.invoke("backup:eliminar", idRecordatorio),
     marcarBackupRealizado: (idRecordatorio) => ipcRenderer.invoke("backup:realizado", idRecordatorio),
     verificarBrechasCorreo: (correo) => ipcRenderer.invoke("brechas:verificar", correo),
-    guardarResultadoPhishing: (datos) => ipcRenderer.invoke("phishing:guardarResultado", datos)
+    guardarResultadoPhishing: (datos) => ipcRenderer.invoke("phishing:guardarResultado", datos),
+    guardarResultadoTrivia: (datos) => ipcRenderer.invoke("trivia:guardarResultado", datos)
 });

@@ -11,7 +11,8 @@ const {
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,
     marcarBackupRealizado,
-    guardarResultadoPhishing
+    guardarResultadoPhishing,
+    guardarResultadoTrivia
 } = require("../src/database/db");
 
 // Clave de prueba de Have I Been Pwned.
@@ -353,4 +354,11 @@ app.on("window-all-closed", () => {
 // ============================================================
 ipcMain.handle("phishing:guardarResultado", async (event, datos) => {
     return await guardarResultadoPhishing(datos);
+});
+
+//============================================================
+// MANEJADOR DEL GUARDADO DE RESULTADOS DE TRIVIA
+//============================================================
+ipcMain.handle("trivia:guardarResultado", async (event, datos) => {
+    return await guardarResultadoTrivia(datos);
 });
