@@ -119,23 +119,12 @@
    </div>
    <div class="flex items-center gap-gutter">
 
-<!--        
-    <div class="hidden md:flex items-center gap-stack-lg">
-     <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-blue-700 dark:text-blue-300 font-bold">
-      Principal
-     </span>
-     <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">
-      Diagnostico
-     </span>
-     <span class="font-['Public_Sans'] text-sm font-medium tracking-tight text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer px-2 py-1 rounded">
-      Entrenamiento
-     </span>
-    </div>
--->
     <div class="flex items-center gap-stack-md">
-     <span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full">
+
+  <!--    <span class="text-xs font-semibold px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full">
       Sistema: Protegido
-     </span>
+     </span> -->
+
      <button class="bg-error text-on-error font-bold text-xs px-4 py-2 rounded-lg shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">
        Emergencia
@@ -158,25 +147,10 @@
   <div class="flex">
    <!-- SideNavBar -->
     <aside class="fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-8 z-40 bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-gray-800 hidden md:flex">
-
-        <!-- Espacio superior opcional -->
-        <!--
-        <div class="px-6 mb-stack-lg">
-            <h2 class="text-lg font-black text-blue-800 dark:text-blue-400">
-                HADES
-            </h2>
-
-            <p class="text-[14px] text-gray-500 font-['Public_Sans']">
-                Safety by Design
-            </p>
-        </div>
-        -->
-
         <nav class="flex-1 px-4 space-y-2">
             <a
                 class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-semibold border-r-4 border-blue-800 dark:border-blue-400 cursor-pointer transition-all duration-200"
-                href="dashboard.html"
-            >
+                href="dashboard.html">
                 <span class="material-symbols-outlined" data-icon="dashboard">
                     dashboard
                 </span>
@@ -188,8 +162,7 @@
 
             <a
                 class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200"
-                href="diagnostico.html"
-            >
+                href="diagnostico.html">
                 <span class="material-symbols-outlined" data-icon="security">
                     security
                 </span>
@@ -201,8 +174,7 @@
 
             <a
                 class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200"
-                href="entrenamiento.html"
-            >
+                href="entrenamiento.html">
                 <span class="material-symbols-outlined" data-icon="school">
                     school
                 </span>
@@ -212,19 +184,18 @@
                 </span>
             </a>
 
-            <!--
-            <div class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200">
+            <a
+                class="flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200"
+                href="configuracion.html">
                 <span class="material-symbols-outlined" data-icon="settings">
                     settings
                 </span>
 
                 <span class="font-['Public_Sans'] text-[14px]">
-                    Settings
+                    Configuración
                 </span>
-            </div>
-            -->
+            </a>
         </nav>
-
         <div class="px-4 mt-auto">
             <button class="w-full py-3 bg-primary text-on-primary font-label-md rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-sm" data-icon="policy">
@@ -245,15 +216,17 @@
                 </div>
 
 <!--   RECORDAR ASOCIAR AL USUARIO EN SESIÓN   -->
-                <div class="overflow-hidden">
-                    <p class="text-label-md truncate">
-                        Fabio Sotelo 
-                    </p>
+        <div class="overflow-hidden">
+            <p
+                id="nombreUsuarioSesion"
+                class="text-label-md truncate">
+                Usuario
+            </p>
 
-                    <p class="text-caption text-gray-500 truncate">
-                        Premium Plan
-                    </p>
-                </div>
+            <p class="text-caption text-gray-500 truncate">
+                Sesión activa
+            </p>
+        </div>
 <!--  -------------------------------------------  -->
             </div>
         </div>
@@ -574,5 +547,8 @@
     </span>
    </button>
   </nav>
+  <!-- Scripts -->
+  <script src="../assets/js/dashboard.js"></script>
+  <!---------------------------------------------->
  </body>
 </html>

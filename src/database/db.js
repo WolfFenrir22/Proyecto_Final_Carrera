@@ -10,8 +10,39 @@ const { app } = require("electron");
 // El modo verbose muestra información más detallada si ocurre algún error.
 const sqlite3 = require("sqlite3").verbose();
 
+// Importa el módulo "crypto" de Node.js.
+const crypto = require("crypto");
+
 // Variable global donde se guardará la conexión activa a la base de datos.
 let db;
+
+//============ Funciones para manejar contraseñas y validaciones de usuario ========================
+function generarSalt() {
+    return crypto.randomBytes(16).toString("hex");
+}
+
+function generarHashPassword(password, salt) {
+    return crypto
+        .pbkdf2Sync(password, salt, 100000, 64, "sha512")
+        .toString("hex");
+}
+
+function validarNombreUsuario(nombre) {
+    return (
+        typeof nombre === "string" &&
+        nombre.trim().length >= 2 &&
+        nombre.trim().length <= 40
+    );
+}
+
+function validarPassword(password) {
+    return (
+        typeof password === "string" &&
+        password.length >= 4 &&
+        password.length <= 100
+    );
+}
+//================================================================================================
 
 // Función encargada de inicializar la base de datos.
 function initDatabase() {
@@ -43,10 +74,34 @@ function initDatabase() {
             CREATE TABLE IF NOT EXISTS usuarios (
                 id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT NOT NULL CHECK(length(nombre) BETWEEN 2 AND 40),
+                password_hash TEXT,
+                password_salt TEXT,
                 fecha_creacion TEXT NOT NULL,
                 ultimo_acceso TEXT NOT NULL
             )
         `);
+
+    //===== para la migración de la base de datos, revisa si las columnas password_hash y password_salt existen =====
+            db.all(`PRAGMA table_info(usuarios)`, [], (error, columnas) => {
+        if (error) {
+            console.error(
+                "Error al revisar estructura de usuarios:",
+                error.message
+            );
+            return;
+        }
+
+        const nombresColumnas = columnas.map((columna) => columna.name);
+
+        if (!nombresColumnas.includes("password_hash")) {
+            db.run(`ALTER TABLE usuarios ADD COLUMN password_hash TEXT`);
+        }
+
+        if (!nombresColumnas.includes("password_salt")) {
+            db.run(`ALTER TABLE usuarios ADD COLUMN password_salt TEXT`);
+        }
+    });
+    //========================================================================================================================
 
         db.run(`
             CREATE TABLE IF NOT EXISTS recordatorios_backup (
@@ -280,6 +335,321 @@ function eliminarUsuarioPrincipal() {
 
                 // Si la eliminación fue exitosa, devuelve true.
                 resolve(true);
+            }
+        );
+    });
+}
+
+// Función que obtiene un usuario por su nombre.
+function obtenerUsuarioPorNombre(nombre) {
+    const database = getDatabase();
+    const nombreLimpio = nombre.trim();
+
+    return new Promise((resolve, reject) => {
+        database.get(
+            `
+                SELECT
+                    id_usuario,
+                    nombre,
+                    password_hash,
+                    password_salt,
+                    fecha_creacion,
+                    ultimo_acceso
+                FROM usuarios
+                WHERE LOWER(nombre) = LOWER(?)
+                LIMIT 1
+            `,
+            [nombreLimpio],
+            (error, row) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(row || null);
+            }
+        );
+    });
+}
+
+function crearUsuarioConPassword(nombre, password) {
+    const database = getDatabase();
+    const nombreLimpio = nombre.trim();
+    const fechaActual = new Date().toISOString();
+
+    if (!validarNombreUsuario(nombreLimpio)) {
+        return Promise.reject(
+            new Error("El nombre debe tener entre 2 y 40 caracteres.")
+        );
+    }
+
+    if (!validarPassword(password)) {
+        return Promise.reject(
+            new Error("La contraseña debe tener al menos 4 caracteres.")
+        );
+    }
+
+    return new Promise((resolve, reject) => {
+        obtenerUsuarioPorNombre(nombreLimpio)
+            .then((usuarioExistente) => {
+                if (usuarioExistente) {
+                    reject(
+                        new Error(
+                            "Ya existe un usuario con ese nombre."
+                        )
+                    );
+                    return;
+                }
+
+                const salt = generarSalt();
+                const hash = generarHashPassword(password, salt);
+
+                database.run(
+                    `
+                        INSERT INTO usuarios (
+                            nombre,
+                            password_hash,
+                            password_salt,
+                            fecha_creacion,
+                            ultimo_acceso
+                        )
+                        VALUES (?, ?, ?, ?, ?)
+                    `,
+                    [
+                        nombreLimpio,
+                        hash,
+                        salt,
+                        fechaActual,
+                        fechaActual
+                    ],
+                    function (error) {
+                        if (error) {
+                            reject(error);
+                            return;
+                        }
+
+                        resolve({
+                            id_usuario: this.lastID,
+                            nombre: nombreLimpio,
+                            fecha_creacion: fechaActual,
+                            ultimo_acceso: fechaActual
+                        });
+                    }
+                );
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+function iniciarSesion(nombre, password) {
+    const database = getDatabase();
+    const nombreLimpio = nombre.trim();
+    const fechaActual = new Date().toISOString();
+
+    if (!validarNombreUsuario(nombreLimpio)) {
+        return Promise.reject(
+            new Error("Ingresá un nombre de usuario válido.")
+        );
+    }
+
+    if (!validarPassword(password)) {
+        return Promise.reject(
+            new Error("Ingresá una contraseña válida.")
+        );
+    }
+
+    return new Promise((resolve, reject) => {
+        obtenerUsuarioPorNombre(nombreLimpio)
+            .then((usuario) => {
+                if (!usuario) {
+                    reject(
+                        new Error(
+                            "No existe un usuario con ese nombre."
+                        )
+                    );
+                    return;
+                }
+
+                if (!usuario.password_hash || !usuario.password_salt) {
+                    reject(
+                        new Error(
+                            "Este usuario todavía no tiene contraseña configurada."
+                        )
+                    );
+                    return;
+                }
+
+                const hashIngresado = generarHashPassword(
+                    password,
+                    usuario.password_salt
+                );
+
+                if (hashIngresado !== usuario.password_hash) {
+                    reject(new Error("La contraseña no es correcta."));
+                    return;
+                }
+
+                database.run(
+                    `
+                        UPDATE usuarios
+                        SET ultimo_acceso = ?
+                        WHERE id_usuario = ?
+                    `,
+                    [fechaActual, usuario.id_usuario],
+                    (error) => {
+                        if (error) {
+                            reject(error);
+                            return;
+                        }
+
+                        resolve({
+                            id_usuario: usuario.id_usuario,
+                            nombre: usuario.nombre,
+                            fecha_creacion: usuario.fecha_creacion,
+                            ultimo_acceso: fechaActual
+                        });
+                    }
+                );
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+function actualizarNombreUsuario(idUsuario, nuevoNombre) {
+    const database = getDatabase();
+    const nombreLimpio = nuevoNombre.trim();
+
+    if (!validarNombreUsuario(nombreLimpio)) {
+        return Promise.reject(
+            new Error("El nombre debe tener entre 2 y 40 caracteres.")
+        );
+    }
+
+    return new Promise((resolve, reject) => {
+        obtenerUsuarioPorNombre(nombreLimpio)
+            .then((usuarioExistente) => {
+                if (
+                    usuarioExistente &&
+                    usuarioExistente.id_usuario !== idUsuario
+                ) {
+                    reject(
+                        new Error(
+                            "Ya existe otro usuario con ese nombre."
+                        )
+                    );
+                    return;
+                }
+
+                database.run(
+                    `
+                        UPDATE usuarios
+                        SET nombre = ?
+                        WHERE id_usuario = ?
+                    `,
+                    [nombreLimpio, idUsuario],
+                    (error) => {
+                        if (error) {
+                            reject(error);
+                            return;
+                        }
+
+                        resolve({
+                            id_usuario: idUsuario,
+                            nombre: nombreLimpio
+                        });
+                    }
+                );
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+function actualizarPasswordUsuario(
+    idUsuario,
+    passwordActual,
+    passwordNueva
+) {
+    const database = getDatabase();
+
+    if (!validarPassword(passwordActual)) {
+        return Promise.reject(
+            new Error("Ingresá la contraseña actual.")
+        );
+    }
+
+    if (!validarPassword(passwordNueva)) {
+        return Promise.reject(
+            new Error("La nueva contraseña debe tener al menos 4 caracteres.")
+        );
+    }
+
+    return new Promise((resolve, reject) => {
+        database.get(
+            `
+                SELECT
+                    id_usuario,
+                    password_hash,
+                    password_salt
+                FROM usuarios
+                WHERE id_usuario = ?
+                LIMIT 1
+            `,
+            [idUsuario],
+            (error, usuario) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                if (!usuario) {
+                    reject(new Error("No se encontró el usuario."));
+                    return;
+                }
+
+                const hashActual = generarHashPassword(
+                    passwordActual,
+                    usuario.password_salt
+                );
+
+                if (hashActual !== usuario.password_hash) {
+                    reject(
+                        new Error(
+                            "La contraseña actual no es correcta."
+                        )
+                    );
+                    return;
+                }
+
+                const nuevoSalt = generarSalt();
+                const nuevoHash = generarHashPassword(
+                    passwordNueva,
+                    nuevoSalt
+                );
+
+                database.run(
+                    `
+                        UPDATE usuarios
+                        SET
+                            password_hash = ?,
+                            password_salt = ?
+                        WHERE id_usuario = ?
+                    `,
+                    [nuevoHash, nuevoSalt, idUsuario],
+                    (errorUpdate) => {
+                        if (errorUpdate) {
+                            reject(errorUpdate);
+                            return;
+                        }
+
+                        resolve(true);
+                    }
+                );
             }
         );
     });
@@ -571,6 +941,13 @@ module.exports = {
     guardarUsuario,
     actualizarUltimoAcceso,
     eliminarUsuarioPrincipal,
+
+    obtenerUsuarioPorNombre,
+    crearUsuarioConPassword,
+    iniciarSesion,
+    actualizarNombreUsuario,
+    actualizarPasswordUsuario,
+
     guardarRecordatorioBackup,
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,

@@ -1,111 +1,228 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     const tituloBienvenida = document.getElementById("tituloBienvenida");
     const textoBienvenida = document.getElementById("textoBienvenida");
-    const formulario = document.getElementById("formularioUsuario");
-    const inputNombre = document.getElementById("nombreUsuario");
-    const mensajeError = document.getElementById("mensajeError");
-    const botonIniciar = document.getElementById("botonIniciar");
-    const botonCambiarUsuario = document.getElementById("botonCambiarUsuario");
 
-    function mostrarFormularioUsuario() {
+    const btnModoLogin = document.getElementById("btnModoLogin");
+    const btnModoRegistro = document.getElementById("btnModoRegistro");
+
+    const formularioLogin = document.getElementById("formularioLogin");
+    const loginNombreUsuario = document.getElementById("loginNombreUsuario");
+    const loginPassword = document.getElementById("loginPassword");
+    const mensajeErrorLogin = document.getElementById("mensajeErrorLogin");
+
+    const formularioRegistro = document.getElementById("formularioRegistro");
+    const registroNombreUsuario = document.getElementById(
+        "registroNombreUsuario"
+    );
+    const registroPassword = document.getElementById("registroPassword");
+    const registroPasswordConfirmacion = document.getElementById(
+        "registroPasswordConfirmacion"
+    );
+    const mensajeErrorRegistro = document.getElementById(
+        "mensajeErrorRegistro"
+    );
+
+    function limpiarMensajes() {
+        if (mensajeErrorLogin) {
+            mensajeErrorLogin.textContent = "";
+            mensajeErrorLogin.classList.add("hidden");
+        }
+
+        if (mensajeErrorRegistro) {
+            mensajeErrorRegistro.textContent = "";
+            mensajeErrorRegistro.classList.add("hidden");
+        }
+    }
+
+    function mostrarMensajeLogin(mensaje) {
+        mensajeErrorLogin.textContent = mensaje;
+        mensajeErrorLogin.classList.remove("hidden");
+    }
+
+    function limpiarMensajeError(mensaje) {
+    if (!mensaje) {
+        return "Ocurrió un error inesperado.";
+    }
+
+    return mensaje
+        .replace(/^Error invoking remote method '[^']+':\s*/, "")
+        .replace(/^Error:\s*/, "")
+        .trim();
+    }
+
+    function mostrarMensajeRegistro(mensaje) {
+        mensajeErrorRegistro.textContent = mensaje;
+        mensajeErrorRegistro.classList.remove("hidden");
+    }
+
+    function activarModoLogin() {
+        limpiarMensajes();
+
         tituloBienvenida.textContent = "Bienvenido a HADES";
         textoBienvenida.textContent =
-            "Antes de comenzar, ingresá tu nombre para personalizar la experiencia dentro de la herramienta.";
+            "Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital.";
 
-        inputNombre.value = "";
-        mensajeError.textContent = "";
-        mensajeError.classList.add("hidden");
+        formularioLogin.classList.remove("hidden");
+        formularioRegistro.classList.add("hidden");
 
-        formulario.classList.remove("hidden");
-        botonIniciar.classList.add("hidden");
-        botonCambiarUsuario.classList.add("hidden");
+        btnModoLogin.className =
+            "py-2 rounded-full text-sm font-bold bg-primary-container text-white shadow transition-colors";
+
+        btnModoRegistro.className =
+            "py-2 rounded-full text-sm font-bold text-outline-variant hover:text-white transition-colors";
+
+        loginNombreUsuario.focus();
     }
 
-    function mostrarUsuarioGuardado(nombre) {
-        tituloBienvenida.textContent = `Bienvenido, ${nombre}`;
+    function activarModoRegistro() {
+        limpiarMensajes();
+
+        tituloBienvenida.textContent = "Crear usuario en HADES";
         textoBienvenida.textContent =
-            "Continuá fortaleciendo tus hábitos de seguridad digital mediante guías, diagnósticos y simulaciones educativas.";
+            "Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital.";
 
-        mensajeError.textContent = "";
-        mensajeError.classList.add("hidden");
+        formularioLogin.classList.add("hidden");
+        formularioRegistro.classList.remove("hidden");
 
-        formulario.classList.add("hidden");
-        botonIniciar.classList.remove("hidden");
-        botonCambiarUsuario.classList.remove("hidden");
+        btnModoRegistro.className =
+            "py-2 rounded-full text-sm font-bold bg-secondary text-white shadow transition-colors";
+
+        btnModoLogin.className =
+            "py-2 rounded-full text-sm font-bold text-outline-variant hover:text-white transition-colors";
+
+        registroNombreUsuario.focus();
     }
 
-    try {
-        const usuario = await window.hadesAPI.obtenerUsuario();
-
-        if (usuario) {
-            mostrarUsuarioGuardado(usuario.nombre);
-        } else {
-            mostrarFormularioUsuario();
+    function validarNombre(nombre) {
+        if (!nombre || nombre.trim().length < 2) {
+            return "Ingresá un nombre de usuario válido.";
         }
-    } catch (error) {
-        mensajeError.textContent = "No se pudo cargar la información del usuario.";
-        mensajeError.classList.remove("hidden");
+
+        if (nombre.trim().length > 40) {
+            return "El nombre no puede superar los 40 caracteres.";
+        }
+
+        return null;
     }
 
-    formulario.addEventListener("submit", async (event) => {
+    function validarPassword(password) {
+        if (!password || password.length < 4) {
+            return "La contraseña debe tener al menos 4 caracteres.";
+        }
+
+        if (password.length > 100) {
+            return "La contraseña no puede superar los 100 caracteres.";
+        }
+
+        return null;
+    }
+
+    function guardarUsuarioActivo(usuario) {
+        localStorage.setItem(
+            "hades_usuario_activo",
+            JSON.stringify({
+                id_usuario: usuario.id_usuario,
+                nombre: usuario.nombre,
+                fecha_creacion: usuario.fecha_creacion,
+                ultimo_acceso: usuario.ultimo_acceso
+            })
+        );
+    }
+
+    function irAlDashboard() {
+        document.body.classList.add("page-transition-out");
+
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 550);
+    }
+
+    btnModoLogin.addEventListener("click", activarModoLogin);
+    btnModoRegistro.addEventListener("click", activarModoRegistro);
+
+    formularioLogin.addEventListener("submit", async (event) => {
         event.preventDefault();
+        limpiarMensajes();
 
-        const nombre = inputNombre.value.trim();
+        const nombre = loginNombreUsuario.value.trim();
+        const password = loginPassword.value;
 
-        mensajeError.classList.add("hidden");
-        mensajeError.textContent = "";
+        const errorNombre = validarNombre(nombre);
 
-        if (nombre.length < 2) {
-            mensajeError.textContent = "Ingresá un nombre válido.";
-            mensajeError.classList.remove("hidden");
+        if (errorNombre) {
+            mostrarMensajeLogin(errorNombre);
             return;
         }
 
-        if (nombre.length > 40) {
-            mensajeError.textContent = "El nombre no puede superar los 40 caracteres.";
-            mensajeError.classList.remove("hidden");
+        const errorPassword = validarPassword(password);
+
+        if (errorPassword) {
+            mostrarMensajeLogin(errorPassword);
             return;
         }
 
         try {
-            const usuarioGuardado = await window.hadesAPI.guardarUsuario(nombre);
+            const usuario = await window.hadesAPI.iniciarSesion({
+                nombre,
+                password
+            });
 
-            tituloBienvenida.textContent = `Bienvenido, ${usuarioGuardado.nombre}`;
-            textoBienvenida.textContent =
-                "Tu perfil fue creado correctamente. Ya podés acceder al panel principal de la herramienta.";
-
-            formulario.classList.add("hidden");
-            botonIniciar.classList.remove("hidden");
-            botonCambiarUsuario.classList.remove("hidden");
+            guardarUsuarioActivo(usuario);
+            irAlDashboard();
         } catch (error) {
-            mensajeError.textContent = error.message || "No se pudo guardar el usuario.";
-            mensajeError.classList.remove("hidden");
+            mostrarMensajeLogin(
+                limpiarMensajeError(
+                    error.message ||
+                        "No se pudo iniciar sesión. Verificá los datos ingresados."
+                )
+            );
         }
     });
 
-    botonCambiarUsuario.addEventListener("click", async () => {
-    const confirmar = confirm("¿Querés borrar el nombre guardado y usar otro?");
-
-    if (!confirmar) {
-        return;
-    }
-
-    try {
-        await window.hadesAPI.eliminarUsuario();
-        mostrarFormularioUsuario();
-    } catch (error) {
-        mensajeError.textContent = "No se pudo cambiar el usuario.";
-        mensajeError.classList.remove("hidden");
-    }
-});
-
-    botonIniciar.addEventListener("click", (event) => {
+    formularioRegistro.addEventListener("submit", async (event) => {
         event.preventDefault();
+        limpiarMensajes();
 
-        document.body.classList.add("page-transition-out");
+        const nombre = registroNombreUsuario.value.trim();
+        const password = registroPassword.value;
+        const passwordConfirmacion = registroPasswordConfirmacion.value;
 
-        setTimeout(() => {
-            window.location.href = botonIniciar.getAttribute("href");
-        }, 550);
-        });
+        const errorNombre = validarNombre(nombre);
+
+        if (errorNombre) {
+            mostrarMensajeRegistro(errorNombre);
+            return;
+        }
+
+        const errorPassword = validarPassword(password);
+
+        if (errorPassword) {
+            mostrarMensajeRegistro(errorPassword);
+            return;
+        }
+
+        if (password !== passwordConfirmacion) {
+            mostrarMensajeRegistro("Las contraseñas no coinciden.");
+            return;
+        }
+
+        try {
+            const usuario = await window.hadesAPI.crearUsuarioConPassword({
+                nombre,
+                password
+            });
+
+            guardarUsuarioActivo(usuario);
+            irAlDashboard();
+        } catch (error) {
+            mostrarMensajeRegistro(
+                limpiarMensajeError(
+                    error.message ||
+                        "No se pudo crear el usuario. Intentá nuevamente."
+                )
+            );
+        }
+    });
+
+    activarModoLogin();
 });

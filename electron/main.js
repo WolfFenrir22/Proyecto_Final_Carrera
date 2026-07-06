@@ -7,6 +7,12 @@ const {
     guardarUsuario,
     actualizarUltimoAcceso,
     eliminarUsuarioPrincipal,
+
+    crearUsuarioConPassword,
+    iniciarSesion,
+    actualizarNombreUsuario,
+    actualizarPasswordUsuario,
+
     guardarRecordatorioBackup,
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,
@@ -224,6 +230,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
     initDatabase();
+    console.log("Carpeta userData:", app.getPath("userData"));
 
     // ============================================================
     // MANEJADORES DEL USUARIO
@@ -274,6 +281,69 @@ app.whenReady().then(() => {
     ipcMain.handle("usuario:eliminar", async () => {
         return await eliminarUsuarioPrincipal();
     });
+
+        ipcMain.handle(
+        "usuario:crearConPassword",
+        async (event, datos) => {
+            if (!datos || typeof datos !== "object") {
+                throw new Error("Los datos del usuario no son válidos.");
+            }
+
+            const { nombre, password } = datos;
+
+            return await crearUsuarioConPassword(nombre, password);
+        }
+    );
+
+    ipcMain.handle(
+        "usuario:login",
+        async (event, datos) => {
+            if (!datos || typeof datos !== "object") {
+                throw new Error("Los datos de inicio de sesión no son válidos.");
+            }
+
+            const { nombre, password } = datos;
+
+            return await iniciarSesion(nombre, password);
+        }
+    );
+
+    ipcMain.handle(
+        "usuario:actualizarNombre",
+        async (event, datos) => {
+            if (!datos || typeof datos !== "object") {
+                throw new Error("Los datos para actualizar el nombre no son válidos.");
+            }
+
+            const { idUsuario, nuevoNombre } = datos;
+
+            return await actualizarNombreUsuario(
+                idUsuario,
+                nuevoNombre
+            );
+        }
+    );
+
+    ipcMain.handle(
+        "usuario:actualizarPassword",
+        async (event, datos) => {
+            if (!datos || typeof datos !== "object") {
+                throw new Error("Los datos para actualizar la contraseña no son válidos.");
+            }
+
+            const {
+                idUsuario,
+                passwordActual,
+                passwordNueva
+            } = datos;
+
+            return await actualizarPasswordUsuario(
+                idUsuario,
+                passwordActual,
+                passwordNueva
+            );
+        }
+    );
 
     // ============================================================
     // MANEJADORES DE BACKUPS
@@ -341,15 +411,8 @@ app.whenReady().then(() => {
             createWindow();
         }
     });
-});
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
-});
-
-// ============================================================
+    // ============================================================
 // MANEJADOR DEL GUARDADO DE RESULTADOS DE PHISHING
 // ============================================================
 ipcMain.handle("phishing:guardarResultado", async (event, datos) => {
@@ -362,3 +425,13 @@ ipcMain.handle("phishing:guardarResultado", async (event, datos) => {
 ipcMain.handle("trivia:guardarResultado", async (event, datos) => {
     return await guardarResultadoTrivia(datos);
 });
+
+});
+
+
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+        app.quit();
+    }
+});
+

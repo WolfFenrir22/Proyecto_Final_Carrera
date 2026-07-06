@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>HADES - Configuración</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet"
+    />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00288e",
+                        "primary-container": "#1e40af",
+                        "secondary": "#006c4a",
+                        "secondary-container": "#82f5c1",
+                        "surface": "#f9f9ff",
+                        "surface-container-low": "#f0f3ff",
+                        "surface-container": "#e7eefe",
+                        "surface-container-high": "#e2e8f8",
+                        "surface-container-highest": "#dce2f3",
+                        "on-surface": "#151c27",
+                        "on-background": "#151c27",
+                        "outline": "#757684",
+                        "outline-variant": "#c4c5d5",
+                        "error": "#ba1a1a"
+                    },
+                    fontFamily: {
+                        sans: ["Public Sans"]
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="bg-surface text-on-background min-h-screen font-sans">
+    <div class="min-h-screen flex">
+
+        <!-- Sidebar simple -->
+        <aside class="w-72 bg-primary text-white p-6 hidden md:flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center overflow-hidden">
+                        <img
+                            src="../assets/img/logo_hades.ico"
+                            alt="Logo HADES"
+                            class="w-8 h-8 object-contain"
+                        />
+                    </div>
+
+                    <div>
+                        <h1 class="font-bold text-xl">
+                            HADES
+                        </h1>
+
+                        <p class="text-xs text-white/70">
+                            Seguridad digital
+                        </p>
+                    </div>
+                </div>
+
+                <nav class="space-y-2">
+                    <a
+                        href="dashboard.html"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors"
+                    >
+                        <span class="material-symbols-outlined">
+                            dashboard
+                        </span>
+                        Principal
+                    </a>
+
+                    <a
+                        href="diagnostico.html"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors"
+                    >
+                        <span class="material-symbols-outlined">
+                            health_and_safety
+                        </span>
+                        Diagnóstico
+                    </a>
+
+                    <a
+                        href="entrenamiento.html"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors"
+                    >
+                        <span class="material-symbols-outlined">
+                            school
+                        </span>
+                        Aprendizaje
+                    </a>
+
+                    <a
+                        href="configuracion.html"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/15 text-white font-bold"
+                    >
+                        <span class="material-symbols-outlined">
+                            settings
+                        </span>
+                        Configuración
+                    </a>
+                </nav>
+            </div>
+
+            <p class="text-xs text-white/50">
+                Proyecto Final de Carrera
+            </p>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="flex-1 p-6 md:p-10">
+            <header class="mb-8">
+                <span class="inline-flex items-center gap-2 text-sm font-bold text-primary bg-surface-container px-4 py-2 rounded-full mb-4">
+                    <span class="material-symbols-outlined text-base">
+                        manage_accounts
+                    </span>
+                    Perfil local
+                </span>
+
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-2">
+                    Configuración de usuario
+                </h2>
+
+                <p class="text-outline max-w-2xl">
+                    Administrá los datos básicos de tu perfil local dentro de HADES.
+                    Estos cambios no eliminan tus recordatorios ni tus resultados.
+                </p>
+            </header>
+
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Tarjeta usuario actual -->
+                <article class="lg:col-span-1 bg-white rounded-2xl border border-outline-variant shadow-sm p-6">
+                    <div class="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center mb-5">
+                        <span class="material-symbols-outlined text-4xl">
+                            person
+                        </span>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-on-surface mb-1">
+                        Usuario activo
+                    </h3>
+
+                    <p
+                        id="nombreUsuarioActual"
+                        class="text-primary font-bold text-lg"
+                    >
+                        Cargando...
+                    </p>
+
+                    <!-- ====== Recordar quitar cuando se finalice el sistema ===== -->
+                    <p
+                        id="idUsuarioActual"
+                        class="text-sm text-outline mt-1"
+                    >
+                        ID de usuario: -
+                    </p>
+                    <!-- ============================================================ -->
+                    <div class="mt-6 p-4 rounded-xl bg-surface-container-low border border-outline-variant">
+                        <p class="text-sm text-outline">
+                            Los recordatorios de backup, resultados de trivia y simulaciones de phishing quedan asociados a este usuario.
+                        </p>
+                    </div>
+
+                    <button
+                        id="btnCerrarSesion"
+                        type="button"
+                        class="mt-6 w-full flex items-center justify-center gap-2 bg-error text-white px-5 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity"
+                    >
+                        <span class="material-symbols-outlined">
+                            logout
+                        </span>
+                        Cerrar sesión
+                    </button>
+                </article>
+
+                <!-- Formularios -->
+                <div class="lg:col-span-2 space-y-6">
+
+                    <!-- Cambiar nombre -->
+                    <article class="bg-white rounded-2xl border border-outline-variant shadow-sm p-6">
+                        <div class="flex items-start gap-4 mb-5">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center">
+                                <span class="material-symbols-outlined">
+                                    badge
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">
+                                    Cambiar nombre
+                                </h3>
+
+                                <p class="text-sm text-outline">
+                                    Modifica el nombre visible del usuario actual sin perder sus datos.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form id="formCambiarNombre" class="space-y-4">
+                            <div>
+                                <label
+                                    for="nuevoNombreUsuario"
+                                    class="block text-sm font-bold text-on-surface mb-2"
+                                >
+                                    Nuevo nombre de usuario
+                                </label>
+
+                                <input
+                                    id="nuevoNombreUsuario"
+                                    type="text"
+                                    maxlength="40"
+                                    placeholder="Ingresá el nuevo nombre"
+                                    class="w-full rounded-xl border border-outline-variant px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                                    autocomplete="off"
+                                />
+                            </div>
+
+                            <p
+                                id="mensajeNombre"
+                                class="hidden text-sm"
+                            ></p>
+
+                            <button
+                                type="submit"
+                                class="bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors"
+                            >
+                                Guardar nuevo nombre
+                            </button>
+                        </form>
+                    </article>
+
+                    <!-- Cambiar contraseña -->
+                    <article class="bg-white rounded-2xl border border-outline-variant shadow-sm p-6">
+                        <div class="flex items-start gap-4 mb-5">
+                            <div class="w-12 h-12 rounded-xl bg-green-50 text-secondary flex items-center justify-center">
+                                <span class="material-symbols-outlined">
+                                    lock_reset
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold text-primary">
+                                    Cambiar contraseña
+                                </h3>
+
+                                <p class="text-sm text-outline">
+                                    Para proteger el perfil, primero se solicita la contraseña actual.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form id="formCambiarPassword" class="space-y-4">
+                            <div>
+                                <label
+                                    for="passwordActual"
+                                    class="block text-sm font-bold text-on-surface mb-2"
+                                >
+                                    Contraseña actual
+                                </label>
+
+                                <input
+                                    id="passwordActual"
+                                    type="password"
+                                    maxlength="100"
+                                    placeholder="Ingresá tu contraseña actual"
+                                    class="w-full rounded-xl border border-outline-variant px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                                    autocomplete="current-password"
+                                />
+                            </div>
+
+                            <div>
+                                <label
+                                    for="passwordNueva"
+                                    class="block text-sm font-bold text-on-surface mb-2"
+                                >
+                                    Nueva contraseña
+                                </label>
+
+                                <input
+                                    id="passwordNueva"
+                                    type="password"
+                                    maxlength="100"
+                                    placeholder="Mínimo 4 caracteres"
+                                    class="w-full rounded-xl border border-outline-variant px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                                    autocomplete="new-password"
+                                />
+                            </div>
+
+                            <div>
+                                <label
+                                    for="passwordNuevaConfirmacion"
+                                    class="block text-sm font-bold text-on-surface mb-2"
+                                >
+                                    Repetir nueva contraseña
+                                </label>
+
+                                <input
+                                    id="passwordNuevaConfirmacion"
+                                    type="password"
+                                    maxlength="100"
+                                    placeholder="Repetí la nueva contraseña"
+                                    class="w-full rounded-xl border border-outline-variant px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+                                    autocomplete="new-password"
+                                />
+                            </div>
+
+                            <p
+                                id="mensajePassword"
+                                class="hidden text-sm"
+                            ></p>
+
+                            <button
+                                type="submit"
+                                class="bg-secondary text-white px-6 py-3 rounded-xl font-bold hover:bg-secondary/90 transition-colors"
+                            >
+                                Actualizar contraseña
+                            </button>
+                        </form>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../assets/js/configuracion.js"></script>
+</body>
+</html>

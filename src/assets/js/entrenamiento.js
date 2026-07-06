@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCerrarModalConcepto = document.getElementById(
         "btnCerrarModalConcepto"
     );
-    //#########FIN Elementos del modal Academia############
+    //######### FIN Elementos del modal Academia ############
 
     //========== VARIABLES GLOBALES =====================
     let escenarioActual = null;
@@ -306,6 +306,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let casoEvaluado = false;
     //===================================================
+
+    const nombreUsuarioSesion = document.getElementById(
+    "nombreUsuarioSesion"
+);
+
+//======================================================
+function mostrarUsuarioEnSesion() {
+    const usuarioGuardado = localStorage.getItem(
+        "hades_usuario_activo"
+    );
+
+    if (!usuarioGuardado) {
+        return;
+    }
+
+    try {
+        const usuarioActual = JSON.parse(usuarioGuardado);
+
+        if (nombreUsuarioSesion) {
+            nombreUsuarioSesion.textContent = usuarioActual.nombre;
+        }
+    } catch (error) {
+        console.error("No se pudo mostrar el usuario en sesión:", error);
+    }
+}
+
+mostrarUsuarioEnSesion();
+//======================================================================
+
+    // Función para obtener el usuario activo desde la sesión
+    function obtenerUsuarioActivoDesdeSesion() {
+    const usuarioGuardado = localStorage.getItem("hades_usuario_activo");
+
+    if (!usuarioGuardado) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(usuarioGuardado);
+    } catch (error) {
+        console.error("No se pudo leer el usuario activo:", error);
+        localStorage.removeItem("hades_usuario_activo");
+        return null;
+    }
+}
+//======================================================================
 
     //============= VARIABLES INICIALIZADOS =============
     const totalCasosSesion = 5;
@@ -709,46 +755,56 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function iniciarSimuladorPhishing() {
-        if (
-            !phishingRemitente ||
-            !phishingAsunto ||
-            !listaSenalesPhishing ||
-            !btnEvaluarPhishing ||
-            !btnNuevoCasoPhishing
-        ) {
-            console.warn(
-                "No se encontraron todos los elementos del simulador de phishing."
-            );
-            return;
-        }
-
-        if (window.hadesAPI?.obtenerUsuario) {
-            usuarioActual = await window.hadesAPI.obtenerUsuario();
-        }
-
-        const escenarioInicial = obtenerEscenarioAleatorio();
-
-        cargarEscenario(escenarioInicial);
-        actualizarResumenSesion();
-
-        btnEvaluarPhishing.addEventListener("click", evaluarCasoActual);
-
-        btnNuevoCasoPhishing.addEventListener("click", () => {
-            if (casoActualSesion < totalCasosSesion) {
-                casoActualSesion += 1;
-            } else {
-                casoActualSesion = 1;
-                puntajeAcumuladoSesion = 0;
-                aciertosAcumuladosSesion = 0;
-                evaluacionesRealizadasSesion = 0;
-            }
-
-            const nuevoEscenario = obtenerEscenarioAleatorio();
-
-            cargarEscenario(nuevoEscenario);
-            actualizarResumenSesion();
-        });
+    if (
+        !phishingRemitente ||
+        !phishingAsunto ||
+        !listaSenalesPhishing ||
+        !btnEvaluarPhishing ||
+        !btnNuevoCasoPhishing
+    ) {
+        console.warn(
+            "No se encontraron todos los elementos del simulador de phishing."
+        );
+        return;
     }
+
+    usuarioActual = obtenerUsuarioActivoDesdeSesion();
+
+    if (!usuarioActual) {
+        mostrarMensaje(
+            "No se encontró una sesión activa. Volvé a iniciar sesión."
+        );
+
+        setTimeout(() => {
+            window.location.href = "bienvenida.html";
+        }, 1200);
+
+        return;
+    }
+
+    const escenarioInicial = obtenerEscenarioAleatorio();
+
+    cargarEscenario(escenarioInicial);
+    actualizarResumenSesion();
+
+    btnEvaluarPhishing.addEventListener("click", evaluarCasoActual);
+
+    btnNuevoCasoPhishing.addEventListener("click", () => {
+        if (casoActualSesion < totalCasosSesion) {
+            casoActualSesion += 1;
+        } else {
+            casoActualSesion = 1;
+            puntajeAcumuladoSesion = 0;
+            aciertosAcumuladosSesion = 0;
+            evaluacionesRealizadasSesion = 0;
+        }
+
+        const nuevoEscenario = obtenerEscenarioAleatorio();
+
+        cargarEscenario(nuevoEscenario);
+        actualizarResumenSesion();
+    });
+}
 
 //#########Elementos de la Academia de Defensa Digital############
     const contenidosAcademia = {

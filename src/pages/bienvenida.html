@@ -202,12 +202,12 @@
             </h2>
 
             <p id="textoBienvenida" class="font-body-lg text-body-lg text-primary-fixed-dim mb-stack-lg leading-relaxed">
-                Antes de comenzar, ingresá tu nombre para personalizar la experiencia dentro de la herramienta.
+                Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital.
             </p>
         </div>
 
         <!-- Tarjetas informativas -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter w-full max-w-4xl mb-stack-lg">
+     <!--   <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter w-full max-w-4xl mb-stack-lg">
 
             <div class="welcome-info-card bg-white/5 backdrop-blur-xl border border-white/10 p-stack-md rounded-xl shadow-2xl flex flex-col items-start text-left">
                 <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center mb-3">
@@ -254,84 +254,176 @@
                     Simuladores y ejercicios para entrenar decisiones seguras.
                 </p>
             </div>
+        </div> -->
+
+        <!-- Formulario de acceso -->
+<div class="flex flex-col items-center gap-stack-md mt-stack-md w-full max-w-md">
+
+    <!-- Selector de modo -->
+    <div class="w-full grid grid-cols-2 gap-2 bg-white/10 border border-white/10 rounded-full p-1">
+        <button
+            id="btnModoLogin"
+            type="button"
+            class="py-2 rounded-full text-sm font-bold bg-primary-container text-white shadow transition-colors"
+        >
+            Iniciar sesión
+        </button>
+
+        <button
+            id="btnModoRegistro"
+            type="button"
+            class="py-2 rounded-full text-sm font-bold text-outline-variant hover:text-white transition-colors"
+        >
+            Crear usuario
+        </button>
+    </div>
+
+    <!-- Formulario de inicio de sesión -->
+    <form id="formularioLogin" class="w-full flex flex-col gap-4">
+        <div class="text-left">
+            <label
+                for="loginNombreUsuario"
+                class="block font-label-md text-label-md text-white mb-2"
+            >
+                Nombre de usuario
+            </label>
+
+            <input
+                id="loginNombreUsuario"
+                type="text"
+                maxlength="40"
+                placeholder="Ejemplo: Fabio"
+                class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                autocomplete="username"
+            />
         </div>
 
-        <!-- Formulario / Botón de inicio -->
-        <div class="flex flex-col items-center gap-stack-md mt-stack-md w-full max-w-md">
+        <div class="text-left">
+            <label
+                for="loginPassword"
+                class="block font-label-md text-label-md text-white mb-2"
+            >
+                Contraseña
+            </label>
 
-            <form id="formularioUsuario" class="w-full flex flex-col gap-4">
-                <div class="text-left">
-                    <label
-                        for="nombreUsuario"
-                        class="block font-label-md text-label-md text-white mb-2"
-                    >
-                        Nombre de usuario
-                    </label>
+            <input
+                id="loginPassword"
+                type="password"
+                maxlength="100"
+                placeholder="Ingresá tu contraseña"
+                class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                autocomplete="current-password"
+            />
+        </div>
 
-                    <input
-                        id="nombreUsuario"
-                        type="text"
-                        maxlength="40"
-                        placeholder="Ejemplo: Fabio"
-                        class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
-                        autocomplete="off"
-                    />
-                </div>
+        <p
+            id="mensajeErrorLogin"
+            class="hidden text-sm text-red-300 text-left"
+        ></p>
 
-                <p
-                    id="mensajeError"
-                    class="hidden text-sm text-red-300 text-left"
-                ></p>
+        <button
+            type="submit"
+            class="group relative px-12 py-4 bg-primary-container text-white font-label-md text-label-md rounded-full shadow-xl shadow-primary-container/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden"
+        >
+            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
 
-                <button
-                    type="submit"
-                    class="group relative px-12 py-4 bg-primary-container text-white font-label-md text-label-md rounded-full shadow-xl shadow-primary-container/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden"
+            <span class="relative flex items-center justify-center gap-2">
+                Iniciar sesión
+
+                <span
+                    class="material-symbols-outlined !text-lg"
+                    data-icon="login"
                 >
-                    <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    login
+                </span>
+            </span>
+        </button>
+    </form>
 
-                    <span class="relative flex items-center justify-center gap-2">
-                        Guardar y continuar
+    <!-- Formulario de registro -->
+        <form id="formularioRegistro" class="hidden w-full flex flex-col gap-4">
+            <div class="text-left">
+                <label
+                    for="registroNombreUsuario"
+                    class="block font-label-md text-label-md text-white mb-2"
+                >
+                    Nombre de usuario
+                </label>
 
-                        <span
-                            class="material-symbols-outlined !text-lg"
-                            data-icon="arrow_forward"
-                        >
-                            arrow_forward
-                        </span>
-                    </span>
-                </button>
-            </form>
+                <input
+                    id="registroNombreUsuario"
+                    type="text"
+                    maxlength="40"
+                    placeholder="Ejemplo: Fabio"
+                    class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                    autocomplete="username"
+                />
+            </div>
 
-            <a
-                id="botonIniciar"
-                href="dashboard.html"
-                class="hidden group relative px-12 py-4 bg-primary-container text-white font-label-md text-label-md rounded-full shadow-xl shadow-primary-container/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden"
+            <div class="text-left">
+                <label
+                    for="registroPassword"
+                    class="block font-label-md text-label-md text-white mb-2"
+                >
+                    Contraseña
+                </label>
+
+                <input
+                    id="registroPassword"
+                    type="password"
+                    maxlength="100"
+                    placeholder="Mínimo 4 caracteres"
+                    class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                    autocomplete="new-password"
+                />
+            </div>
+
+            <div class="text-left">
+                <label
+                    for="registroPasswordConfirmacion"
+                    class="block font-label-md text-label-md text-white mb-2"
+                >
+                    Repetir contraseña
+                </label>
+
+                <input
+                    id="registroPasswordConfirmacion"
+                    type="password"
+                    maxlength="100"
+                    placeholder="Repetí la contraseña"
+                    class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                    autocomplete="new-password"
+                />
+            </div>
+
+            <p
+                id="mensajeErrorRegistro"
+                class="hidden text-sm text-red-300 text-left"
+            ></p>
+
+            <button
+                type="submit"
+                class="group relative px-12 py-4 bg-secondary text-white font-label-md text-label-md rounded-full shadow-xl shadow-secondary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden"
             >
                 <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
 
-                <span class="relative flex items-center gap-2">
-                    Iniciar
+                <span class="relative flex items-center justify-center gap-2">
+                    Crear usuario
 
                     <span
                         class="material-symbols-outlined !text-lg"
-                        data-icon="arrow_forward"
+                        data-icon="person_add"
                     >
-                        arrow_forward
+                        person_add
                     </span>
                 </span>
-            </a>
-
-            <button
-                id="botonCambiarUsuario"
-                type="button"
-                class="hidden text-sm text-outline-variant hover:text-white underline underline-offset-4 transition-colors"
-            >
-                Usar otro nombre
             </button>
+        </form>
 
-            <!-- <p class="font-caption text-caption text-outline-variant">
-                Presioná para acceder al panel principal de la herramienta.
-            </p> -->
+ <!--       <p class="font-caption text-caption text-outline-variant">
+            Cada usuario conserva sus propios recordatorios, resultados y progreso.
+        </p>-->
+    </div>
         </div>
     </main>
 

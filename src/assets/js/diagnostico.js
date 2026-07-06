@@ -68,6 +68,32 @@ document.addEventListener("DOMContentLoaded", () => {
   //      return;
   //  }
 
+    const nombreUsuarioSesion = document.getElementById(
+    "nombreUsuarioSesion"
+);
+
+function mostrarUsuarioEnSesion() {
+    const usuarioGuardado = localStorage.getItem(
+        "hades_usuario_activo"
+    );
+
+    if (!usuarioGuardado) {
+        return;
+    }
+
+    try {
+        const usuarioActual = JSON.parse(usuarioGuardado);
+
+        if (nombreUsuarioSesion) {
+            nombreUsuarioSesion.textContent = usuarioActual.nombre;
+        }
+    } catch (error) {
+        console.error("No se pudo mostrar el usuario en sesión:", error);
+    }
+}
+
+mostrarUsuarioEnSesion();
+
     const patronesComunes = [
         "123456",
         "123456789",
@@ -291,6 +317,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //#################Funciones relacionadas con los recordatorios de backup ###########################
     let usuarioActual = null;
+
+    function obtenerUsuarioActivoDesdeSesion() {
+    const usuarioGuardado = localStorage.getItem("hades_usuario_activo");
+
+    if (!usuarioGuardado) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(usuarioGuardado);
+    } catch (error) {
+        console.error("No se pudo leer el usuario activo:", error);
+        localStorage.removeItem("hades_usuario_activo");
+        return null;
+    }
+}
 
     function mostrarMensajeBackup(mensaje) {
         if (!mensajeBackup) {
@@ -537,10 +579,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-        usuarioActual = await window.hadesAPI.obtenerUsuario();
+        usuarioActual = obtenerUsuarioActivoDesdeSesion();
 
         if (!usuarioActual) {
-            mostrarMensajeBackup("No se encontró un usuario activo.");
+            mostrarMensajeBackup(
+                "No se encontró una sesión activa. Volvé a iniciar sesión."
+            );
+
+            setTimeout(() => {
+                window.location.href = "bienvenida.html";
+            }, 1200);
+
             return;
         }
 
@@ -561,17 +610,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const ultimo = ultimoBackup.value;
 
         if (nombre.length < 3) {
-            mostrarMensajeBackup("Ingresá un nombre válido para el respaldo.");
+            mostrarMensajeBackup(
+                "Ingresá un nombre válido para el respaldo."
+            );
             return;
         }
 
         if (ubicacion.length < 3) {
-            mostrarMensajeBackup("Ingresá una ubicación válida para el respaldo.");
+            mostrarMensajeBackup(
+                "Ingresá una ubicación válida para el respaldo."
+            );
             return;
         }
 
         if (!ultimo) {
-            mostrarMensajeBackup("Seleccioná la fecha del último backup realizado.");
+            mostrarMensajeBackup(
+                "Seleccioná la fecha del último backup realizado."
+            );
             return;
         }
 
@@ -596,48 +651,79 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (listaBackups) {
         listaBackups.addEventListener("click", async (event) => {
-            const botonRealizado = event.target.closest(".btnBackupRealizado");
-            const botonEliminar = event.target.closest(".btnEliminarBackup");
+            const botonRealizado = event.target.closest(
+                ".btnBackupRealizado"
+            );
+
+            const botonEliminar = event.target.closest(
+                ".btnEliminarBackup"
+            );
 
             if (botonRealizado) {
-                const idRecordatorio = Number(botonRealizado.dataset.id);
-
-                console.log("Botón Marcar realizado presionado");
-                console.log("ID del recordatorio:", idRecordatorio);
-                console.log("API disponible:", window.hadesAPI);
+                const idRecordatorio = Number(
+                    botonRealizado.dataset.id
+                );
 
                 if (!window.hadesAPI?.marcarBackupRealizado) {
-                    mostrarMensajeBackup("La función para marcar backup realizado no está disponible.");
-                    console.error("No existe window.hadesAPI.marcarBackupRealizado");
+                    mostrarMensajeBackup(
+                        "La función para marcar backup realizado no está disponible."
+                    );
+
+                    console.error(
+                        "No existe window.hadesAPI.marcarBackupRealizado"
+                    );
+
                     return;
                 }
 
                 try {
-                    await window.hadesAPI.marcarBackupRealizado(idRecordatorio);
+                    await window.hadesAPI.marcarBackupRealizado(
+                        idRecordatorio
+                    );
+
                     await cargarBackups();
                 } catch (error) {
-                    mostrarMensajeBackup("No se pudo actualizar el recordatorio.");
-                    console.error("Error al marcar backup como realizado:", error);
+                    mostrarMensajeBackup(
+                        "No se pudo actualizar el recordatorio."
+                    );
+
+                    console.error(
+                        "Error al marcar backup como realizado:",
+                        error
+                    );
                 }
 
                 return;
             }
 
             if (botonEliminar) {
-                const idRecordatorio = Number(botonEliminar.dataset.id);
+                const idRecordatorio = Number(
+                    botonEliminar.dataset.id
+                );
 
-                const confirmar = confirm("¿Querés eliminar este recordatorio?");
+                const confirmar = confirm(
+                    "¿Querés eliminar este recordatorio?"
+                );
 
                 if (!confirmar) {
                     return;
                 }
 
                 try {
-                    await window.hadesAPI.eliminarRecordatorioBackup(idRecordatorio);
+                    await window.hadesAPI.eliminarRecordatorioBackup(
+                        idRecordatorio
+                    );
+
                     await cargarBackups();
                 } catch (error) {
-                    mostrarMensajeBackup("No se pudo eliminar el recordatorio.");
-                    console.error("Error al eliminar recordatorio:", error);
+                    mostrarMensajeBackup(
+                        "No se pudo eliminar el recordatorio."
+                    );
+
+                    console.error(
+                        "Error al eliminar recordatorio:",
+                        error
+                    );
                 }
             }
         });
