@@ -62,5 +62,14 @@ contextBridge.exposeInMainWorld("hadesAPI", {
         ipcRenderer.invoke("phishing:guardarResultado", datos),
 
     guardarResultadoTrivia: (datos) =>
-        ipcRenderer.invoke("trivia:guardarResultado", datos)
+        ipcRenderer.invoke("trivia:guardarResultado", datos),
+
+    // ============================================================
+    // DASHBOARD
+    // ============================================================
+    obtenerResumenDashboard: (idUsuario) =>
+    ipcRenderer.invoke(
+        "dashboard:resumen",
+        idUsuario
+    ),
 });

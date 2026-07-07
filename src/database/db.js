@@ -838,7 +838,34 @@ function marcarBackupRealizado(idRecordatorio) {
                     }
                 );
             });
-        }
+}
+
+//===PARA EL DASHBOARD, OBTENER EL PRÓXIMO BACKUP PROGRAMADO PARA UN USUARIO===
+function obtenerProximoBackup(idUsuario) {
+    const database = getDatabase();
+
+    return new Promise((resolve, reject) => {
+        database.get(
+            `
+            SELECT *
+            FROM recordatorios_backup
+            WHERE id_usuario = ?
+            AND activo = 1
+            ORDER BY proximo_backup ASC
+            LIMIT 1
+            `,
+            [idUsuario],
+            (error, row) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(row || null);
+            }
+        );
+    });
+}
 //############################################################################################
 
 //####Función que guarda el resultado de una simulación de phishing en la base de datos######
@@ -891,6 +918,33 @@ function guardarResultadoPhishing(datos) {
     });
 }
 
+//==PARA EL DASHBOARD, OBTENER EL ÚLTIMO RESULTADO DE UNA SIMULACIÓN DE PHISHING PARA UN USUARIO==
+function obtenerUltimoPhishing(idUsuario) {
+    const database = getDatabase();
+
+    return new Promise((resolve, reject) => {
+        database.get(
+            `
+            SELECT *
+            FROM simulaciones_phishing
+            WHERE id_usuario = ?
+            ORDER BY fecha_simulacion DESC
+            LIMIT 1
+            `,
+            [idUsuario],
+            (error, row) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(row || null);
+            }
+        );
+    });
+}
+
+
 // ########Función que guarda el resultado de una trivia en la base de datos################.
 function guardarResultadoTrivia(datos) {
     const database = getDatabase();
@@ -933,6 +987,32 @@ function guardarResultadoTrivia(datos) {
     });
 }
 
+//===PARA EL DASHBOARD, OBTENER EL ÚLTIMO RESULTADO DE UNA TRIVIA PARA UN USUARIO===
+function obtenerUltimaTrivia(idUsuario) {
+    const database = getDatabase();
+
+    return new Promise((resolve, reject) => {
+        database.get(
+            `
+            SELECT *
+            FROM resultados_trivia
+            WHERE id_usuario = ?
+            ORDER BY fecha_resultado DESC
+            LIMIT 1
+            `,
+            [idUsuario],
+            (error, row) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(row || null);
+            }
+        );
+    });
+}
+
 // Exporta las funciones para que puedan ser usadas desde otros archivos,
 // por ejemplo desde electron/main.js.
 module.exports = {
@@ -952,6 +1032,11 @@ module.exports = {
     obtenerRecordatoriosBackup,
     eliminarRecordatorioBackup,
     marcarBackupRealizado,
+    obtenerProximoBackup,
+
     guardarResultadoPhishing,
-    guardarResultadoTrivia
+    obtenerUltimoPhishing,
+
+    guardarResultadoTrivia,
+    obtenerUltimaTrivia
 };

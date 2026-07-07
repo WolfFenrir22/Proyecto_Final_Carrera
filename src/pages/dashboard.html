@@ -129,8 +129,8 @@
       <span class="material-symbols-outlined text-sm">
        Emergencia
       </span>
-      <!-- BOT&Oacute;N DE P&Aacute;NICO -->
-      BOTÓN DE PÁNICO
+     BOT&Oacute;N DE P&Aacute;NICO 
+      
      </button>
      <div class="flex items-center gap-2 text-gray-500">
       <span class="material-symbols-outlined cursor-pointer hover:bg-gray-50 p-1 rounded-full transition-colors" data-icon="notifications">
@@ -196,7 +196,8 @@
                 </span>
             </a>
         </nav>
-        <div class="px-4 mt-auto">
+        <!-- ==== ANALIZAR SI ME SIRVE LUEGO ===-->
+     <!--   <div class="px-4 mt-auto">
             <button class="w-full py-3 bg-primary text-on-primary font-label-md rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined text-sm" data-icon="policy">
                     policy
@@ -215,7 +216,6 @@
                     />
                 </div>
 
-<!--   RECORDAR ASOCIAR AL USUARIO EN SESIÓN   -->
         <div class="overflow-hidden">
             <p
                 id="nombreUsuarioSesion"
@@ -227,39 +227,52 @@
                 Sesión activa
             </p>
         </div>
-<!--  -------------------------------------------  -->
-            </div>
         </div>
+        </div> --> 
     </aside>
-   <!-- Main Content Canvas -->
+   <!-- ===============MAIN PRINCIPAL DE TARJETA================= -->
    <main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background">
     <div class="max-w-container-max mx-auto space-y-stack-lg">
      <!-- Semáforo de Actualizaciones / Hero Section -->
      <section class="relative overflow-hidden rounded-xl bg-white shadow-[0_16px_32px_-12px_rgba(0,40,142,0.12)] border border-gray-100 p-8 flex flex-col md:flex-row items-center justify-between gap-gutter">
       <div class="relative z-10 space-y-stack-sm text-center md:text-left">
-       <div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/30 text-secondary font-semibold rounded-full text-sm">
+
+        <!-- ==== Verificar si sirve ==== -->
+       <!--<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/30 text-secondary font-semibold rounded-full text-sm">
         <span class="flex h-2 w-2 rounded-full bg-secondary">
         </span>
         Sistemas Protegidos
-       </div>
-       <h1 class="font-h1 text-h1 text-primary">
-        Todo al d&iacute;a, Fabio.
-       </h1>
+       </div>-->
+       <!-- =============================================-->
+
+       <div class="overflow-hidden">
+            <p
+                id="nombreUsuarioSesion"
+                class="text-label-md truncate">
+                Bienvenido, Usuario
+       </p>
+
+            
+        </div>
        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
-        No se han detectado amenazas cr&iacute;ticas en las &uacute;ltimas 24 horas. Tu escudo digital est&aacute; operando al 100%.
+        Revisa tus estadisticas de entrenamiento y seguridad, mantente al día con las últimas actualizaciones de tu sistema.
        </p>
        <div class="pt-stack-md flex gap-stack-md justify-center md:justify-start">
-        <button class="bg-primary text-on-primary font-label-md px-6 py-3 rounded-lg flex items-center gap-2 transition-all hover:shadow-lg">
+        <!-- ===== Verificar si utilizare los botones ==== -->
+        <!-- <button class="bg-primary text-on-primary font-label-md px-6 py-3 rounded-lg flex items-center gap-2 transition-all hover:shadow-lg">
          <span class="material-symbols-outlined">
           refresh
          </span>
          Escanear ahora
         </button>
+
         <button class="border border-outline-variant text-primary font-label-md px-6 py-3 rounded-lg hover:bg-surface-container transition-all">
          Ver historial
-        </button>
+        </button> -->
+        <!-- ============================================= -->
        </div>
       </div>
+
       <div class="relative w-full md:w-1/3 flex justify-center">
        <!-- Abstract Visual Shield -->
        <div class="relative w-48 h-48 flex items-center justify-center">
@@ -275,8 +288,7 @@
      </section>
      <!-- Bento Grid Status Cards -->
      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-
-      <!-- Card: Ultimo Backup -->
+      <!-- tarjeta Ultimo Backup -->
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col justify-between group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
         <div class="p-3 bg-surface-container rounded-lg text-primary">
@@ -284,27 +296,36 @@
           cloud_upload
          </span>
         </div>
-        <span class="text-caption text-gray-400">
-         Hace 2 horas
+        <span
+            id="dashboardFechaBackup"
+            class="text-caption text-gray-400">
+            Sin datos
         </span>
        </div>
        <div class="mt-stack-lg">
-        <h3 class="font-h3 text-h3 mb-2">
-         Gestor de Recordatorios
+        <h3
+            id="dashboardTituloBackup"
+            class="font-h3 text-h3 mb-2">
+            Próximo Backup
         </h3>
-        <p class="text-body-md text-on-surface-variant">
-         &Uacute;ltimo respaldo completado con &eacute;xito en la b&oacute;veda segura.
+        <p
+            id="dashboardDescripcionBackup"
+            class="text-body-md text-on-surface-variant">
+            Sin recordatorios configurados.
         </p>
        </div>
-       <button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
+
+       <!-- ** Verificar si combiene el boton ** -->
+       <!--<button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
         Configurar frecuencia
         <span class="material-symbols-outlined text-sm">
          chevron_right
         </span>
-       </button>
+       </button> -->
+
       </div>
 
-      <!-- Card: Robustez de Credenciales -->
+      <!-- tarjeta ultima simulacion de phishing-->
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
         <div class="p-3 bg-tertiary-fixed text-tertiary-container rounded-lg">
@@ -313,9 +334,11 @@
          </span>
         </div>
         <div class="flex flex-col items-end">
-         <span class="text-h3 font-bold text-tertiary-container">
-          84%
-         </span>
+         <span
+            id="dashboardPuntajePhishing"
+            class="text-h3 font-bold text-tertiary-container">
+            0%
+        </span>
          <span class="text-caption text-tertiary">
           Puntuaci&oacute;n
          </span>
@@ -323,25 +346,31 @@
        </div>
        <div class="mt-stack-lg flex-1">
         <h3 class="font-h3 text-h3 mb-2">
-         Evaluador de Robustez
+            Última Simulación de Phishing
         </h3>
         <div class="w-full bg-surface-container rounded-full h-2 mt-4">
-         <div class="bg-tertiary-container h-2 rounded-full w-[84%]">
+         <div id="dashboardBarraPhishing"
+              class="bg-tertiary-container h-2 rounded-full"
+              style="width: 0%">>
          </div>
         </div>
-        <p class="text-caption mt-4 text-on-surface-variant">
-         3 contrase&ntilde;as sugeridas para actualizaci&oacute;n por antig&uuml;edad.
+        <p
+            id="dashboardDetallePhishing"
+            class="text-caption mt-4 text-on-surface-variant">
+            No hay simulaciones registradas.
         </p>
        </div>
-       <button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
+
+    <!-- ** Verificar si combiene el boton ** -->
+       <!--<button class="mt-stack-lg text-primary font-label-md flex items-center gap-1 group-hover:gap-2 transition-all">
         Optimizar ahora
         <span class="material-symbols-outlined text-sm">
          chevron_right
         </span>
-       </button>
+       </button>-->
       </div>
 
-      <!-- Card: Brechas de Datos -->
+      <!--tarjeta ultima trivia-->
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-50 flex flex-col group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
         <div class="p-3 bg-error-container text-error rounded-lg">
@@ -349,25 +378,33 @@
           gpp_maybe
          </span>
         </div>
-        <span class="px-2 py-1 bg-error-container text-error text-[10px] font-bold rounded">
-         ALERTA
+        <span
+            id="dashboardNivelTrivia"
+            class="px-2 py-1 bg-error-container text-error text-[10px] font-bold rounded">
+            SIN DATOS
         </span>
        </div>
        <div class="mt-stack-lg flex-1">
         <h3 class="font-h3 text-h3 mb-2">
-         Verificador de Brechas
+            Última Trivia
         </h3>
-        <p class="text-body-md text-on-surface-variant">
-         Se detect&oacute; tu correo en 1 nueva filtraci&oacute;n masiva (Ene 2024).
+        <p
+            id="dashboardDetalleTrivia"
+            class="text-body-md text-on-surface-variant">
+            No hay resultados registrados.
         </p>
        </div>
-       <button class="mt-stack-lg bg-error/10 text-error font-label-md py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-error/20 transition-all">
+
+       <!-- ** Verificar si combiene el boton ** -->
+       <!-- <button class="mt-stack-lg bg-error/10 text-error font-label-md py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-error/20 transition-all">
         Ver detalles de riesgo
-       </button>
+       </button> -->
       </div>
       
      </div>
-     <!-- Academia de Defensa Digital Section -->
+
+
+     <!-- =============== Academia de Defensa Digital Section ============== -->
      <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
       <!-- Progress Summary -->
       <div class="lg:col-span-2 bg-primary-container text-on-primary rounded-xl p-8 flex flex-col md:flex-row gap-gutter relative overflow-hidden">
@@ -422,7 +459,7 @@
         </button>
        </div>
       </div>
-      <!-- Panic Card (High Focus) -->
+      <!-- ==================== BOTÓN DE PANÍCO(VER SI SE UTILIZARA) =====================-->
       <div class="bg-surface-container-lowest border-2 border-dashed border-error/30 rounded-xl p-6 flex flex-col items-center text-center justify-center space-y-stack-md">
        <div class="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center">
         <span class="material-symbols-outlined text-error text-4xl" style="font-variation-settings: 'FILL' 1;">
@@ -434,15 +471,19 @@
          Respuesta R&aacute;pida
         </h3>
         <p class="text-caption text-on-surface-variant px-4">
-         &iquest;Algo no va bien? Activa el protocolo de contenci&oacute;n inmediata para bloquear tus cuentas.
+         &iquest;Algo no va bien? Activa el protocolo de contenci&oacute;n inmediata.
         </p>
        </div>
        <button class="w-full bg-error text-on-error font-h3 py-4 rounded-xl shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
         BOT&Oacute;N DE P&Aacute;NICO
        </button>
       </div>
+      <!-- ===================================================================================-->
+
      </div>
-     <!-- Recent Activity (Asymmetric Detail) -->
+
+     <!--=========== ACTIVIDADES RECIENTES(VER SI SE UTILIZARA)  ====================-->
+     <!-- 
      <section class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center">
        <h3 class="font-h3 text-h3">
@@ -508,7 +549,10 @@
         </span>
        </div>
       </div>
-     </section>
+     </section> -->
+    <!-- ===================================================================================-->
+
+
     </div>
    </main>
   </div>
