@@ -305,6 +305,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let triviaEvaluada = false;
 
     let casoEvaluado = false;
+
+    let presentacionActual = null;
+    let diapositivaActual = 1;
     //===================================================
 
     const nombreUsuarioSesion = document.getElementById(
@@ -312,6 +315,32 @@ document.addEventListener("DOMContentLoaded", () => {
 );
 
 //======================================================
+
+//======================================================
+const presentaciones = [
+    {
+        titulo: "Robo de Identidad Digital",
+        carpeta: "robo_identidad",
+        total: 10
+    },
+    {
+        titulo: "Inteligencia Artificial",
+        carpeta: "inteligencia_artificial",
+        total: 10
+    },
+    {
+        titulo: "Tips de Seguridad Digital",
+        carpeta: "tips_ciber",
+        total: 11
+    },
+    {
+        titulo: "Ransomware",
+        carpeta: "ransomware",
+        total: 10
+    }
+];
+//======================================================
+
 function mostrarUsuarioEnSesion() {
     const usuarioGuardado = localStorage.getItem(
         "hades_usuario_activo"
@@ -946,7 +975,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "La autenticación en dos pasos agrega una verificación extra además de la contraseña. Puede ser un código temporal, una app autenticadora o una notificación en el celular.",
+            "La autenticación en dos pasos agrega una verificación extra además de la contraseña tradicional, basándose en la combinación de al menos dos factores independientes: algo que sabés (tu clave), algo que tenés (tu celular o un token) o algo que sos (tu huella o rostro). \n Esta capa adicional puede materializarse mediante un código temporal de un solo uso (OTP), notificaciones dinámicas (push) en el smartphone, o aplicaciones autenticadoras dedicadas.  De acuerdo con las auditorías globales de seguridad de Microsoft y el marco del NIST, más del 88% de las brechas de datos actuales involucran credenciales débiles o reutilizadas, y la simple activación del doble factor de autenticación bloquea de manera automática el 99.9% de los ataques automatizados de suplantación de identidad.",
         recomendacion:
             "Activala en tus cuentas más importantes: correo, banco, redes sociales, almacenamiento en la nube y GitHub."
     },
@@ -958,7 +987,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "Un virus informático es un tipo de software malicioso que puede alterar archivos, afectar el funcionamiento del equipo o propagarse a otros sistemas.",
+            "Un virus informático es un tipo específico de software malicioso (malware) diseñado con la capacidad de replicarse a sí mismo insertando su código en otros programas ejecutables, archivos o sectores del sistema operativo. Su objetivo principal es alterar el correcto funcionamiento del equipo, corromper o secuestrar datos confidenciales, y propagarse de manera sigilosa hacia otros sistemas compartidos a través de redes locales, dispositivos de almacenamiento extraíbles o archivos adjuntos en el correo electrónico.A nivel técnico y según los marcos globales de CISA, aunque el término virus suele usarse popularmente para englobar a toda amenaza digital, representa solo una categoría dentro del ecosistema del malware, diferenciándose de los gusanos (que no requieren intervención humana para propagarse) y los troyanos (que se disfrazan de software legítimo). Los reportes actuales de ENISA advierten que los virus modernos ya no solo buscan vandalizar el sistema o ralentizar el hardware, sino que actúan de forma híbrida y persistente: eluden los mecanismos de detección tradicionales inyectándose directamente en la memoria RAM (técnicas fileless) y abren puertas traseras (backdoors) para la posterior ejecución de amenazas más complejas como el ransomware.",
         recomendacion:
             "Evitá descargar archivos de sitios desconocidos y mantené actualizado el sistema operativo y el antivirus."
     },
@@ -970,7 +999,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "El phishing es una técnica de engaño que intenta que el usuario entregue datos personales, contraseñas o información sensible mediante correos, mensajes o sitios falsos.",
+            "El phishing es la clásica estafa del cuento del tío, pero versión digital. Es un engaño donde los delincuentes se hacen pasar por una empresa que conocés y usás (como tu banco, Mercado Libre, Correo Argentino o Netflix) enviándote un mail, un mensaje de WhatsApp o un SMS falso. Te inventan una urgencia (como tu cuenta fue bloqueada) para que entres a un enlace y les regales tus contraseñas o tarjetas de crédito. \n ¿Por qué es clave saber esto? \n Organizaciones que persiguen estas estafas (como el APWG) avisan que los delincuentes clonan las páginas web a la perfección, haciendo que parezcan idénticas a las reales. Además, investigadores de nuestra región (Jiménez Montenegro, 2025) confirmaron que la mayoría de las personas comunes caen en estas trampas simplemente por no saber cómo funcionan estos engaños cotidianos.",
         recomendacion:
             "Antes de hacer clic, revisá el remitente, el dominio, el tono del mensaje y si te están presionando con urgencia."
     },
@@ -982,7 +1011,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "Una contraseña segura es larga, única y difícil de adivinar. No debería incluir datos personales como nombre, fecha de nacimiento o palabras obvias.",
+            "Una contraseña segura es larga, única y difícil de adivinar. No debería incluir datos personales como tu nombre, fecha de nacimiento, el nombre de tu mascota o palabras obvias (como 123456 o contraseña). La regla de oro es que sea una frase que solo vos conozcas, pero que resulte fácil de recordar. ¿Por qué es clave saber esto? Los expertos en ciberseguridad del organismo internacional NIST explican que hoy en día lo más importante es la longitud. Las computadoras de los delincuentes son capaces de adivinar claves cortas (de 8 caracteres) en cuestión de minutos, aunque les metas números o mayúsculas. Sin embargo, si creás una clave larga —combinando cuatro o cinco palabras comunes pero inconexas (por ejemplo: gato-mate-azul-viento)—, a una máquina le tomaría siglos descifrarla. Además, las estadísticas de Hive Systems demuestran que usar la misma clave para todo es el error más común: si hackean una aplicación vieja que ya no usás, los atacantes probarán esa misma contraseña para intentar entrar a tu correo o a tu banco.",
         recomendacion:
             "Usá frases largas o un gestor de contraseñas. No repitas la misma clave en varios servicios."
     },
@@ -994,7 +1023,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1600267165477-6d4cc741b379?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "Un backup es una copia de seguridad que permite recuperar archivos ante pérdida, daño del equipo, borrado accidental o ataques como ransomware.",
+            "Un backup es una copia de seguridad de tus archivos digitales que se guarda en un lugar seguro y separado de tu dispositivo principal. Sirve como un salvavidas que te permite recuperar tus fotos, trabajos o documentos importantes de forma rápida si sufrís la pérdida o el robo de tu equipo, si se te rompe el disco rígido, o si sos víctima de un virus peligroso. ¿Por qué es clave saber esto? Los expertos del organismo de seguridad US-CERT recomiendan seguir siempre la regla de oro del respaldo, llamada 3-2-1: debés tener 3 copias de tus datos importantes, guardadas en 2 tipos de almacenamiento distintos (por ejemplo, una copia en el disco de tu computadora y otra en un pendrive o disco externo física), y 1 de ellas guardada fuera de tu casa (que hoy en día es la nube, como Google Drive o OneDrive). Las estadísticas actuales de firmas de ciberseguridad como Sophos advierten que las amenazas modernas, como el ransomware (un virus que secuestra y cifra tus archivos pidiéndote plata a cambio), intentan bloquear todo lo que esté conectado a la máquina. Por eso, tener un backup en un disco externo que desconectás cuando no lo usás es la única defensa 100% segura para no perder tu información.",
         recomendacion:
             "Mantené al menos una copia externa o en la nube y verificá periódicamente que puedas restaurarla."
     },
@@ -1006,7 +1035,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "El ransomware es un tipo de malware que cifra archivos o bloquea el acceso al equipo y luego exige un pago para recuperarlos.",
+            "El ransomware es un tipo de programa malicioso muy peligroso que funciona como un secuestrador digital. Una vez que entra en tu computadora o celular, bloquea por completo el acceso al equipo o cifra tus archivos (les pone una clave secreta para que no puedas abrir tus fotos, videos o documentos). Inmediatamente después, los delincuentes te muestran un cartel en la pantalla exigiendo que les pagues un rescate en dinero digital (criptomonedas) para devolverte el control. ¿Por qué es clave saber esto? Agencias de investigación como el FBI y organismos de ciberseguridad como CISA advierten con total firmeza que nunca se debe pagar el rescate. Pagar no garantiza que los delincuentes te devuelvan tus archivos (después de todo, son criminales) y, además, financia sus operaciones para que sigan atacando a más personas. La única defensa verdaderamente efectiva contra este peligro es la prevención: tener mucho cuidado con los enlaces o archivos que descargamos de internet y, fundamentalmente, mantener copias de seguridad de nuestros archivos importantes en un disco externo desenchufado, donde el secuestrador no pueda llegar.",
         recomendacion:
             "No abras adjuntos sospechosos, mantené backups actualizados y desconectá el equipo de la red si sospechás una infección."
     },
@@ -1018,7 +1047,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "Las actualizaciones corrigen errores, mejoran la seguridad y solucionan vulnerabilidades que podrían ser aprovechadas por atacantes.",
+            "Las actualizaciones corrigen errores, mejoran el rendimiento de tus aplicaciones y solucionan fallas de seguridad (llamadas vulnerabilidades) que los atacantes podrían aprovechar para entrar a tu dispositivo. Mantener tu sistema operativo y tus aplicaciones al día es como ponerle un cerrojo nuevo a tu casa cada vez que se descubre que los ladrones aprendieron a abrir la cerradura vieja. ¿Por qué es clave saber esto? La agencia de ciberseguridad CISA advierte que la gran mayoría de los hackeos exitosos a usuarios comunes no ocurren porque los delincuentes usen técnicas de película, sino porque aprovechan fallas viejas que ya tenían un parche de seguridad disponible que el usuario nunca instaló. Equipos de investigación como Google Project Zero demuestran que, cuando se descubre un agujero de seguridad en un teléfono o computadora, los atacantes corren a usarlo antes de que la gente actualice. Por eso, posponer las actualizaciones es dejar la puerta abierta. Lo más recomendable y seguro es activar siempre las actualizaciones automáticas para que se instalen solas mientras dormís.",
         recomendacion:
             "Activá actualizaciones automáticas en el sistema operativo, navegador y aplicaciones principales."
     },
@@ -1030,7 +1059,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "Una red WiFi segura reduce el riesgo de accesos no autorizados a tus dispositivos y datos dentro del hogar.",
+            "Una red WiFi segura reduce el riesgo de que personas no autorizadas se conecten a tus dispositivos y roben tus datos dentro del hogar. Tu WiFi es el puente que conecta tus celulares, computadoras, televisores y cámaras a internet; si ese puente es débil, cualquiera que esté cerca de tu casa podría colarse en tu red y espiar lo que hacés. ¿Por qué es clave saber esto? La Wi-Fi Alliance explica que no todas las contraseñas de WiFi protegen de la misma manera. Los routers antiguos usan sistemas de seguridad viejos (como WEP o WPA) que los delincuentes pueden descifrar en pocos minutos usando herramientas automáticas. Hoy en día, lo seguro es configurar el router con el estándar moderno llamado WPA3 (o en su defecto, WPA2). Además, organismos como la FTC recomiendan dos acciones muy simples para proteger el hogar: primero, cambiar la contraseña que viene de fábrica pegada en la etiqueta del módem (ya que existen listas en internet con esas claves genéricas); y segundo, desactivar la opción WPS (el botoncito que permite conectarse sin poner la clave), porque suele tener fallas que los atacantes aprovechan para entrar sin permiso.",
         recomendacion:
             "Usá WPA2 o WPA3, cambiá la clave por defecto del router y evitá compartir la contraseña principal con desconocidos."
     },
@@ -1042,7 +1071,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1592495989226-03f88104f8cc?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "La privacidad digital consiste en controlar qué información personal compartís, con quién y bajo qué condiciones.",
+            "La privacidad digital consiste en tener el poder de controlar qué información personal compartís en internet, con quién la compartís y bajo qué condiciones. Tus fotos, tu ubicación diaria, las cosas que buscás en internet y hasta tus gustos personales forman parte de tu huella digital; cuidar tu privacidad significa decidir quién puede ver esa huella y evitar que las empresas la usen sin tu permiso. ¿Por qué es clave saber esto? La EFF explica que hoy en día nuestros datos personales se convirtieron en una moneda de cambio. Muchas aplicaciones y páginas web gratuitas rastrean en silencio todo lo que hacés para armar un perfil tuyo y vendérselo a empresas de publicidad. Organismos como la AEPD recuerdan que la privacidad no es tener algo que ocultar, sino el derecho a elegir qué proteger. Para cuidar tu privacidad en el día a día, los expertos recomiendan dos cosas muy simples: primero, revisar los permisos de las apps que instalás (denegando el acceso al micrófono o a la ubicación si no lo necesitan); y segundo, leer los carteles de aceptar cookies al entrar a una web para rechazar el rastreo publicitario.",
         recomendacion:
             "Revisá permisos de aplicaciones, configuraciones de redes sociales y datos visibles públicamente."
     },
@@ -1054,7 +1083,7 @@ const conceptosCiberHigiene = [
         imagen:
             "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
         descripcion:
-            "La ingeniería social busca manipular a una persona para que revele información, realice una acción o confíe en una fuente falsa.",
+            "La ingeniería social busca manipular a una persona para que revele información confidencial, realice una acción peligrosa (como descargar un archivo) o confíe ciegamente en una fuente que en realidad es falsa. En lugar de atacar las defensas tecnológicas de una computadora, los delincuentes deciden hackear a la persona, aprovechándose de su buena fe, de su curiosidad o de su miedo. ¿Por qué es clave saber esto? Expertos del SANS Institute señalan que la ingeniería social es la herramienta favorita de los atacantes porque es mucho más fácil engañar a un ser humano que romper un sistema de seguridad avanzado. Los delincuentes suelen usar disparadores psicológicos muy específicos, como la urgencia (hacerte creer que tenés que actuar ya mismo para evitar un problema), la autoridad (hacerse pasar por un jefe, un policía o un gerente de banco) o el miedo (decirte que cometiste una infracción). Reportes de la agencia europea ENISA confirman que el eslabón más débil en la seguridad digital sigue siendo el desconocimiento de estas técnicas. Por eso, la mejor defensa no es un programa informático costoso, sino desarrollar un escepticismo saludable: si un mensaje te genera mucha urgencia o te pide algo inusual, lo seguro es parar, dudar y verificar por otra vía.",
         recomendacion:
             "Desconfiá de pedidos urgentes, promesas demasiado buenas o mensajes que intenten generar miedo, culpa o presión."
     }
@@ -1870,6 +1899,125 @@ function iniciarAcademiaDigital() {
             });
         }
 //#########FIN Elementos de la Academia de Defensa Digital############
+
+//============ PRESENTACIONES DE INFOGRAFIA =========================
+function cargarPresentaciones() {
+
+    const contenedor =
+        document.getElementById("listaPresentaciones");
+
+    contenedor.innerHTML = "";
+
+    presentaciones.forEach((presentacion) => {
+
+        const tarjeta = document.createElement("button");
+
+        tarjeta.className =
+            "border rounded-xl p-4 hover:bg-blue-50 text-left";
+
+        tarjeta.innerHTML = `
+            <div class="text-4xl mb-2">📁</div>
+            <div class="font-bold">
+                ${presentacion.titulo}
+            </div>
+            <div class="text-sm text-gray-500">
+                ${presentacion.total} diapositivas
+            </div>
+        `;
+
+        tarjeta.addEventListener("click", () => {
+            abrirPresentacion(presentacion);
+        });
+
+        contenedor.appendChild(tarjeta);
+    });
+}
+
+function abrirPresentacion(presentacion) {
+
+    presentacionActual = presentacion;
+
+    diapositivaActual = 1;
+
+    actualizarDiapositiva();
+
+    document
+        .getElementById("modalVisorPresentacion")
+        .classList.remove("hidden");
+}
+
+function actualizarDiapositiva() {
+
+    const imagen =
+        document.getElementById("imagenPresentacion");
+
+    imagen.src =
+        `../assets/img/presentaciones/${
+            presentacionActual.carpeta
+        }/${diapositivaActual}.png`;
+}
+
+document
+    .getElementById("btnSiguienteDiapositiva")
+    .addEventListener("click", () => {
+
+        if (
+            diapositivaActual <
+            presentacionActual.total
+        ) {
+            diapositivaActual++;
+            actualizarDiapositiva();
+        }
+    });
+
+document
+    .getElementById("btnAnteriorDiapositiva")
+    .addEventListener("click", () => {
+
+        if (diapositivaActual > 1) {
+            diapositivaActual--;
+            actualizarDiapositiva();
+        }
+    });
+
+ // ===============================
+// PRESENTACIONES EDUCATIVAS
+// ===============================
+
+const btnPresentaciones =
+    document.getElementById("btnPresentaciones");
+
+const modalPresentaciones =
+    document.getElementById("modalPresentaciones");
+
+const btnCerrarPresentaciones =
+    document.getElementById("btnCerrarPresentaciones");
+
+if (btnPresentaciones) {
+    btnPresentaciones.addEventListener("click", () => {
+
+        cargarPresentaciones();
+
+        modalPresentaciones.classList.remove("hidden");
+    });
+}
+
+if (btnCerrarPresentaciones) {
+    btnCerrarPresentaciones.addEventListener("click", () => {
+        modalPresentaciones.classList.add("hidden");
+    });
+}
+
+document
+    .getElementById("btnCerrarVisor")
+    .addEventListener("click", () => {
+
+        document
+            .getElementById("modalVisorPresentacion")
+            .classList.add("hidden");
+    });
+
+//================== FIN PRESENTACIONES DE INFOGRAFIA =========================
 
     iniciarAcademiaDigital();
     iniciarSimuladorPhishing();
