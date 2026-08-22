@@ -154,6 +154,19 @@
             }
         };
     </script>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("hades_theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add("dark");
+                document.documentElement.classList.remove("light");
+            } else {
+                document.documentElement.classList.remove("dark");
+                document.documentElement.classList.add("light");
+            }
+        })();
+    </script>
 
     <link rel="stylesheet" href="../assets/css/bienvenida.css" />
 </head>
@@ -444,6 +457,7 @@
         </p>
     </footer>
 
+    <script src="../assets/js/theme.js"></script>
     <script src="../assets/js/bienvenida.js"></script>
 </body>
 </html>

@@ -128,6 +128,18 @@ document.addEventListener("DOMContentLoaded", () => {
             `ID de usuario: ${usuarioActual.id_usuario}`;
 
         nuevoNombreUsuario.value = usuarioActual.nombre;
+
+        // Actualizar nombre en el sidebar si existe
+        const sidebarNombre = document.getElementById('nombreUsuarioSesion');
+        if (sidebarNombre) {
+            sidebarNombre.textContent = usuarioActual.nombre;
+        }
+
+        // También actualizar elementos con clase sidebar-nombreUsuario
+        const sidebarNombres = document.querySelectorAll('.sidebar-nombreUsuario');
+        if (sidebarNombres && sidebarNombres.length) {
+            sidebarNombres.forEach(el => el.textContent = usuarioActual.nombre);
+        }
     }
 
     function verificarSesion() {

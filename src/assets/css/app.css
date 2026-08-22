@@ -1,33 +1,88 @@
 /* =========================================================
-   HACADIS - Estilos compartidos extraídos de las vistas originales.
-   Se preservan las clases Tailwind y los estilos inline necesarios para mantener la maqueta.
+   HADES - Estilos compartidos (Modo Claro y Oscuro)
    ========================================================= */
 
-body { font-family: 'Public Sans', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
+body {
+    font-family: 'Public Sans', sans-serif;
+    background-color: #e9f1fa;
+    color: #0f172a;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
 
-body { font-family: 'Public Sans', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-        }
+html.dark body {
+    background-color: #050a17;
+    color: #ffffff;
+}
 
 .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-        }
-        body {
-            background-color: #f9f9ff;
-            font-family: 'Public Sans', sans-serif;
-        }
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
 
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+}
+
+html.dark .glass-card {
+    background: rgba(20, 37, 75, 0.95);
+    backdrop-filter: blur(12px);
+}
+
+/* Clases utilitarias de tarjetas y paneles */
+.hades-card {
+    background-color: #ffffff;
+    border: 1.5px solid #a8cdfc;
+    box-shadow: 0 4px 14px -2px rgba(0, 40, 142, 0.08);
+}
+
+html.dark .hades-card {
+    background-color: #14254b;
+    border: 1px solid #23467d;
+    box-shadow: 0 6px 18px -2px rgba(0, 0, 0, 0.4);
+}
+
+.hades-header {
+    background-color: rgba(196, 222, 252, 0.98);
+    border-bottom: 1px solid #94bdf2;
+}
+
+html.dark .hades-header {
+    background-color: rgba(14, 30, 62, 0.98);
+    border-bottom: 1px solid #1e3d73;
+}
+
+.hades-sidebar {
+    background-color: #d1e5fa;
+    border-right: 1px solid #94bdf2;
+}
+
+html.dark .hades-sidebar {
+    background-color: #0e1e3e;
+    border-right: 1px solid #1e3d73;
+}
+
+.hades-input {
+    background-color: #f0f7ff;
+    border: 1.5px solid #a4c9f7;
+    color: #0f172a;
+}
+
+html.dark .hades-input {
+    background-color: #1a3162;
+    border: 1px solid #2d549a;
+    color: #ffffff;
+}
+
+/* Transiciones suaves */
+header, aside, main, article, section, div, button, input, select {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}

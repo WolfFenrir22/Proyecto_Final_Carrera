@@ -32,6 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (nombreUsuarioSesion) {
             nombreUsuarioSesion.textContent = usuarioActual.nombre;
         }
+
+        // También actualizar elementos del sidebar que muestren el nombre (clase .sidebar-nombreUsuario)
+        const sidebarNombres = document.querySelectorAll('.sidebar-nombreUsuario');
+        if (sidebarNombres && sidebarNombres.length) {
+            sidebarNombres.forEach(el => {
+                el.textContent = usuarioActual.nombre;
+            });
+        }
     }
 
     async function cargarResumenDashboard() {

@@ -430,7 +430,7 @@ mostrarUsuarioEnSesion();
             const label = document.createElement("label");
 
             label.className =
-                "flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-100 cursor-pointer hover:border-primary transition-colors";
+                "flex items-start gap-3 p-3 bg-white dark:bg-[#0f1b36] rounded-lg border border-gray-100 dark:border-blue-900/40 cursor-pointer hover:border-primary transition-colors text-slate-900 dark:text-white";
 
             label.innerHTML = `
                 <input
@@ -1461,12 +1461,12 @@ function renderizarTriviaSeguridad() {
         const bloquePregunta = document.createElement("div");
 
         bloquePregunta.className =
-            "bg-white border border-blue-100 rounded-xl p-5 shadow-sm";
+            "bg-white dark:bg-[#0b2340] border border-blue-100 dark:border-blue-700/40 rounded-xl p-5 shadow-sm text-slate-900 dark:text-white";
 
         const opcionesHTML = pregunta.opciones
             .map((opcion, indiceOpcion) => {
                 return `
-                    <label class="flex items-start gap-3 p-3 mt-3 rounded-lg border border-gray-100 cursor-pointer hover:border-primary hover:bg-blue-50 transition-colors">
+                    <label class="flex items-start gap-3 p-3 mt-3 rounded-lg border border-gray-100 dark:border-blue-700/40 cursor-pointer bg-blue-50 dark:bg-[#0f2b4a] hover:border-primary hover:bg-blue-50 dark:hover:bg-[#0f2b4a] transition-colors">
                         <input
                             type="radio"
                             name="${pregunta.id}"
@@ -1474,7 +1474,7 @@ function renderizarTriviaSeguridad() {
                             class="mt-1 text-primary focus:ring-primary"
                         />
 
-                        <span class="text-sm text-on-surface">
+                        <span class="text-sm text-slate-900 dark:text-white">
                             ${opcion}
                         </span>
                     </label>
@@ -1489,7 +1489,7 @@ function renderizarTriviaSeguridad() {
                 </div>
 
                 <div class="flex-1">
-                    <h4 class="font-bold text-primary">
+                    <h4 class="font-bold text-primary dark:text-blue-300">
                         ${pregunta.pregunta}
                     </h4>
 
@@ -1506,7 +1506,7 @@ function renderizarTriviaSeguridad() {
     const accionesTrivia = document.createElement("div");
 
     accionesTrivia.className =
-        "bg-white/70 border border-blue-100 rounded-xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4";
+        "bg-white/70 dark:bg-[#0f1b36] border border-blue-100 dark:border-blue-900/40 rounded-xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-slate-900 dark:text-white";
 
     accionesTrivia.innerHTML = `
         <div>
@@ -1533,7 +1533,7 @@ function renderizarTriviaSeguridad() {
 
     resultadoTrivia.id = "resultadoTriviaSeguridad";
     resultadoTrivia.className =
-        "hidden bg-white border border-blue-100 rounded-xl p-5 shadow-sm";
+        "hidden bg-white dark:bg-[#0f1b36] border border-blue-100 dark:border-blue-900/40 rounded-xl p-5 shadow-sm text-slate-900 dark:text-white";
 
     contenedorTrivia.appendChild(resultadoTrivia);
 
