@@ -55,6 +55,21 @@ contextBridge.exposeInMainWorld("hadesAPI", {
         ipcRenderer.invoke("brechas:verificar", correo),
 
     // ============================================================
+    // ARCHIVOS
+    // ============================================================
+    seleccionarArchivo: () => ipcRenderer.invoke("dialog:abrirArchivo"),
+
+    // ============================================================
+    // VIRUSTOTAL
+    // ============================================================
+
+    escanearArchivoVirusTotal: (rutaArchivo, apiKey) =>
+        ipcRenderer.invoke("virustotal:escanearArchivo", rutaArchivo, apiKey),
+        
+    escanearUrlVirusTotal: (url, apiKey) =>
+        ipcRenderer.invoke("virustotal:escanearUrl", url, apiKey),
+
+    // ============================================================
     // ENTRENAMIENTO
     // ============================================================
 

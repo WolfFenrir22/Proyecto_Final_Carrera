@@ -621,6 +621,173 @@
 
 <!-- ###################### FIN DE VERIFICADOR DE BRECHAS ###################### -->
 
+<!-- ###################### INICIO DE GESTOR DE CONTRASEÑAS ###################### -->
+<section class="col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white mt-8 mb-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="p-3 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-300 rounded-2xl">
+                    <span class="material-symbols-outlined text-[32px]">
+                        password
+                    </span>
+                </span>
+
+                <h3 class="font-h3 text-h3 text-slate-900 dark:text-white">
+                    Gestor de Contraseñas
+                </h3>
+            </div>
+
+            <p class="text-slate-700 dark:text-slate-300 font-body-md ml-16">
+                Guardá de forma segura tus contraseñas con una breve descripción de su propósito.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Formulario de nueva contraseña -->
+        <div class="bg-[#f0f7ff] dark:bg-[#18284f] p-6 rounded-2xl shadow-sm border border-[#a4c9f7] dark:border-blue-700/50">
+            <div class="mb-6">
+                <div class="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg text-primary dark:text-blue-300 w-fit mb-4">
+                    <span class="material-symbols-outlined">
+                        vpn_key
+                    </span>
+                </div>
+
+                <h4 class="font-bold text-slate-900 dark:text-white mb-1">
+                    Nueva contraseña
+                </h4>
+
+                <p class="text-caption text-slate-600 dark:text-slate-300">
+                    Añadí el sitio o propósito y la credencial.
+                </p>
+            </div>
+
+            <form id="formGestorPasswords" class="space-y-4">
+                <div>
+                    <label
+                        for="sitioPassword"
+                        class="block text-label-md font-bold text-slate-900 dark:text-white mb-2"
+                    >
+                        Sitio o Propósito
+                    </label>
+
+                    <input
+                        id="sitioPassword"
+                        type="text"
+                        maxlength="80"
+                        class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white"
+                        placeholder="Ej: Correo electrónico principal"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label
+                        for="valorPassword"
+                        class="block text-label-md font-bold text-slate-900 dark:text-white mb-2"
+                    >
+                        Contraseña
+                    </label>
+
+                    <div class="relative group">
+                        <input
+                            id="valorPassword"
+                            class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white"
+                            placeholder="Ingrese la contraseña"
+                            type="password"
+                            autocomplete="off"
+                            required
+                        />
+
+                        <button
+                            id="btnVerValorPassword"
+                            type="button"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors"
+                        >
+                            <span
+                                id="iconoVerValorPassword"
+                                class="material-symbols-outlined"
+                            >
+                                visibility
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <p
+                    id="mensajeGestorPassword"
+                    class="hidden text-sm text-error font-medium"
+                ></p>
+
+                <div class="flex flex-col gap-2">
+                    <button
+                        id="btnSubmitGestorPassword"
+                        type="submit"
+                        class="w-full bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                    >
+                        <span id="iconoSubmitGestorPassword" class="material-symbols-outlined">
+                            save
+                        </span>
+                        <span id="textoSubmitGestorPassword">Guardar contraseña</span>
+                    </button>
+                    
+                    <button
+                        id="btnCancelarEdicionPassword"
+                        type="button"
+                        class="hidden w-full bg-surface-variant text-on-surface-variant px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-outline-variant transition-all"
+                    >
+                        <span class="material-symbols-outlined">
+                            cancel
+                        </span>
+                        Cancelar edición
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista dinámica de contraseñas -->
+        <div class="lg:col-span-2">
+            
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white">
+                        Contraseñas guardadas
+                    </h4>
+
+                    <p class="text-caption text-slate-600 dark:text-slate-300">
+                        Credenciales almacenadas localmente.
+                    </p>
+                </div>
+
+                <span
+                    id="cantidadGestorPasswords"
+                    class="text-[11px] font-bold text-secondary bg-secondary-container px-3 py-1 rounded-full"
+                >
+                    0 guardadas
+                </span>
+            </div>
+
+            <div
+                id="listaGestorPasswords"
+                class="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
+                <div class="bg-[#e2effd] dark:bg-[#1a3162] border-2 border-dashed border-[#a4c9f7] dark:border-blue-700/50 rounded-2xl flex flex-col items-center justify-center p-8 w-full md:col-span-2">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center text-primary dark:text-blue-300">
+                        <span class="material-symbols-outlined text-3xl">
+                            key_off
+                        </span>
+                    </div>
+
+                    <p class="mt-4 font-label-md font-medium text-slate-700 dark:text-slate-300 text-center">
+                        Todavía no hay contraseñas guardadas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ###################### FIN DE GESTOR DE CONTRASEÑAS ###################### -->
+
     <!--  ###################### INICIO DE GESTOR DE BACKUPS #############################  -->
     <section class="col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -789,6 +956,168 @@
         </div>
 </section>
     <!--  ###################### FIN DE GESTOR DE BACKUPS #############################  -->
+
+<!-- ###################### INICIO DE ESCÁNER DE VIRUSTOTAL ###################### -->
+<section class="col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white mt-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="p-3 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 rounded-2xl">
+                    <span class="material-symbols-outlined text-[32px]">
+                        bug_report
+                    </span>
+                </span>
+
+                <h3 class="font-h3 text-h3 text-slate-900 dark:text-white">
+                    Escáner de Archivos Maliciosos (VirusTotal)
+                </h3>
+            </div>
+
+            <p class="text-slate-700 dark:text-slate-300 font-body-md ml-16">
+                Evaluá archivos locales o URLs en busca de amenazas (Límite: 32MB).
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Formulario -->
+        <div class="bg-[#f0f7ff] dark:bg-[#18284f] p-6 rounded-2xl shadow-sm border border-[#a4c9f7] dark:border-blue-700/50 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-lg flex items-center gap-2">
+                        Analizar Amenaza
+                    </h4>
+                    
+                    <!-- Toggle File / URL -->
+                    <div class="flex bg-slate-200 dark:bg-[#0e1e3e] rounded-lg p-1">
+                        <button id="btnTabArchivo" type="button" class="px-4 py-1 rounded text-sm font-bold bg-white dark:bg-blue-600 shadow-sm transition-all text-primary dark:text-white">Archivo</button>
+                        <button id="btnTabUrl" type="button" class="px-4 py-1 rounded text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-primary transition-all">URL</button>
+                    </div>
+                </div>
+
+                <form id="formVirusTotal" class="space-y-4 mt-6">
+                    <div class="mb-4">
+                        <label class="block text-label-md font-bold text-slate-900 dark:text-white mb-2">
+                            API Key de VirusTotal
+                            <span class="text-[10px] font-normal text-slate-500 bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-full ml-2">Requerido</span>
+                        </label>
+                        <input
+                            id="inputApiKeyVT"
+                            type="password"
+                            placeholder="Pegá tu API Key acá..."
+                            class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white text-sm"
+                            required
+                        />
+                    </div>
+                    <div id="containerArchivo">
+                        <label
+                            class="block text-label-md font-bold text-slate-900 dark:text-white mb-2"
+                        >
+                            Seleccioná un archivo
+                        </label>
+                        <button
+                            id="btnSeleccionarArchivoVT"
+                            type="button"
+                            class="w-full bg-blue-100 dark:bg-[#1a3162] text-primary dark:text-blue-300 font-bold px-4 py-3 rounded-xl border border-[#a4c9f7] dark:border-blue-700/60 hover:bg-blue-200 dark:hover:bg-[#23467d] transition-colors flex items-center justify-center gap-2"
+                        >
+                            <span class="material-symbols-outlined">folder_open</span>
+                            Explorar Archivos
+                        </button>
+                        <p id="textoArchivoSeleccionadoVT" class="text-xs text-slate-600 dark:text-slate-400 mt-2 truncate font-mono hidden"></p>
+                    </div>
+                    
+                    <div id="containerUrl" class="hidden">
+                        <label
+                            class="block text-label-md font-bold text-slate-900 dark:text-white mb-2"
+                        >
+                            Ingresá una URL
+                        </label>
+                        <input
+                            id="inputUrlVT"
+                            type="url"
+                            placeholder="https://ejemplo.com"
+                            class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white"
+                        />
+                    </div>
+
+                    <p
+                        id="mensajeErrorVT"
+                        class="hidden text-sm text-error font-medium bg-red-50 dark:bg-red-900/20 p-2 rounded-lg mt-2"
+                    ></p>
+
+                    <button
+                        id="btnSubmitVT"
+                        type="submit"
+                        class="w-full bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <span id="iconoSubmitVT" class="material-symbols-outlined">search</span>
+                        <span id="textoSubmitVT">Analizar</span>
+                    </button>
+                </form>
+            </div>
+            
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-6 flex items-start gap-1">
+                <span class="material-symbols-outlined text-[14px]">info</span>
+                Los archivos se enviarán a VirusTotal para su análisis. No subas información sensible.
+            </p>
+        </div>
+
+        <!-- Resultados -->
+        <div class="relative bg-white dark:bg-[#14254b] rounded-2xl shadow-sm border border-[#a4c9f7] dark:border-blue-700/50 p-6 flex flex-col items-center justify-center min-h-[300px]">
+            <!-- Estado Inicial -->
+            <div id="vtEstadoInicial" class="text-center">
+                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1a3162] flex items-center justify-center mx-auto mb-4 text-slate-400 dark:text-slate-500">
+                    <span class="material-symbols-outlined text-4xl">shield</span>
+                </div>
+                <p class="font-medium text-slate-600 dark:text-slate-300">
+                    Esperando archivo o URL para analizar...
+                </p>
+            </div>
+            
+            <!-- Estado Analizando -->
+            <div id="vtAnalizando" class="hidden text-center">
+                <div class="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mx-auto mb-4 text-primary dark:text-blue-400">
+                    <span class="material-symbols-outlined text-4xl animate-spin">refresh</span>
+                </div>
+                <p class="font-medium text-slate-600 dark:text-slate-300 animate-pulse">
+                    Analizando, esto puede tardar un momento...
+                </p>
+            </div>
+            
+            <!-- Estado Resultado -->
+            <div id="vtResultado" class="hidden w-full h-full flex flex-col justify-between">
+                <div>
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-6 text-center text-xl" id="vtTituloResultado">
+                        Reporte del Análisis
+                    </h4>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-200 dark:border-red-800 text-center">
+                            <span class="material-symbols-outlined text-red-500 text-3xl mb-1">pest_control</span>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase">Maliciosos</p>
+                            <p class="text-2xl font-bold text-red-700 dark:text-red-400" id="vtStatMalicious">0</p>
+                        </div>
+                        <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-200 dark:border-amber-800 text-center">
+                            <span class="material-symbols-outlined text-amber-500 text-3xl mb-1">warning</span>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase">Sospechosos</p>
+                            <p class="text-2xl font-bold text-amber-700 dark:text-amber-400" id="vtStatSuspicious">0</p>
+                        </div>
+                        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800 text-center col-span-2">
+                            <span class="material-symbols-outlined text-emerald-500 text-3xl mb-1">check_circle</span>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase">Limpios / No Detectados</p>
+                            <p class="text-2xl font-bold text-emerald-700 dark:text-emerald-400" id="vtStatUndetected">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="vtVeredictoContainer" class="p-4 rounded-xl text-center font-bold text-lg">
+                    <!-- Se pinta vía JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ###################### FIN DE ESCÁNER DE VIRUSTOTAL ###################### -->
       
    </div>
    <section class="mt-stack-lg bg-white dark:bg-[#14254b] rounded-2xl p-8 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm overflow-hidden">

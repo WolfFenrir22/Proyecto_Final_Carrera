@@ -49,6 +49,93 @@ document.addEventListener("DOMContentLoaded", () => {
         "aciertosSesionPhishing"
     );
 
+    //#########Elementos del Simulador de Smishing/Vishing############
+    const svRemitente = document.getElementById("svRemitente");
+    const svTipoPantalla = document.getElementById("svTipoPantalla");
+    const svMensaje = document.getElementById("svMensaje");
+    const svEnlace = document.getElementById("svEnlace");
+    const listaSenalesSV = document.getElementById("listaSenalesSV");
+    const btnEvaluarSV = document.getElementById("btnEvaluarSV");
+    const btnNuevoCasoSV = document.getElementById("btnNuevoCasoSV");
+    const mensajeErrorSV = document.getElementById("mensajeErrorSV");
+    const resultadoSV = document.getElementById("resultadoSV");
+    const tituloResultadoSV = document.getElementById("tituloResultadoSV");
+    const detalleResultadoSV = document.getElementById("detalleResultadoSV");
+
+    const senalesDisponiblesSV = [
+        { id: "sv_urgencia", texto: "El mensaje genera urgencia extrema o pánico." },
+        { id: "sv_pide_otp", texto: "Solicita un código de verificación (SMS/OTP)." },
+        { id: "sv_link_sospechoso", texto: "Incluye un enlace acortado o sospechoso." },
+        { id: "sv_amenaza", texto: "Amenaza con multas, bloqueos o acciones legales." },
+        { id: "sv_premio_falso", texto: "Ofrece un premio, subsidio o trabajo muy fácil." },
+        { id: "sv_remitente_desconocido", texto: "Proviene de un número desconocido haciéndose pasar por entidad." }
+    ];
+
+    const escenariosSV = [
+        {
+            id: 101,
+            tipo: "smishing",
+            dificultad: "Intermedio",
+            remitente: "+54 9 11 1234-5678",
+            tipoPantalla: "Mensaje de texto (SMS)",
+            mensaje: "BANCO: Estimado cliente, su cuenta ha sido suspendida temporalmente por seguridad. Para reactivarla verifique sus datos aquí:",
+            enlace: "http://bit.ly/banco-verificar-54",
+            senalesPresentes: ["sv_urgencia", "sv_link_sospechoso", "sv_remitente_desconocido"],
+            decisionCorrecta: "ataque",
+            explicaciones: {
+                sv_urgencia: "El mensaje asusta al usuario diciendo que la cuenta está suspendida.",
+                sv_link_sospechoso: "Usa un acortador (bit.ly) en lugar del dominio oficial del banco.",
+                sv_remitente_desconocido: "Los bancos suelen usar números cortos verificados (ej. 4567), no números de celular comunes."
+            }
+        },
+        {
+            id: 102,
+            tipo: "smishing",
+            dificultad: "Intermedio",
+            remitente: "CORREO POSTAL",
+            tipoPantalla: "Mensaje de texto (SMS)",
+            mensaje: "Su paquete ha sido retenido en aduana por falta de pago de impuestos (AR$500). Realice el pago para liberar su envío:",
+            enlace: "https://pago-aduana-envios.net/pagar",
+            senalesPresentes: ["sv_urgencia", "sv_link_sospechoso"],
+            decisionCorrecta: "ataque",
+            explicaciones: {
+                sv_urgencia: "Intenta generar preocupación por un paquete retenido.",
+                sv_link_sospechoso: "El link no pertenece a una empresa de correos oficial."
+            }
+        },
+        {
+            id: 103,
+            tipo: "vishing",
+            dificultad: "Avanzado",
+            remitente: "Llamada Entrante: +54 9 11 8765-4321",
+            tipoPantalla: "Transcripción de Llamada (Vishing)",
+            mensaje: "Hola, le hablamos del soporte técnico de WhatsApp. Detectamos un intento de hackeo en su cuenta. Para verificar que es usted, le enviamos un código de 6 dígitos por SMS, por favor dígamelo.",
+            enlace: null,
+            senalesPresentes: ["sv_pide_otp", "sv_urgencia", "sv_remitente_desconocido"],
+            decisionCorrecta: "ataque",
+            explicaciones: {
+                sv_pide_otp: "NUNCA debes compartir un código de verificación con nadie, ni siquiera si dicen ser soporte técnico.",
+                sv_urgencia: "Finge un hackeo para que la víctima se asuste y no piense.",
+                sv_remitente_desconocido: "WhatsApp no llama a los usuarios desde números de celular para pedir códigos."
+            }
+        },
+        {
+            id: 104,
+            tipo: "legitimo",
+            dificultad: "Básico",
+            remitente: "BANCO",
+            tipoPantalla: "Mensaje de texto (SMS)",
+            mensaje: "Banco informa: Consumo con su tarjeta terminada en 4321 por AR$ 15.000 el 15/10 a las 14:30 hs. Si desconoce esta compra comuníquese al 0800-XXX-XXXX.",
+            enlace: null,
+            senalesPresentes: [],
+            decisionCorrecta: "legitimo",
+            explicaciones: {
+                legitimo: "Es un aviso informativo, no pide clics, no pide datos ni códigos, y sugiere llamar al número oficial de la tarjeta en caso de duda."
+            }
+        }
+    ];
+    //#########FIN Elementos del Simulador SV############
+
     const senalesDisponibles = [
         {
             id: "dominio_falso",
@@ -2019,7 +2106,121 @@ document
 
 //================== FIN PRESENTACIONES DE INFOGRAFIA =========================
 
+    // =========================================================================
+    // SIMULADOR DE SMISHING / VISHING
+    // =========================================================================
+    let casoSVEvaluado = false;
+    let escenarioSVActual = null;
+    let ultimoEscenarioSVId = null;
+
+    function renderizarSenalesSV() {
+        if (!listaSenalesSV) return;
+        listaSenalesSV.innerHTML = "";
+        senalesDisponiblesSV.forEach((senal) => {
+            const label = document.createElement("label");
+            label.className = "flex items-start gap-3 p-3 bg-white dark:bg-[#0f1b36] rounded-lg border border-gray-100 dark:border-blue-900/40 cursor-pointer hover:border-purple-500 transition-colors text-slate-900 dark:text-white";
+            label.innerHTML = `
+                <input class="senalSV mt-1 rounded text-purple-600 focus:ring-purple-600 h-5 w-5" type="checkbox" value="${senal.id}" />
+                <span class="text-sm">${senal.texto}</span>
+            `;
+            listaSenalesSV.appendChild(label);
+        });
+    }
+
+    function obtenerEscenarioAleatorioSV() {
+        const disponibles = escenariosSV.filter((esc) => esc.id !== ultimoEscenarioSVId);
+        return disponibles[Math.floor(Math.random() * disponibles.length)];
+    }
+
+    function cargarEscenarioSV(escenario) {
+        escenarioSVActual = escenario;
+        ultimoEscenarioSVId = escenario.id;
+        casoSVEvaluado = false;
+
+        svRemitente.textContent = escenario.remitente;
+        svTipoPantalla.textContent = escenario.tipoPantalla;
+        svMensaje.textContent = escenario.mensaje;
+        
+        if (escenario.enlace) {
+            svEnlace.textContent = escenario.enlace;
+            svEnlace.classList.remove("hidden");
+        } else {
+            svEnlace.textContent = "";
+            svEnlace.classList.add("hidden");
+        }
+
+        renderizarSenalesSV();
+        
+        document.querySelectorAll(".senalSV").forEach(c => c.checked = false);
+        document.querySelectorAll('input[name="decisionSV"]').forEach(r => r.checked = false);
+        
+        resultadoSV.classList.add("hidden");
+        detalleResultadoSV.innerHTML = "";
+        mensajeErrorSV.classList.add("hidden");
+    }
+
+    function evaluarCasoSV() {
+        if (casoSVEvaluado) return;
+        
+        const decisionSeleccionada = document.querySelector('input[name="decisionSV"]:checked')?.value;
+        if (!decisionSeleccionada) {
+            mensajeErrorSV.textContent = "Seleccioná si es legítimo o un fraude (Phishing).";
+            mensajeErrorSV.classList.remove("hidden");
+            return;
+        }
+        mensajeErrorSV.classList.add("hidden");
+
+        const senalesSeleccionadas = Array.from(document.querySelectorAll(".senalSV:checked")).map(c => c.value);
+        const presentes = escenarioSVActual.senalesPresentes;
+
+        const correctas = senalesSeleccionadas.filter(s => presentes.includes(s));
+        const incorrectas = senalesSeleccionadas.filter(s => !presentes.includes(s));
+        const faltantes = presentes.filter(s => !senalesSeleccionadas.includes(s));
+
+        resultadoSV.classList.remove("hidden");
+        detalleResultadoSV.innerHTML = "";
+
+        const esDecisionCorrecta = decisionSeleccionada === escenarioSVActual.decisionCorrecta;
+        tituloResultadoSV.textContent = esDecisionCorrecta ? "¡Excelente detección!" : "Cuidado, debes estar más atento.";
+        tituloResultadoSV.className = esDecisionCorrecta ? "font-bold mb-2 text-emerald-600 dark:text-emerald-400" : "font-bold mb-2 text-error";
+
+        const pDec = document.createElement("p");
+        pDec.textContent = esDecisionCorrecta 
+            ? "✓ Clasificaste correctamente la situación." 
+            : `✗ La clasificación correcta era: ${escenarioSVActual.decisionCorrecta === "ataque" ? "Fraude (Phishing)" : "Legítimo"}.`;
+        detalleResultadoSV.appendChild(pDec);
+
+        const explicacion = document.createElement("div");
+        explicacion.innerHTML = `<p class="font-bold text-purple-600 dark:text-purple-400 mt-4">Explicación:</p>`;
+        
+        if (escenarioSVActual.decisionCorrecta === "legitimo") {
+            const p = document.createElement("p");
+            p.textContent = escenarioSVActual.explicaciones.legitimo;
+            explicacion.appendChild(p);
+        } else {
+            presentes.forEach(s => {
+                const p = document.createElement("p");
+                p.textContent = "• " + escenarioSVActual.explicaciones[s];
+                explicacion.appendChild(p);
+            });
+        }
+        detalleResultadoSV.appendChild(explicacion);
+        
+        casoSVEvaluado = true;
+    }
+
+    function iniciarSimuladorSV() {
+        if (!svRemitente || !btnEvaluarSV || !btnNuevoCasoSV) return;
+        
+        btnEvaluarSV.addEventListener("click", evaluarCasoSV);
+        btnNuevoCasoSV.addEventListener("click", () => cargarEscenarioSV(obtenerEscenarioAleatorioSV()));
+        
+        cargarEscenarioSV(obtenerEscenarioAleatorioSV());
+    }
+    // =========================================================================
+
     iniciarAcademiaDigital();
     iniciarSimuladorPhishing();
+    iniciarSimuladorSV();
     
 });

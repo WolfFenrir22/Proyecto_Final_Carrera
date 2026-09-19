@@ -1055,7 +1055,477 @@ async function iniciarModulosDiagnostico() {
             error
         );
     }
+    
+    try {
+        iniciarModuloGestorPasswords();
+        console.log("Módulo de gestor de contraseñas iniciado.");
+    } catch (error) {
+        console.error(
+            "Error al iniciar el módulo de gestor de contraseñas:",
+            error
+        );
+    }
+    
+    try {
+        iniciarModuloScanner();
+        console.log("Módulo de escáner VirusTotal iniciado.");
+    } catch (error) {
+        console.error(
+            "Error al iniciar el módulo de escáner VirusTotal:",
+            error
+        );
+    }
 }
+
+//#######################Funciones relacionadas con el Gestor de Contraseñas#################################
+const formGestorPasswords = document.getElementById("formGestorPasswords");
+const sitioPassword = document.getElementById("sitioPassword");
+const valorPassword = document.getElementById("valorPassword");
+const btnVerValorPassword = document.getElementById("btnVerValorPassword");
+const iconoVerValorPassword = document.getElementById("iconoVerValorPassword");
+const mensajeGestorPassword = document.getElementById("mensajeGestorPassword");
+const listaGestorPasswords = document.getElementById("listaGestorPasswords");
+const cantidadGestorPasswords = document.getElementById("cantidadGestorPasswords");
+
+const btnSubmitGestorPassword = document.getElementById("btnSubmitGestorPassword");
+const textoSubmitGestorPassword = document.getElementById("textoSubmitGestorPassword");
+const iconoSubmitGestorPassword = document.getElementById("iconoSubmitGestorPassword");
+const btnCancelarEdicionPassword = document.getElementById("btnCancelarEdicionPassword");
+
+let passwordEnEdicionId = null;
+
+function mostrarMensajeGestorPassword(mensaje) {
+    if (!mensajeGestorPassword) return;
+    mensajeGestorPassword.textContent = mensaje;
+    mensajeGestorPassword.classList.remove("hidden");
+}
+
+function ocultarMensajeGestorPassword() {
+    if (!mensajeGestorPassword) return;
+    mensajeGestorPassword.textContent = "";
+    mensajeGestorPassword.classList.add("hidden");
+}
+
+function obtenerPasswordsGuardadas() {
+    const usuarioActual = obtenerUsuarioActivoDesdeSesion();
+    const idUsuario = usuarioActual ? usuarioActual.id_usuario : "default";
+    const clave = `hades_passwords_${idUsuario}`;
+    const data = localStorage.getItem(clave);
+    return data ? JSON.parse(data) : [];
+}
+
+function guardarPasswordLocal(sitio, password) {
+    const usuarioActual = obtenerUsuarioActivoDesdeSesion();
+    const idUsuario = usuarioActual ? usuarioActual.id_usuario : "default";
+    const clave = `hades_passwords_${idUsuario}`;
+    const passwords = obtenerPasswordsGuardadas();
+    
+    passwords.push({
+        id: Date.now(),
+        sitio: sitio,
+        valor: password,
+        fecha: new Date().toISOString()
+    });
+    
+    localStorage.setItem(clave, JSON.stringify(passwords));
+}
+
+function actualizarPasswordLocal(id, sitio, password) {
+    const usuarioActual = obtenerUsuarioActivoDesdeSesion();
+    const idUsuario = usuarioActual ? usuarioActual.id_usuario : "default";
+    const clave = `hades_passwords_${idUsuario}`;
+    let passwords = obtenerPasswordsGuardadas();
+    
+    const index = passwords.findIndex(p => p.id === id);
+    if(index !== -1) {
+        passwords[index].sitio = sitio;
+        passwords[index].valor = password;
+        localStorage.setItem(clave, JSON.stringify(passwords));
+    }
+}
+
+function eliminarPasswordLocal(id) {
+    const usuarioActual = obtenerUsuarioActivoDesdeSesion();
+    const idUsuario = usuarioActual ? usuarioActual.id_usuario : "default";
+    const clave = `hades_passwords_${idUsuario}`;
+    let passwords = obtenerPasswordsGuardadas();
+    
+    passwords = passwords.filter(p => p.id !== id);
+    localStorage.setItem(clave, JSON.stringify(passwords));
+}
+
+function restablecerFormularioPassword() {
+    formGestorPasswords.reset();
+    valorPassword.type = "password";
+    if(iconoVerValorPassword) iconoVerValorPassword.textContent = "visibility";
+    
+    passwordEnEdicionId = null;
+    
+    if(textoSubmitGestorPassword) textoSubmitGestorPassword.textContent = "Guardar contraseña";
+    if(iconoSubmitGestorPassword) iconoSubmitGestorPassword.textContent = "save";
+    if(btnCancelarEdicionPassword) btnCancelarEdicionPassword.classList.add("hidden");
+}
+
+function renderizarGestorPasswords() {
+    if (!listaGestorPasswords || !cantidadGestorPasswords) return;
+    
+    const passwords = obtenerPasswordsGuardadas();
+    cantidadGestorPasswords.textContent = `${passwords.length} guardadas`;
+    
+    if (passwords.length === 0) {
+        listaGestorPasswords.innerHTML = `
+            <div class="bg-[#e2effd] dark:bg-[#1a3162] border-2 border-dashed border-[#a4c9f7] dark:border-blue-700/50 rounded-2xl flex flex-col items-center justify-center p-8 w-full md:col-span-2">
+                <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center text-primary dark:text-blue-300">
+                    <span class="material-symbols-outlined text-3xl">
+                        key_off
+                    </span>
+                </div>
+                <p class="mt-4 font-label-md font-medium text-slate-700 dark:text-slate-300 text-center">
+                    Todavía no hay contraseñas guardadas.
+                </p>
+            </div>
+        `;
+        return;
+    }
+    
+    listaGestorPasswords.innerHTML = "";
+    
+    passwords.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "bg-white dark:bg-[#1a3162] p-6 rounded-2xl shadow-sm border border-[#a4c9f7] dark:border-blue-700/50 flex flex-col justify-between";
+        div.innerHTML = `
+            <div>
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg text-primary dark:text-blue-300">
+                        <span class="material-symbols-outlined">
+                            public
+                        </span>
+                    </div>
+                </div>
+
+                <h4 class="font-bold text-slate-900 dark:text-white mb-1 truncate" title="${item.sitio}">
+                    ${item.sitio}
+                </h4>
+
+                <div class="flex items-center gap-2 mb-4 bg-slate-50 dark:bg-[#18284f] p-2 rounded-lg border border-slate-200 dark:border-blue-800/50">
+                    <input type="password" readonly value="${item.valor}" class="bg-transparent border-none focus:ring-0 text-slate-600 dark:text-slate-300 w-full text-sm font-mono" />
+                    <button type="button" class="btnToggleVisibility text-slate-500 hover:text-primary dark:text-slate-400 transition-colors">
+                        <span class="material-symbols-outlined text-sm">visibility</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-2">
+                <button
+                    type="button"
+                    class="btnEditarPassword text-xs text-secondary font-bold flex items-center gap-1 hover:underline"
+                    data-id="${item.id}">
+                    <span class="material-symbols-outlined text-sm">
+                        edit
+                    </span>
+                    Editar
+                </button>
+                <button
+                    type="button"
+                    class="btnEliminarPassword text-xs text-error font-bold flex items-center gap-1 hover:underline"
+                    data-id="${item.id}">
+                    <span class="material-symbols-outlined text-sm">
+                        delete
+                    </span>
+                    Eliminar
+                </button>
+            </div>
+        `;
+        listaGestorPasswords.appendChild(div);
+    });
+}
+
+function iniciarModuloGestorPasswords() {
+    if (!formGestorPasswords) return;
+    
+    renderizarGestorPasswords();
+
+    if (btnVerValorPassword && iconoVerValorPassword) {
+        btnVerValorPassword.addEventListener("click", () => {
+            const esPassword = valorPassword.type === "password";
+            valorPassword.type = esPassword ? "text" : "password";
+            iconoVerValorPassword.textContent = esPassword ? "visibility_off" : "visibility";
+        });
+    }
+    
+    if (btnCancelarEdicionPassword) {
+        btnCancelarEdicionPassword.addEventListener("click", () => {
+            restablecerFormularioPassword();
+            ocultarMensajeGestorPassword();
+        });
+    }
+
+    formGestorPasswords.addEventListener("submit", (event) => {
+        event.preventDefault();
+        ocultarMensajeGestorPassword();
+
+        const sitio = sitioPassword.value.trim();
+        const valor = valorPassword.value.trim();
+
+        if (sitio.length === 0 || valor.length === 0) {
+            mostrarMensajeGestorPassword("Por favor, completa ambos campos.");
+            return;
+        }
+
+        if (passwordEnEdicionId) {
+            actualizarPasswordLocal(passwordEnEdicionId, sitio, valor);
+        } else {
+            guardarPasswordLocal(sitio, valor);
+        }
+        
+        restablecerFormularioPassword();
+        renderizarGestorPasswords();
+    });
+
+    if (listaGestorPasswords) {
+        listaGestorPasswords.addEventListener("click", (event) => {
+            const btnEliminar = event.target.closest(".btnEliminarPassword");
+            const btnEditar = event.target.closest(".btnEditarPassword");
+            const btnToggle = event.target.closest(".btnToggleVisibility");
+
+            if (btnEliminar) {
+                const id = Number(btnEliminar.dataset.id);
+                if (confirm("¿Seguro que quieres eliminar esta contraseña?")) {
+                    eliminarPasswordLocal(id);
+                    if (passwordEnEdicionId === id) {
+                        restablecerFormularioPassword();
+                    }
+                    renderizarGestorPasswords();
+                }
+            } else if (btnEditar) {
+                const id = Number(btnEditar.dataset.id);
+                const passwords = obtenerPasswordsGuardadas();
+                const pass = passwords.find(p => p.id === id);
+                if (pass) {
+                    sitioPassword.value = pass.sitio;
+                    valorPassword.value = pass.valor;
+                    valorPassword.type = "text";
+                    if(iconoVerValorPassword) iconoVerValorPassword.textContent = "visibility_off";
+                    
+                    passwordEnEdicionId = id;
+                    
+                    if(textoSubmitGestorPassword) textoSubmitGestorPassword.textContent = "Actualizar contraseña";
+                    if(iconoSubmitGestorPassword) iconoSubmitGestorPassword.textContent = "update";
+                    if(btnCancelarEdicionPassword) btnCancelarEdicionPassword.classList.remove("hidden");
+                    
+                    // Hacer scroll al formulario para dispositivos móviles
+                    formGestorPasswords.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else if (btnToggle) {
+                const input = btnToggle.previousElementSibling;
+                const icono = btnToggle.querySelector(".material-symbols-outlined");
+                if (input && input.tagName === "INPUT") {
+                    const esPassword = input.type === "password";
+                    input.type = esPassword ? "text" : "password";
+                    icono.textContent = esPassword ? "visibility_off" : "visibility";
+                }
+            }
+        });
+    }
+}
+//#######################Fin de Gestor de Contraseñas#################################
+
+//#######################Funciones relacionadas con el Escáner VirusTotal#################################
+const formVirusTotal = document.getElementById("formVirusTotal");
+const inputApiKeyVT = document.getElementById("inputApiKeyVT");
+const btnTabArchivo = document.getElementById("btnTabArchivo");
+const btnTabUrl = document.getElementById("btnTabUrl");
+const containerArchivo = document.getElementById("containerArchivo");
+const containerUrl = document.getElementById("containerUrl");
+const btnSeleccionarArchivoVT = document.getElementById("btnSeleccionarArchivoVT");
+const textoArchivoSeleccionadoVT = document.getElementById("textoArchivoSeleccionadoVT");
+const inputUrlVT = document.getElementById("inputUrlVT");
+const btnSubmitVT = document.getElementById("btnSubmitVT");
+const iconoSubmitVT = document.getElementById("iconoSubmitVT");
+const textoSubmitVT = document.getElementById("textoSubmitVT");
+const mensajeErrorVT = document.getElementById("mensajeErrorVT");
+
+const vtEstadoInicial = document.getElementById("vtEstadoInicial");
+const vtAnalizando = document.getElementById("vtAnalizando");
+const vtResultado = document.getElementById("vtResultado");
+const vtStatMalicious = document.getElementById("vtStatMalicious");
+const vtStatSuspicious = document.getElementById("vtStatSuspicious");
+const vtStatUndetected = document.getElementById("vtStatUndetected");
+const vtVeredictoContainer = document.getElementById("vtVeredictoContainer");
+
+let modoEscanerActivo = "archivo"; // 'archivo' | 'url'
+let rutaArchivoSeleccionado = null;
+
+function mostrarErrorVT(mensaje) {
+    if (!mensajeErrorVT) return;
+    mensajeErrorVT.textContent = mensaje;
+    mensajeErrorVT.classList.remove("hidden");
+}
+
+function ocultarErrorVT() {
+    if (!mensajeErrorVT) return;
+    mensajeErrorVT.textContent = "";
+    mensajeErrorVT.classList.add("hidden");
+}
+
+function setEstadoVT(estado) {
+    if(vtEstadoInicial) vtEstadoInicial.classList.add("hidden");
+    if(vtAnalizando) vtAnalizando.classList.add("hidden");
+    if(vtResultado) vtResultado.classList.add("hidden");
+
+    if (estado === "inicial" && vtEstadoInicial) {
+        vtEstadoInicial.classList.remove("hidden");
+    } else if (estado === "analizando" && vtAnalizando) {
+        vtAnalizando.classList.remove("hidden");
+    } else if (estado === "resultado" && vtResultado) {
+        vtResultado.classList.remove("hidden");
+    }
+}
+
+function mostrarResultadosVT(stats) {
+    if (!stats) return;
+    
+    const malicious = stats.malicious || 0;
+    const suspicious = stats.suspicious || 0;
+    const undetected = stats.undetected || 0;
+    const harmless = stats.harmless || 0;
+    const limpios = undetected + harmless;
+
+    if(vtStatMalicious) vtStatMalicious.textContent = malicious;
+    if(vtStatSuspicious) vtStatSuspicious.textContent = suspicious;
+    if(vtStatUndetected) vtStatUndetected.textContent = limpios;
+
+    if (vtVeredictoContainer) {
+        vtVeredictoContainer.className = "p-4 rounded-xl text-center font-bold text-lg ";
+        if (malicious > 0) {
+            vtVeredictoContainer.classList.add("bg-red-100", "text-red-700", "dark:bg-red-900/40", "dark:text-red-400");
+            vtVeredictoContainer.textContent = "PELIGROSO: Se detectaron amenazas.";
+        } else if (suspicious > 0) {
+            vtVeredictoContainer.classList.add("bg-amber-100", "text-amber-700", "dark:bg-amber-900/40", "dark:text-amber-400");
+            vtVeredictoContainer.textContent = "SOSPECHOSO: Revisar con precaución.";
+        } else {
+            vtVeredictoContainer.classList.add("bg-emerald-100", "text-emerald-700", "dark:bg-emerald-900/40", "dark:text-emerald-400");
+            vtVeredictoContainer.textContent = "SEGURO: No se detectaron amenazas.";
+        }
+    }
+
+    setEstadoVT("resultado");
+}
+
+function iniciarModuloScanner() {
+    if (!formVirusTotal) return;
+
+    if (inputApiKeyVT) {
+        const savedApiKey = localStorage.getItem("hades_vt_apikey");
+        if (savedApiKey) {
+            inputApiKeyVT.value = savedApiKey;
+        }
+    }
+
+    if (btnTabArchivo && btnTabUrl) {
+        btnTabArchivo.addEventListener("click", () => {
+            modoEscanerActivo = "archivo";
+            btnTabArchivo.className = "px-4 py-1 rounded text-sm font-bold bg-white dark:bg-blue-600 shadow-sm transition-all text-primary dark:text-white";
+            btnTabUrl.className = "px-4 py-1 rounded text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-primary transition-all";
+            containerArchivo.classList.remove("hidden");
+            containerUrl.classList.add("hidden");
+            inputUrlVT.required = false;
+            ocultarErrorVT();
+        });
+
+        btnTabUrl.addEventListener("click", () => {
+            modoEscanerActivo = "url";
+            btnTabUrl.className = "px-4 py-1 rounded text-sm font-bold bg-white dark:bg-blue-600 shadow-sm transition-all text-primary dark:text-white";
+            btnTabArchivo.className = "px-4 py-1 rounded text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-primary transition-all";
+            containerUrl.classList.remove("hidden");
+            containerArchivo.classList.add("hidden");
+            inputUrlVT.required = true;
+            ocultarErrorVT();
+        });
+    }
+
+    if (btnSeleccionarArchivoVT) {
+        btnSeleccionarArchivoVT.addEventListener("click", async () => {
+            ocultarErrorVT();
+            try {
+                const ruta = await window.hadesAPI.seleccionarArchivo();
+                if (ruta) {
+                    rutaArchivoSeleccionado = ruta;
+                    textoArchivoSeleccionadoVT.textContent = ruta;
+                    textoArchivoSeleccionadoVT.classList.remove("hidden");
+                }
+            } catch (error) {
+                mostrarErrorVT("Error al abrir el explorador de archivos.");
+            }
+        });
+    }
+
+    formVirusTotal.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        ocultarErrorVT();
+        
+        const apiKey = inputApiKeyVT ? inputApiKeyVT.value.trim() : "";
+        if (!apiKey) {
+            mostrarErrorVT("Por favor ingresá tu API Key de VirusTotal.");
+            return;
+        }
+        
+        // Guardar la API Key para futuras sesiones
+        localStorage.setItem("hades_vt_apikey", apiKey);
+
+        if (modoEscanerActivo === "archivo") {
+            if (!rutaArchivoSeleccionado) {
+                mostrarErrorVT("Por favor seleccioná un archivo.");
+                return;
+            }
+
+            try {
+                btnSubmitVT.disabled = true;
+                textoSubmitVT.textContent = "Subiendo...";
+                iconoSubmitVT.classList.add("animate-spin");
+                iconoSubmitVT.textContent = "refresh";
+                setEstadoVT("analizando");
+
+                const stats = await window.hadesAPI.escanearArchivoVirusTotal(rutaArchivoSeleccionado, apiKey);
+                mostrarResultadosVT(stats);
+            } catch (error) {
+                mostrarErrorVT(error.message || "Ocurrió un error inesperado al analizar el archivo.");
+                setEstadoVT("inicial");
+            } finally {
+                btnSubmitVT.disabled = false;
+                textoSubmitVT.textContent = "Analizar";
+                iconoSubmitVT.classList.remove("animate-spin");
+                iconoSubmitVT.textContent = "search";
+            }
+        } else {
+            const urlValue = inputUrlVT.value.trim();
+            if (!urlValue) {
+                mostrarErrorVT("Por favor ingresá una URL válida.");
+                return;
+            }
+
+            try {
+                btnSubmitVT.disabled = true;
+                textoSubmitVT.textContent = "Analizando...";
+                iconoSubmitVT.classList.add("animate-spin");
+                iconoSubmitVT.textContent = "refresh";
+                setEstadoVT("analizando");
+
+                const stats = await window.hadesAPI.escanearUrlVirusTotal(urlValue, apiKey);
+                mostrarResultadosVT(stats);
+            } catch (error) {
+                mostrarErrorVT(error.message || "Ocurrió un error inesperado al analizar la URL.");
+                setEstadoVT("inicial");
+            } finally {
+                btnSubmitVT.disabled = false;
+                textoSubmitVT.textContent = "Analizar";
+                iconoSubmitVT.classList.remove("animate-spin");
+                iconoSubmitVT.textContent = "search";
+            }
+        }
+    });
+}
+//#######################Fin de Escáner VirusTotal#################################
 
 iniciarModulosDiagnostico();
 });

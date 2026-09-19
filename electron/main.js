@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 
 const {
@@ -26,6 +26,9 @@ const {
     obtenerUltimaTrivia
 } = require("../src/database/db");
 
+const fs = require("fs");
+const { Blob } = require("buffer");
+
 // Clave de prueba de Have I Been Pwned.
 // Para consultas reales se deberá configurar HIBP_API_KEY
 // como variable de entorno.
@@ -34,6 +37,8 @@ const HIBP_API_KEY =
     "00000000000000000000000000000000";
 
 const HIBP_MODO_PRUEBA = !process.env.HIBP_API_KEY;
+
+const VT_API_KEY = process.env.VT_API_KEY || "fb3c9ba0dc065e1eb3268832a8932fc44dd8bc09d8be929a7516a245d625bc2b"; // Public default for demo, but highly restricted. In a real app we leave empty or prompt the user.
 
 /**
  * Valida el formato básico de una dirección de correo.
@@ -190,6 +195,108 @@ async function verificarBrechasCorreo(correo) {
         cantidad: brechas.length,
         brechas
     };
+}
+
+// ============================================================
+// FUNCIONES DE VIRUSTOTAL
+// ============================================================
+async function escanearArchivoVirusTotal(rutaArchivo, apiKey) {
+    if (!fs.existsSync(rutaArchivo)) {
+        throw new Error("El archivo no existe.");
+    }
+    const stats = fs.statSync(rutaArchivo);
+    if (stats.size > 32 * 1024 * 1024) {
+        throw new Error("El archivo supera el límite de 32MB de la API de VirusTotal.");
+    }
+
+    const fileBuffer = fs.readFileSync(rutaArchivo);
+    const blob = new Blob([fileBuffer]);
+    
+    // Node.js nativo FormData (disponible desde Node 18, usado por Electron 28+)
+    const formData = new FormData();
+    formData.append("file", blob, path.basename(rutaArchivo));
+
+    const response = await fetch("https://www.virustotal.com/api/v3/files", {
+        method: "POST",
+        headers: {
+            "x-apikey": apiKey
+        },
+        body: formData
+    });
+
+    if (response.status === 401) {
+        throw new Error("La API Key de VirusTotal es inválida o incorrecta.");
+    }
+    if (response.status === 429) {
+        throw new Error("Cuota excedida. Por favor espera un momento o intenta más tarde.");
+    }
+    if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Error al subir a VirusTotal: ${response.status} - ${errText}`);
+    }
+
+    const data = await response.json();
+    return await esperarAnalisisVirusTotal(data.data.id, apiKey);
+}
+
+async function escanearUrlVirusTotal(urlScan, apiKey) {
+    const formData = new URLSearchParams();
+    formData.append("url", urlScan);
+
+    const response = await fetch("https://www.virustotal.com/api/v3/urls", {
+        method: "POST",
+        headers: {
+            "x-apikey": apiKey,
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData
+    });
+
+    if (response.status === 401) {
+        throw new Error("La API Key de VirusTotal es inválida o incorrecta.");
+    }
+    if (response.status === 429) {
+        throw new Error("Cuota excedida. Por favor espera un momento o intenta más tarde.");
+    }
+    if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Error al escanear URL: ${response.status} - ${errText}`);
+    }
+
+    const data = await response.json();
+    return await esperarAnalisisVirusTotal(data.data.id, apiKey);
+}
+
+async function esperarAnalisisVirusTotal(analysisId, apiKey) {
+    const url = `https://www.virustotal.com/api/v3/analyses/${analysisId}`;
+    
+    for (let i = 0; i < 15; i++) {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "x-apikey": apiKey
+            }
+        });
+        
+        if (response.status === 401) {
+            throw new Error("La API Key de VirusTotal es inválida o incorrecta.");
+        }
+        if (response.status === 429) {
+            throw new Error("Cuota excedida al verificar resultados. Espera un momento.");
+        }
+        if (!response.ok) {
+            throw new Error(`Error al consultar el análisis: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        if (data.data.attributes.status === "completed") {
+            return data.data.attributes.stats;
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+    
+    throw new Error("El análisis tardó demasiado. Por favor, inténtalo más tarde.");
 }
 
 /**
@@ -406,6 +513,39 @@ app.whenReady().then(() => {
             return resultado;
         }
     );
+
+    // ============================================================
+    // MANEJADORES DE VIRUSTOTAL
+    // ============================================================
+    ipcMain.handle(
+        "virustotal:escanearArchivo",
+        async (event, rutaArchivo, apiKey) => {
+            console.log("Iniciando escaneo de archivo en VirusTotal:", rutaArchivo);
+            return await escanearArchivoVirusTotal(rutaArchivo, apiKey);
+        }
+    );
+
+    ipcMain.handle(
+        "virustotal:escanearUrl",
+        async (event, url, apiKey) => {
+            console.log("Iniciando escaneo de URL en VirusTotal:", url);
+            return await escanearUrlVirusTotal(url, apiKey);
+        }
+    );
+
+    ipcMain.handle("dialog:abrirArchivo", async () => {
+        const result = await dialog.showOpenDialog({
+            properties: ["openFile"],
+            title: "Seleccionar archivo para escanear",
+            buttonLabel: "Seleccionar"
+        });
+
+        if (result.canceled || result.filePaths.length === 0) {
+            return null;
+        }
+        
+        return result.filePaths[0];
+    });
 
     createWindow();
 
