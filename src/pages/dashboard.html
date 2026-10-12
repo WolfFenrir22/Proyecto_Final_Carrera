@@ -351,6 +351,48 @@
       </div>
      </div>
 
+    <!-- Resumen ampliado de actividad -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+     <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+       <div class="p-3 bg-secondary/10 dark:bg-emerald-900/40 rounded-xl text-secondary dark:text-emerald-300">
+        <span class="material-symbols-outlined">task_alt</span>
+       </div>
+       <span id="dashboardTotalActividades" class="text-h3 font-bold text-secondary dark:text-emerald-300">0</span>
+      </div>
+      <div class="mt-stack-lg">
+       <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Actividad completada</h3>
+       <p id="dashboardDetalleActividades" class="text-caption text-slate-700 dark:text-slate-300">Todavía no hay actividades registradas.</p>
+      </div>
+     </div>
+
+     <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+       <div class="p-3 bg-amber-100 dark:bg-amber-900/40 rounded-xl text-amber-700 dark:text-amber-300">
+        <span class="material-symbols-outlined">analytics</span>
+       </div>
+       <span id="dashboardPromedioSimulaciones" class="text-h3 font-bold text-amber-700 dark:text-amber-300">0%</span>
+      </div>
+      <div class="mt-stack-lg">
+       <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Rendimiento en simuladores</h3>
+       <p id="dashboardDetalleSimulaciones" class="text-caption text-slate-700 dark:text-slate-300">Completá un caso para generar tu promedio.</p>
+      </div>
+     </div>
+
+     <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+       <div class="p-3 bg-rose-100 dark:bg-rose-900/40 rounded-xl text-rose-700 dark:text-rose-300">
+        <span class="material-symbols-outlined">school</span>
+       </div>
+       <span id="dashboardPromedioTrivia" class="text-h3 font-bold text-rose-700 dark:text-rose-300">0%</span>
+      </div>
+      <div class="mt-stack-lg">
+       <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Progreso de trivia</h3>
+       <p id="dashboardDetalleTriviaGeneral" class="text-caption text-slate-700 dark:text-slate-300">Completá la trivia para conocer tu progreso.</p>
+      </div>
+     </div>
+    </div>
+
      <!-- =============== Academia de Defensa Digital Section ============== -->
      <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
       <!-- Progress Summary -->

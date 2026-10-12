@@ -349,6 +349,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnMitosRealidades = document.getElementById("btnMitosRealidades");
     const btnAnatomiaAtaque = document.getElementById("btnAnatomiaAtaque");
     const btnTestNivel = document.getElementById("btnTestNivel");
+    const panelTestContenido = document.getElementById("panelTestContenido");
+    const contenidoTestNivel = document.getElementById("contenidoTestNivel");
 
     const panelAcademia = document.getElementById("panelAcademia");
     const categoriaAcademia = document.getElementById("categoriaAcademia");
@@ -1535,10 +1537,14 @@ function renderizarTarjetasMitos() {
     contenidoAcademia.appendChild(grilla);
 }
 
-function renderizarTriviaSeguridad() {
+function renderizarTriviaSeguridad(contenedorDestino = contenidoAcademia) {
     triviaEvaluada = false;
 
-    contenidoAcademia.innerHTML = "";
+    if (!contenedorDestino) {
+        return;
+    }
+
+    contenedorDestino.innerHTML = "";
 
     const contenedorTrivia = document.createElement("div");
 
@@ -1624,7 +1630,7 @@ function renderizarTriviaSeguridad() {
 
     contenedorTrivia.appendChild(resultadoTrivia);
 
-    contenidoAcademia.appendChild(contenedorTrivia);
+    contenedorDestino.appendChild(contenedorTrivia);
 
     const btnFinalizarTrivia = document.getElementById("btnFinalizarTrivia");
 
@@ -1964,7 +1970,16 @@ function iniciarAcademiaDigital() {
 
     if (btnTestNivel) {
     btnTestNivel.addEventListener("click", () => {
-        mostrarContenidoAcademia("testNivel");
+            if (!panelTestContenido || !contenidoTestNivel) {
+                return;
+            }
+
+            renderizarTriviaSeguridad(contenidoTestNivel);
+            panelTestContenido.classList.remove("hidden");
+            panelTestContenido.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
         });
     }
 

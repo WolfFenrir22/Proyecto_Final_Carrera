@@ -122,6 +122,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 `${resumen.ultimaTrivia.porcentaje}% de aciertos (${resumen.ultimaTrivia.respuestas_correctas}/${resumen.ultimaTrivia.total_preguntas})`;
         }
 
+        const estadisticas = resumen.estadisticas || {};
+        const totalActividades =
+            Number(estadisticas.simulacionesRealizadas || 0) +
+            Number(estadisticas.triviasRealizadas || 0);
+        const totalActividadesElemento = document.getElementById(
+            "dashboardTotalActividades"
+        );
+        const detalleActividades = document.getElementById(
+            "dashboardDetalleActividades"
+        );
+        const promedioSimulaciones = document.getElementById(
+            "dashboardPromedioSimulaciones"
+        );
+        const detalleSimulaciones = document.getElementById(
+            "dashboardDetalleSimulaciones"
+        );
+        const promedioTrivia = document.getElementById(
+            "dashboardPromedioTrivia"
+        );
+        const detalleTriviaGeneral = document.getElementById(
+            "dashboardDetalleTriviaGeneral"
+        );
+
+        totalActividadesElemento.textContent = totalActividades;
+        detalleActividades.textContent =
+            `${estadisticas.simulacionesRealizadas || 0} simulaciones y ${estadisticas.triviasRealizadas || 0} trivias realizadas.`;
+
+        promedioSimulaciones.textContent =
+            `${estadisticas.promedioSimulaciones || 0}%`;
+        detalleSimulaciones.textContent =
+            `${estadisticas.simulacionesRealizadas || 0} casos completados · Mejor puntaje: ${estadisticas.mejorPuntajeSimulacion || 0}%.`;
+
+        promedioTrivia.textContent =
+            `${estadisticas.promedioTrivia || 0}%`;
+        detalleTriviaGeneral.textContent =
+            `${estadisticas.triviasRealizadas || 0} intento(s) registrado(s) · Promedio general de aciertos.`;
+
     } catch (error) {
         console.error(
             "Error cargando resumen del dashboard:",

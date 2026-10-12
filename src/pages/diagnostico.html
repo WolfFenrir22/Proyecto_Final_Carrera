@@ -226,14 +226,34 @@
     <h1 class="font-h1 text-h1 text-slate-900 dark:text-white mb-stack-sm">
      M&oacute;dulo de Diagn&oacute;stico
     </h1>
-    <p class="font-body-lg text-body-lg text-slate-800 dark:text-slate-300 max-w-2xl">
-     Herramientas avanzadas dise&ntilde;adas para simplificar su seguridad digital. Eval&uacute;e, verifique y proteja sus activos m&aacute;s importantes.
-    </p>
    </header>
+     <section class="mb-stack-lg bg-white dark:bg-[#14254b] rounded-2xl p-6 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm">
+        <div class="mb-6">
+         <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">Herramientas de diagnóstico</h2>
+         <p class="text-slate-700 dark:text-slate-300 mt-1">Seleccioná una categoría para acceder a sus herramientas de seguridad.</p>
+        </div>
+        <div id="categoriasDiagnostico" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+         <button type="button" data-categoria-diagnostico="credenciales" class="categoriaDiagnostico group text-left rounded-xl border-2 border-transparent bg-slate-50 dark:bg-[#18284f] p-8 min-h-[200px] transition-all hover:shadow-md hover:border-primary">
+            <span class="material-symbols-outlined text-primary dark:text-blue-300 text-3xl">key</span>
+            <h3 class="font-bold text-slate-900 dark:text-white mt-3">Contraseñas / Credenciales</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Evaluador de robustez y gestor de contraseñas.</p>
+         </button>
+         <button type="button" data-categoria-diagnostico="verificadores" class="categoriaDiagnostico group text-left rounded-xl border-2 border-transparent bg-slate-50 dark:bg-[#18284f] p-8 min-h-[200px] transition-all hover:shadow-md hover:border-primary">
+            <span class="material-symbols-outlined text-secondary dark:text-emerald-300 text-3xl">verified_user</span>
+            <h3 class="font-bold text-slate-900 dark:text-white mt-3">Verificadores</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Verificador de brechas y escáner de archivos maliciosos.</p>
+         </button>
+         <button type="button" data-categoria-diagnostico="backup" class="categoriaDiagnostico group text-left rounded-xl border-2 border-transparent bg-slate-50 dark:bg-[#18284f] p-8 min-h-[200px] transition-all hover:shadow-md hover:border-primary">
+            <span class="material-symbols-outlined text-primary dark:text-blue-300 text-3xl">cloud_sync</span>
+            <h3 class="font-bold text-slate-900 dark:text-white mt-3">Backup</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Recordatorio de backups y copias de seguridad.</p>
+         </button>
+        </div>
+     </section>
    <div class="bento-grid">
 <!--  ###################### INICIO DE EVALUADOR DE PASSWORD #############################  -->
 
-    <section class="col-span-12 lg:col-span-8 bg-white dark:bg-[#14254b] rounded-2xl p-8 shadow-sm border border-[#a8cdfc] dark:border-blue-800/60">
+    <section data-categoria-herramienta="credenciales" class="hidden col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-8 shadow-sm border border-[#a8cdfc] dark:border-blue-800/60">
     <div class="flex items-center justify-between mb-8">
         <div>
             <h3 class="font-h3 text-h3 text-slate-900 dark:text-white flex items-center gap-2">
@@ -464,7 +484,8 @@
 <!-- ###################### INICIO DE VERIFICADOR DE BRECHAS ###################### -->
 
 <section
-    class="col-span-12 lg:col-span-4 bg-primary dark:bg-[#14254b] text-white rounded-2xl p-8 shadow-sm border border-primary dark:border-blue-800/60 flex flex-col justify-between overflow-hidden relative"
+    data-categoria-herramienta="verificadores"
+    class="hidden col-span-12 bg-primary dark:bg-[#14254b] text-white rounded-2xl p-8 shadow-sm border border-primary dark:border-blue-800/60 flex flex-col justify-between overflow-hidden relative"
 >
     <div class="relative z-10">
         <div class="flex items-center gap-3 mb-4">
@@ -622,7 +643,7 @@
 <!-- ###################### FIN DE VERIFICADOR DE BRECHAS ###################### -->
 
 <!-- ###################### INICIO DE GESTOR DE CONTRASEÑAS ###################### -->
-<section class="col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white mt-8 mb-8">
+<section data-categoria-herramienta="credenciales" class="hidden col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white mt-8 mb-8">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
             <div class="flex items-center gap-3 mb-2">
@@ -789,7 +810,7 @@
 <!-- ###################### FIN DE GESTOR DE CONTRASEÑAS ###################### -->
 
     <!--  ###################### INICIO DE GESTOR DE BACKUPS #############################  -->
-    <section class="col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white">
+    <section data-categoria-herramienta="backup" class="hidden col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
                 <div class="flex items-center gap-3 mb-2">
@@ -958,7 +979,7 @@
     <!--  ###################### FIN DE GESTOR DE BACKUPS #############################  -->
 
 <!-- ###################### INICIO DE ESCÁNER DE VIRUSTOTAL ###################### -->
-<section class="col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white mt-8">
+<section data-categoria-herramienta="verificadores" class="hidden col-span-12 bg-white dark:bg-[#14254b] rounded-2xl p-10 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm text-slate-900 dark:text-white mt-8">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
             <div class="flex items-center gap-3 mb-2">
@@ -1120,7 +1141,7 @@
 <!-- ###################### FIN DE ESCÁNER DE VIRUSTOTAL ###################### -->
       
    </div>
-   <section class="mt-stack-lg bg-white dark:bg-[#14254b] rounded-2xl p-8 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm overflow-hidden">
+    <section id="tarjetaReglaBackup" class="hidden mt-stack-lg bg-white dark:bg-[#14254b] rounded-2xl p-8 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm overflow-hidden">
     <div class="flex flex-col md:flex-row items-center gap-10">
      <div class="w-full md:w-1/3">
       <img alt="Cybersecurity analysis" class="rounded-xl shadow-lg w-full h-48 object-cover" data-alt="clean minimal digital workplace with a laptop showing security charts and graphs on screen, bright natural light, professional aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEqA8y5Lj792TV0JNlFkydanH6xZBC05RlNRWwqYxszDq1r3UDPZrZkBEk0exB8I-E4mVuEdbKk-TNq81_8y3nCJom14jaYmYSD2uOnKM3TO7wjp1CtU1WdeZ_7YCjp5666U9pc0BvijHWLfIiO3NjOtHkuayIs1Kn2ZfRtGO7a1Verr3weQVEcg1yi9rnUwk4ufziSuWWz_PPO3g0nF0Ki9YTBWAdezGxjUAPyZrQUnRB7kD38tYKUiLYfr2etEqNgDnoMWleC5dn"/>

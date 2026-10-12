@@ -1077,6 +1077,42 @@ async function iniciarModulosDiagnostico() {
     }
 }
 
+function iniciarCategoriasDiagnostico() {
+    const botonesCategoria = document.querySelectorAll("[data-categoria-diagnostico]");
+    const herramientas = document.querySelectorAll("[data-categoria-herramienta]");
+    const tarjetaReglaBackup = document.getElementById("tarjetaReglaBackup");
+
+    botonesCategoria.forEach((boton) => {
+        boton.addEventListener("click", () => {
+            const categoriaSeleccionada = boton.dataset.categoriaDiagnostico;
+
+            botonesCategoria.forEach((item) => {
+                const esActivo = item === boton;
+                item.classList.toggle("border-primary", esActivo);
+                item.classList.toggle("border-transparent", !esActivo);
+                item.classList.toggle("bg-blue-50", esActivo);
+                item.classList.toggle("dark:bg-[#1a3162]", esActivo);
+                item.classList.toggle("bg-slate-50", !esActivo);
+                item.classList.toggle("dark:bg-[#18284f]", !esActivo);
+            });
+
+            herramientas.forEach((herramienta) => {
+                herramienta.classList.toggle(
+                    "hidden",
+                    herramienta.dataset.categoriaHerramienta !== categoriaSeleccionada
+                );
+            });
+
+            if (tarjetaReglaBackup) {
+                tarjetaReglaBackup.classList.toggle(
+                    "hidden",
+                    categoriaSeleccionada !== "backup"
+                );
+            }
+        });
+    });
+}
+
 //#######################Funciones relacionadas con el Gestor de Contraseñas#################################
 const formGestorPasswords = document.getElementById("formGestorPasswords");
 const sitioPassword = document.getElementById("sitioPassword");
@@ -1528,4 +1564,5 @@ function iniciarModuloScanner() {
 //#######################Fin de Escáner VirusTotal#################################
 
 iniciarModulosDiagnostico();
+iniciarCategoriasDiagnostico();
 });

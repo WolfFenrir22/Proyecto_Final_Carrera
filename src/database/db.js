@@ -1013,6 +1013,52 @@ function obtenerUltimaTrivia(idUsuario) {
     });
 }
 
+function obtenerEstadisticasDashboard(idUsuario) {
+    const database = getDatabase();
+
+    return new Promise((resolve, reject) => {
+        database.get(
+            `
+            SELECT
+                (SELECT COUNT(*)
+                 FROM simulaciones_phishing
+                 WHERE id_usuario = ?) AS simulaciones_realizadas,
+                (SELECT COALESCE(AVG(puntaje), 0)
+                 FROM simulaciones_phishing
+                 WHERE id_usuario = ?) AS promedio_simulaciones,
+                (SELECT COALESCE(MAX(puntaje), 0)
+                 FROM simulaciones_phishing
+                 WHERE id_usuario = ?) AS mejor_puntaje_simulacion,
+                (SELECT COUNT(*)
+                 FROM resultados_trivia
+                 WHERE id_usuario = ?) AS trivias_realizadas,
+                (SELECT COALESCE(AVG(porcentaje), 0)
+                 FROM resultados_trivia
+                 WHERE id_usuario = ?) AS promedio_trivia,
+                (SELECT COUNT(*)
+                 FROM recordatorios_backup
+                 WHERE id_usuario = ? AND activo = 1) AS backups_activos
+            `,
+            [idUsuario, idUsuario, idUsuario, idUsuario, idUsuario, idUsuario],
+            (error, row) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve({
+                    simulacionesRealizadas: row?.simulaciones_realizadas || 0,
+                    promedioSimulaciones: Math.round(row?.promedio_simulaciones || 0),
+                    mejorPuntajeSimulacion: row?.mejor_puntaje_simulacion || 0,
+                    triviasRealizadas: row?.trivias_realizadas || 0,
+                    promedioTrivia: Math.round(row?.promedio_trivia || 0),
+                    backupsActivos: row?.backups_activos || 0
+                });
+            }
+        );
+    });
+}
+
 // Exporta las funciones para que puedan ser usadas desde otros archivos,
 // por ejemplo desde electron/main.js.
 module.exports = {
@@ -1038,5 +1084,6 @@ module.exports = {
     obtenerUltimoPhishing,
 
     guardarResultadoTrivia,
-    obtenerUltimaTrivia
+    obtenerUltimaTrivia,
+    obtenerEstadisticasDashboard
 };

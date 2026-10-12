@@ -221,737 +221,506 @@
      <div class="max-w-container-max mx-auto space-y-stack-lg">
       <!-- Header Section -->
       <div class="space-y-stack-sm">
-       <h1 class="font-h1 text-h1 text-slate-900 dark:text-white">
-        Centro de Entrenamiento y Simulaci&oacute;n
-       </h1>
-       <p class="font-body-lg text-body-lg text-slate-700 dark:text-slate-300">
-        Domina la seguridad digital a trav&eacute;s de la pr&aacute;ctica guiada y simulaciones en tiempo real.
-       </p>
+        <h1 class="font-h1 text-h1 text-slate-900 dark:text-white">
+          Centro de Entrenamiento y Simulaci&oacute;n
+        </h1>
+        <p class="font-body-lg text-body-lg text-slate-700 dark:text-slate-300">
+          Domina la seguridad digital a trav&eacute;s de la pr&aacute;ctica guiada y simulaciones en tiempo real.
+        </p>
       </div>
-       <p class="font-body-lg text-body-lg text-outline">
-        Domina la seguridad digital a trav&eacute;s de la pr&aacute;ctica guiada y simulaciones en tiempo real.
-       </p>
-      </div>
-      <!--############## Academia de Defensa Digital ################-->
-      <section class="space-y-stack-md">
-     <div class="flex items-center justify-between">
-         <h2 class="font-h2 text-h2 text-slate-900 dark:text-white">
-             Academia de Defensa Digital
-         </h2>
 
+      <!-- ===== TARJETAS DE NAVEGACIÓN PRINCIPAL ===== -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Tarjeta 1: Fundamentos de Seguridad Digital -->
         <button
-            id="btnVerTodosAcademia"
-            type="button"
-            class="text-primary dark:text-blue-400 font-label-md flex items-center gap-1 cursor-pointer hover:underline">
-            Ver todos
-            <span class="material-symbols-outlined text-sm">
-                arrow_forward
-            </span>
+          id="btnNavFundamentos"
+          type="button"
+          onclick="mostrarPanel('panelFundamentos')"
+          class="group relative overflow-hidden rounded-2xl bg-white dark:bg-[#0f1b36] border-2 border-[#d2e3fc] dark:border-blue-900/40 shadow-sm hover:shadow-lg hover:border-primary dark:hover:border-blue-400 transition-all duration-300 text-left p-6 flex flex-col gap-4 active:scale-[0.98]">
+          <div class="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-primary dark:text-blue-300 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-3xl">shield_lock</span>
+          </div>
+          <div>
+            <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">
+              Fundamentos de Seguridad Digital
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300">
+              Conceptos clave, mitos vs. realidades y presentaciones educativas.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="text-[11px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-2.5 py-1 rounded-full">Ciberseguridad</span>
+            <span class="text-[11px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-2.5 py-1 rounded-full">Mitos</span>
+            <span class="text-[11px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-2.5 py-1 rounded-full">Presentaciones</span>
+          </div>
+          <span class="absolute bottom-4 right-4 material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">arrow_forward</span>
         </button>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
-        <!-- Main Featured Card -->
-        <div class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-2xl bg-primary-container dark:bg-[#14254b] text-white p-stack-lg flex flex-col justify-end min-h-[400px] border border-primary-container dark:border-blue-800/60 shadow-sm">
-            <img
+
+        <!-- Tarjeta 2: Test de Nivel -->
+        <button
+          id="btnNavTest"
+          type="button"
+          onclick="mostrarPanel('panelTest')"
+          class="group relative overflow-hidden rounded-2xl bg-white dark:bg-[#0f1b36] border-2 border-[#d2e3fc] dark:border-blue-900/40 shadow-sm hover:shadow-lg hover:border-secondary dark:hover:border-emerald-400 transition-all duration-300 text-left p-6 flex flex-col gap-4 active:scale-[0.98]">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-secondary dark:text-emerald-300 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-3xl">quiz</span>
+          </div>
+          <div>
+            <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">
+              Test de Nivel
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300">
+              Med&iacute; tus conocimientos actuales sobre seguridad digital con preguntas interactivas.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="text-[11px] font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 px-2.5 py-1 rounded-full">Evaluaci&oacute;n</span>
+            <span class="text-[11px] font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 px-2.5 py-1 rounded-full">Conocimiento</span>
+          </div>
+          <span class="absolute bottom-4 right-4 material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-secondary dark:group-hover:text-emerald-400 transition-colors">arrow_forward</span>
+        </button>
+
+        <!-- Tarjeta 3: Simuladores -->
+        <button
+          id="btnNavSimuladores"
+          type="button"
+          onclick="mostrarPanel('panelSimuladores')"
+          class="group relative overflow-hidden rounded-2xl bg-white dark:bg-[#0f1b36] border-2 border-[#d2e3fc] dark:border-blue-900/40 shadow-sm hover:shadow-lg hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-300 text-left p-6 flex flex-col gap-4 active:scale-[0.98]">
+          <div class="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-700 dark:text-purple-300 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-3xl">bug_report</span>
+          </div>
+          <div>
+            <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">
+              Simuladores de Ataque
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300">
+              Pon a prueba tu ojo cr&iacute;tico con simulaciones de phishing y smishing/vishing.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="text-[11px] font-bold bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 px-2.5 py-1 rounded-full">Phishing</span>
+            <span class="text-[11px] font-bold bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 px-2.5 py-1 rounded-full">Smishing</span>
+            <span class="text-[11px] font-bold bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 px-2.5 py-1 rounded-full">Vishing</span>
+          </div>
+          <span class="absolute bottom-4 right-4 material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors">arrow_forward</span>
+        </button>
+
+      </div>
+      <!-- ===== FIN TARJETAS DE NAVEGACIÓN ===== -->
+
+      <!-- ===================================================== -->
+      <!-- PANEL 1: FUNDAMENTOS DE SEGURIDAD DIGITAL             -->
+      <!-- ===================================================== -->
+      <div id="panelFundamentos" class="hidden space-y-stack-md">
+
+        <!-- Cabecera del panel -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button onclick="ocultarPanel('panelFundamentos')" class="w-9 h-9 rounded-full bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 flex items-center justify-center text-slate-500 hover:text-primary dark:hover:text-blue-400 transition-colors shadow-sm">
+              <span class="material-symbols-outlined text-lg">arrow_back</span>
+            </button>
+            <div>
+              <h2 class="font-h2 text-h2 text-slate-900 dark:text-white">Fundamentos de Seguridad Digital</h2>
+              <p class="text-sm text-slate-600 dark:text-slate-400">Academia de Defensa Digital</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contenido: igual que antes (Academia de Defensa Digital) -->
+        <section class="space-y-stack-md">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+            <!-- Main Featured Card -->
+            <div class="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-2xl bg-primary-container dark:bg-[#14254b] text-white p-stack-lg flex flex-col justify-end min-h-[400px] border border-primary-container dark:border-blue-800/60 shadow-sm">
+              <img
                 class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30 group-hover:scale-105 transition-transform duration-500"
                 data-alt="Cybersecurity futuristic circuit board with blue neon lighting and digital nodes representing network defense"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIVtkKy0GWsHut0KoBN2Y-LxgAi1YcC8x3mL_5hLUP2g_ZScfU60IO2NrVwJ02zkO80zyB-R9e66jlilgUtydxs-5nkvmmFQniPc9hVmHBabcX7xkB9ezNIfK-WJpakRKIO4MRAfdUvwQB-L_ioBNjeZv8oLNQM7dWbT4QupoFKiGUKEZOcJek37oeGJazaUZBF9IH4nHRyOrYY_LCxYlJFCtOwdcjf43mk1Fy_HaIdsvA5rM9sUU3U-5wx6dp8W2_KU2F88NjJ0dS"/>
-
-            <div class="relative z-10 space-y-stack-sm">
-                <span class="bg-secondary text-white text-caption px-3 py-1 rounded-full w-fit font-bold">
-                    Conceptos Clave
-                </span>
-
-                <h3 class="font-h3 text-h3 text-white">
-                    Fundamentos de Ciberseguridad
-                </h3>
-
-                <p class="font-body-md text-white/90 dark:text-slate-300">
-                    Aprende los hábitos diarios que mantienen tu identidad digital a salvo de amenazas comunes.
-                </p>
-
-                <button
-                    id="btnCursoCiberHigiene"
-                    type="button"
-                    class="mt-4 bg-white text-primary dark:text-slate-900 px-6 py-2 rounded-xl font-bold w-fit active:scale-95 transition-transform shadow hover:bg-blue-50">
-                    Ver
-                </button>
-            </div>
-        </div>
-
-        <!-- Mitos vs Realidades -->
-        <button
-            id="btnMitosRealidades"
-            type="button"
-            class="md:col-span-2 bg-white dark:bg-[#0f1b36] rounded-2xl p-stack-md flex gap-4 items-center shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 hover:shadow-md transition-shadow text-left">
-            <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                <img
-                    class="w-full h-full object-cover"
-                    data-alt="Stylized infographic about data protection with clean icons and blue and green color palette"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWXs-b13s0nXRj4IhGROZWixKX0wQcJrodYyRmWCjGWuOj8xo1bDinWAOLo-Yw4-d1bRBlcMfN6A3fvbY_ifEDUuMJnOOHSbqRUxx8jEYDDNqcl_tVBasmkDg6N0AYe5qRMp0jyXxTn3um0-3jhL_Amk_malwXpo3upIlSZPD5iiFymaR5ixxVyJb9TYS32kY51o0Edjhsh5yqdLsfarGIA7PahVeoIjYBBw_nDe4dSCkVjTJz1sY8YTv78OcXYFyDqQSZZFyqsrii"/>
+              <div class="relative z-10 space-y-stack-sm">
+                <span class="bg-secondary text-white text-caption px-3 py-1 rounded-full w-fit font-bold">Conceptos Clave</span>
+                <h3 class="font-h3 text-h3 text-white">Fundamentos de Ciberseguridad</h3>
+                <p class="font-body-md text-white/90 dark:text-slate-300">Aprende los hábitos diarios que mantienen tu identidad digital a salvo de amenazas comunes.</p>
+                <button id="btnCursoCiberHigiene" type="button" class="mt-4 bg-white text-primary dark:text-slate-900 px-6 py-2 rounded-xl font-bold w-fit active:scale-95 transition-transform shadow hover:bg-blue-50">Ver</button>
+              </div>
             </div>
 
-            <div class="flex-1">
-                <h4 class="font-label-md font-bold text-primary dark:text-blue-400 mb-1">
-                    Mitos vs. Realidades
-                </h4>
-
-                <p class="text-sm text-slate-700 dark:text-slate-300">
-                    ¿El modo incógnito realmente te hace invisible? Desmentimos las creencias más comunes.
-                </p>
-            </div>
-        </button>
-
-        <!-- ======================= MODULO DE INFOGRAFIA ==================================== -->
-        <button
-            id="btnPresentaciones"
-            type="button"
-            class="md:col-span-1 bg-white dark:bg-[#0f1b36] rounded-2xl p-stack-md flex flex-col gap-3 shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 hover:shadow-md transition-shadow text-left">
-
-            <img
-                class="w-full h-32 object-cover rounded-xl"
-                src="../assets/img/fondo/portada.jpg"
-                alt="Presentaciones educativas">
-
-            <h4 class="font-label-md font-bold text-slate-900 dark:text-white">
-                Presentaciones Educativas
-            </h4>
-
-            <p class="text-xs text-slate-600 dark:text-slate-300">
-                Explora contenidos visuales paso a paso sobre amenazas y buenas prácticas.
-            </p>
-        </button>
-
-        <div
-            id="modalPresentaciones"
-            class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-
-            <div class="bg-white dark:bg-[#0f1b36] rounded-2xl w-full max-w-3xl p-6 border border-[#d2e3fc] dark:border-blue-900/40 text-slate-900 dark:text-white shadow-2xl">
-
-                <div class="flex justify-between items-center mb-6">
-
-                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">
-                        Presentaciones Educativas
-                    </h3>
-
-                    <button id="btnCerrarPresentaciones" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white text-lg font-bold">
-                        ✕
-                    </button>
-
-                </div>
-
-                <div id="listaPresentaciones"></div>
-            </div>
-        </div>
-        <div
-            id="modalVisorPresentacion"
-            class="hidden fixed inset-0 z-[110] bg-black/80 flex items-center justify-center p-6">
-
-            <div class="bg-white dark:bg-[#0f1b36] rounded-2xl p-4 max-w-5xl w-full border border-gray-200 dark:border-blue-900/40">
-
-                <img
-                    id="imagenPresentacion"
-                    class="w-full max-h-[70vh] object-contain rounded-xl"
-                    src=""
-                    alt="Presentación">
-
-                <div class="flex justify-center gap-4 mt-4">
-
-                    <button
-                        id="btnAnteriorDiapositiva"
-                        class="px-4 py-2 bg-primary text-white rounded-lg font-bold">
-                        ← Anterior
-                    </button>
-
-                    <button
-                        id="btnSiguienteDiapositiva"
-                        class="px-4 py-2 bg-primary text-white rounded-lg font-bold">
-                        Siguiente →
-                    </button>
-
-                    <button
-                        id="btnCerrarVisor"
-                        class="px-4 py-2 bg-red-600 text-white rounded-lg font-bold">
-                        Salir
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!--==================================================================================-->
-
-        <!-- Test de Nivel -->
-        <button
-            id="btnTestNivel"
-            type="button"
-            class="md:col-span-1 bg-white dark:bg-[#0f1b36] rounded-2xl p-stack-md flex flex-col gap-3 shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 hover:shadow-md transition-shadow text-left cursor-pointer active:scale-[0.98]"
-        >
-            <img
-                class="w-full h-32 object-cover rounded-xl"
-                data-alt="Persona respondiendo un cuestionario de seguridad digital en una computadora"
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
-            />
-
-            <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary dark:text-blue-400 text-xl" data-icon="quiz">
-                    quiz
-                </span>
-
-                <h4 class="font-label-md font-bold text-primary dark:text-blue-400">
-                    Test de Nivel
-                </h4>
-            </div>
-
-            <p class="text-xs text-slate-600 dark:text-slate-300">
-                Medí tus conocimientos actuales sobre seguridad digital.
-            </p>
-        </button>
-    </div>
-
-    <!-- Panel dinámico de Academia -->
-    <div
-        id="panelAcademia"
-        class="hidden bg-white dark:bg-[#0f1b36] rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-md p-stack-lg space-y-stack-md text-slate-900 dark:text-white">
-        <div class="flex items-start justify-between gap-4">
-            <div>
-                <span
-                    id="categoriaAcademia"
-                    class="inline-flex text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full mb-3">
-                    Categoría
-                </span>
-                <h3
-                    id="tituloAcademia"
-                    class="font-h3 text-h3 text-slate-900 dark:text-white">
-                    Título del contenido
-                </h3>
-                <p
-                    id="descripcionAcademia"
-                    class="text-slate-700 dark:text-slate-300 text-sm mt-2">
-                    Descripción del contenido.
-                </p>
-            </div>
-            <button
-                id="btnCerrarAcademia"
-                type="button"
-                class="text-slate-500 hover:text-error dark:text-slate-400 transition-colors">
-                <span class="material-symbols-outlined">
-                    close
-                </span>
+            <!-- Mitos vs Realidades -->
+            <button id="btnMitosRealidades" type="button"
+              class="md:col-span-2 bg-white dark:bg-[#0f1b36] rounded-2xl p-stack-md flex gap-4 items-center shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 hover:shadow-md transition-shadow text-left">
+              <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                <img class="w-full h-full object-cover"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWXs-b13s0nXRj4IhGROZWixKX0wQcJrodYyRmWCjGWuOj8xo1bDinWAOLo-Yw4-d1bRBlcMfN6A3fvbY_ifEDUuMJnOOHSbqRUxx8jEYDDNqcl_tVBasmkDg6N0AYe5qRMp0jyXxTn3um0-3jhL_Amk_malwXpo3upIlSZPD5iiFymaR5ixxVyJb9TYS32kY51o0Edjhsh5yqdLsfarGIA7PahVeoIjYBBw_nDe4dSCkVjTJz1sY8YTv78OcXYFyDqQSZZFyqsrii"/>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-label-md font-bold text-primary dark:text-blue-400 mb-1">Mitos vs. Realidades</h4>
+                <p class="text-sm text-slate-700 dark:text-slate-300">¿El modo incógnito realmente te hace invisible? Desmentimos las creencias más comunes.</p>
+              </div>
             </button>
-        </div>
-        <div
-            id="contenidoAcademia"
-            class="space-y-4 text-sm text-slate-800 dark:text-slate-200"
-        ></div>
-        <div
-            id="recomendacionesAcademia"
-            class="bg-[#f8faff] dark:bg-[#142244] border border-[#cbdff7] dark:border-blue-900/50 rounded-xl p-4 text-sm text-slate-800 dark:text-slate-200"
-        ></div>
-    </div>
 
-    <!-- Modal de concepto educativo -->
-    <div
-        id="modalConceptoAcademia"
-        class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-[#0f1b36] rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-[#d2e3fc] dark:border-blue-900/40 text-slate-900 dark:text-white">
-            <div class="relative h-48 bg-slate-100 dark:bg-[#070d1e]">
-                <img
-                    id="imagenConceptoAcademia"
-                    class="w-full h-full object-cover"
-                    src=""
-                    alt="Imagen educativa del concepto"/>
+            <!-- Presentaciones Educativas -->
+            <button id="btnPresentaciones" type="button"
+              class="md:col-span-1 bg-white dark:bg-[#0f1b36] rounded-2xl p-stack-md flex flex-col gap-3 shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 hover:shadow-md transition-shadow text-left">
+              <img class="w-full h-32 object-cover rounded-xl" src="../assets/img/fondo/portada.jpg" alt="Presentaciones educativas">
+              <h4 class="font-label-md font-bold text-slate-900 dark:text-white">Presentaciones Educativas</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300">Explora contenidos visuales paso a paso sobre amenazas y buenas prácticas.</p>
+            </button>
 
-                <button
-                    id="btnCerrarModalConcepto"
-                    type="button"
-                    class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800 text-slate-900 dark:text-white flex items-center justify-center shadow hover:bg-white">
-                    <span class="material-symbols-outlined">
-                        close
-                    </span>
+            <!-- Modals de presentaciones (sin cambios) -->
+            <div id="modalPresentaciones" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div class="bg-white dark:bg-[#0f1b36] rounded-2xl w-full max-w-3xl p-6 border border-[#d2e3fc] dark:border-blue-900/40 text-slate-900 dark:text-white shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-white">Presentaciones Educativas</h3>
+                  <button id="btnCerrarPresentaciones" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white text-lg font-bold">✕</button>
+                </div>
+                <div id="listaPresentaciones"></div>
+              </div>
+            </div>
+            <div id="modalVisorPresentacion" class="hidden fixed inset-0 z-[110] bg-black/80 flex items-center justify-center p-6">
+              <div class="bg-white dark:bg-[#0f1b36] rounded-2xl p-4 max-w-5xl w-full border border-gray-200 dark:border-blue-900/40">
+                <img id="imagenPresentacion" class="w-full max-h-[70vh] object-contain rounded-xl" src="" alt="Presentación">
+                <div class="flex justify-center gap-4 mt-4">
+                  <button id="btnAnteriorDiapositiva" class="px-4 py-2 bg-primary text-white rounded-lg font-bold">← Anterior</button>
+                  <button id="btnSiguienteDiapositiva" class="px-4 py-2 bg-primary text-white rounded-lg font-bold">Siguiente →</button>
+                  <button id="btnCerrarVisor" class="px-4 py-2 bg-red-600 text-white rounded-lg font-bold">Salir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel dinámico de Academia -->
+          <div id="panelAcademia" class="hidden bg-white dark:bg-[#0f1b36] rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-md p-stack-lg space-y-stack-md text-slate-900 dark:text-white">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span id="categoriaAcademia" class="inline-flex text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full mb-3">Categoría</span>
+                <h3 id="tituloAcademia" class="font-h3 text-h3 text-slate-900 dark:text-white">Título del contenido</h3>
+                <p id="descripcionAcademia" class="text-slate-700 dark:text-slate-300 text-sm mt-2">Descripción del contenido.</p>
+              </div>
+              <button id="btnCerrarAcademia" type="button" class="text-slate-500 hover:text-error dark:text-slate-400 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div id="contenidoAcademia" class="space-y-4 text-sm text-slate-800 dark:text-slate-200"></div>
+            <div id="recomendacionesAcademia" class="bg-[#f8faff] dark:bg-[#142244] border border-[#cbdff7] dark:border-blue-900/50 rounded-xl p-4 text-sm text-slate-800 dark:text-slate-200"></div>
+          </div>
+
+          <!-- Modal de concepto educativo -->
+          <div id="modalConceptoAcademia" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-[#0f1b36] rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-[#d2e3fc] dark:border-blue-900/40 text-slate-900 dark:text-white">
+              <div class="relative h-48 bg-slate-100 dark:bg-[#070d1e]">
+                <img id="imagenConceptoAcademia" class="w-full h-full object-cover" src="" alt="Imagen educativa del concepto"/>
+                <button id="btnCerrarModalConcepto" type="button" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800 text-slate-900 dark:text-white flex items-center justify-center shadow hover:bg-white">
+                  <span class="material-symbols-outlined">close</span>
                 </button>
-            </div>
-
-            <div class="p-6 space-y-4">
+              </div>
+              <div class="p-6 space-y-4">
                 <div>
-                    <span
-                        id="categoriaConceptoAcademia"
-                        class="inline-flex text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full mb-3">
-                        Concepto
-                    </span>
-
-                    <h3
-                        id="tituloConceptoAcademia"
-                        class="text-2xl font-bold text-slate-900 dark:text-white">
-                        Título del concepto
-                    </h3>
+                  <span id="categoriaConceptoAcademia" class="inline-flex text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full mb-3">Concepto</span>
+                  <h3 id="tituloConceptoAcademia" class="text-2xl font-bold text-slate-900 dark:text-white">Título del concepto</h3>
                 </div>
-
-                <p
-                    id="descripcionConceptoAcademia"
-                    class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                    Descripción del concepto.
-                </p>
-
+                <p id="descripcionConceptoAcademia" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">Descripción del concepto.</p>
                 <div class="bg-[#f8faff] dark:bg-[#142244] border border-[#cbdff7] dark:border-blue-900/50 rounded-xl p-4">
-                    <p class="text-sm font-bold text-primary dark:text-blue-300 mb-1">
-                        Recomendación de HADES
-                    </p>
-
-                    <p id="recomendacionConceptoAcademia"
-                        class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Recomendación del concepto.
-                    </p>
+                  <p class="text-sm font-bold text-primary dark:text-blue-300 mb-1">Recomendación de HADES</p>
+                  <p id="recomendacionConceptoAcademia" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">Recomendación del concepto.</p>
                 </div>
+              </div>
             </div>
-        </div>
-    </div>
-</section>
-<!--############## Fin de Academia de Defensa Digital ################-->
+          </div>
+        </section>
+      </div>
+      <!-- ===== FIN PANEL FUNDAMENTOS ===== -->
 
- <!-- ################## Simulador de Phishing ########################### -->
-<section class="space-y-stack-md pt-stack-lg">
-    <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-primary dark:text-blue-300">
-            <span class="material-symbols-outlined" data-icon="alternate_email">
-                alternate_email
-            </span>
+      <!-- ===================================================== -->
+      <!-- PANEL 2: TEST DE NIVEL                                -->
+      <!-- ===================================================== -->
+      <div id="panelTest" class="hidden space-y-stack-md">
+
+        <!-- Cabecera del panel -->
+        <div class="flex items-center gap-3">
+          <button onclick="ocultarPanel('panelTest')" class="w-9 h-9 rounded-full bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 flex items-center justify-center text-slate-500 hover:text-secondary dark:hover:text-emerald-400 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+          </button>
+          <div>
+            <h2 class="font-h2 text-h2 text-slate-900 dark:text-white">Test de Nivel</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Evaluá tus conocimientos en seguridad digital</p>
+          </div>
         </div>
-        <div>
-            <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">
-                Simulador de Phishing
-            </h2>
-            <p class="text-slate-700 dark:text-slate-300 text-sm">
-                Entrená tu ojo para detectar correos maliciosos antes de hacer clic.
+
+        <!-- Contenido: tarjeta del test -->
+        <div class="bg-white dark:bg-[#0f1b36] rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm overflow-hidden">
+          <div class="relative h-52 overflow-hidden">
+            <img
+              class="w-full h-full object-cover"
+              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
+              alt="Test de nivel"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-white text-4xl">quiz</span>
+                <h3 class="text-2xl font-bold text-white">Test de Nivel</h3>
+              </div>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col gap-4">
+            <p class="text-slate-700 dark:text-slate-300">
+              Respond&eacute; las preguntas para conocer tu nivel actual de conocimiento sobre ciberseguridad. Al finalizar recibirás un resultado personalizado con recomendaciones.
             </p>
-            <div class="flex flex-wrap gap-3 mt-3">
-            <span
-                id="contadorCasoPhishing"
-                class="text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-900 dark:text-blue-200 px-3 py-1 rounded-full">
-                Caso 1 de 5
-            </span>
-            <span
-                id="puntajeSesionPhishing"
-                class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full">
-                Puntaje acumulado: 0
-            </span>
-            <span
-                id="aciertosSesionPhishing"
-                class="text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-3 py-1 rounded-full">
-                Aciertos: 0
-            </span>
+            <button
+              id="btnTestNivel"
+              type="button"
+              class="w-full py-3 bg-secondary text-white rounded-xl font-bold hover:bg-secondary/90 shadow-sm transition-colors active:scale-[0.98] flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">play_arrow</span>
+              Iniciar Test
+            </button>
+          </div>
         </div>
+
+        <div id="panelTestContenido" class="hidden bg-white dark:bg-[#0f1b36] rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-md p-6 space-y-4 text-slate-900 dark:text-white">
+          <div>
+            <span class="inline-flex text-xs font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full mb-3">Evaluación inicial</span>
+            <h3 class="font-h3 text-h3 text-slate-900 dark:text-white">Test de Nivel en Seguridad Digital</h3>
+            <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">Respondé las preguntas para conocer tu nivel inicial de conocimientos sobre ciberseguridad cotidiana.</p>
+          </div>
+          <div id="contenidoTestNivel" class="space-y-4"></div>
         </div>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-        <!-- Simulación del correo -->
-        <div class="lg:col-span-2 bg-white dark:bg-[#0f1b36] rounded-2xl shadow-sm overflow-hidden border border-[#d2e3fc] dark:border-blue-900/40 text-slate-900 dark:text-white">
-            <!-- Encabezado visual del cliente de correo -->
-            <div class="bg-[#f8faff] dark:bg-[#142244] border-b border-[#cbdff7] dark:border-blue-900/40 p-4 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 italic">
-                    Simulación de seguridad activa
-                </span>
+      </div>
+      <!-- ===== FIN PANEL TEST ===== -->
+
+      <!-- ===================================================== -->
+      <!-- PANEL 3: SIMULADORES                                  -->
+      <!-- ===================================================== -->
+      <div id="panelSimuladores" class="hidden space-y-stack-md">
+
+        <!-- Cabecera del panel -->
+        <div class="flex items-center gap-3">
+          <button onclick="ocultarPanel('panelSimuladores')" class="w-9 h-9 rounded-full bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 flex items-center justify-center text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+          </button>
+          <div>
+            <h2 class="font-h2 text-h2 text-slate-900 dark:text-white">Simuladores de Ataque</h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400">Practica la detección de amenazas en entornos seguros</p>
+          </div>
+        </div>
+
+        <!-- Sub-tarjetas para elegir simulador -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Sub-tarjeta Phishing -->
+          <button
+            id="btnIrPhishing"
+            type="button"
+            onclick="mostrarSimulador('simPhishing')"
+            class="group rounded-2xl bg-white dark:bg-[#0f1b36] border-2 border-[#d2e3fc] dark:border-blue-900/40 shadow-sm hover:shadow-md hover:border-primary dark:hover:border-blue-400 transition-all text-left p-6 flex gap-4 items-center active:scale-[0.98]">
+            <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-primary dark:text-blue-300 group-hover:scale-110 transition-transform flex-shrink-0">
+              <span class="material-symbols-outlined text-2xl">alternate_email</span>
             </div>
-            <!-- Contenido dinámico del correo -->
-            <div class="p-stack-lg space-y-stack-md">
+            <div>
+              <h4 class="font-label-md font-bold text-slate-900 dark:text-white mb-1">Simulador de Phishing</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300">Entren&aacute; tu ojo para detectar correos maliciosos antes de hacer clic.</p>
+            </div>
+          </button>
+
+          <!-- Sub-tarjeta Smishing / Vishing -->
+          <button
+            id="btnIrSmishing"
+            type="button"
+            onclick="mostrarSimulador('simSmishing')"
+            class="group rounded-2xl bg-white dark:bg-[#0f1b36] border-2 border-[#d2e3fc] dark:border-blue-900/40 shadow-sm hover:shadow-md hover:border-purple-500 dark:hover:border-purple-400 transition-all text-left p-6 flex gap-4 items-center active:scale-[0.98]">
+            <div class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-700 dark:text-purple-300 group-hover:scale-110 transition-transform flex-shrink-0">
+              <span class="material-symbols-outlined text-2xl">smartphone</span>
+            </div>
+            <div>
+              <h4 class="font-label-md font-bold text-slate-900 dark:text-white mb-1">Simulador de Smishing / Vishing</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-300">Aprende a identificar fraudes por SMS/WhatsApp y llamadas telef&oacute;nicas.</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- ==================== Simulador de Phishing ==================== -->
+        <div id="simPhishing" class="hidden space-y-stack-md pt-stack-lg border-t border-[#94bdf2] dark:border-blue-900/60">
+          <div class="flex items-center gap-3">
+            <button onclick="ocultarSimulador('simPhishing')" class="w-8 h-8 rounded-full bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 flex items-center justify-center text-slate-400 hover:text-primary transition-colors shadow-sm">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+            </button>
+            <div class="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-primary dark:text-blue-300">
+              <span class="material-symbols-outlined" data-icon="alternate_email">alternate_email</span>
+            </div>
+            <div>
+              <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">Simulador de Phishing</h2>
+              <p class="text-slate-700 dark:text-slate-300 text-sm">Entren&aacute; tu ojo para detectar correos maliciosos antes de hacer clic.</p>
+              <div class="flex flex-wrap gap-3 mt-3">
+                <span id="contadorCasoPhishing" class="text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-900 dark:text-blue-200 px-3 py-1 rounded-full">Caso 1 de 5</span>
+                <span id="puntajeSesionPhishing" class="text-xs font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full">Puntaje acumulado: 0</span>
+                <span id="aciertosSesionPhishing" class="text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-3 py-1 rounded-full">Aciertos: 0</span>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+            <!-- Simulación del correo -->
+            <div class="lg:col-span-2 bg-white dark:bg-[#0f1b36] rounded-2xl shadow-sm overflow-hidden border border-[#d2e3fc] dark:border-blue-900/40 text-slate-900 dark:text-white">
+              <div class="bg-[#f8faff] dark:bg-[#142244] border-b border-[#cbdff7] dark:border-blue-900/40 p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 italic">Simulación de seguridad activa</span>
+              </div>
+              <div class="p-stack-lg space-y-stack-md">
                 <div class="border-b border-gray-200 dark:border-blue-900/30 pb-4">
-                    <p class="text-sm font-bold text-slate-900 dark:text-white">
-                        De:
-                        <span
-                            id="phishingRemitente"
-                            class="text-blue-600 dark:text-blue-400 font-normal">
-                            remitente@ejemplo.com
-                        </span>
-                    </p>
-                    <p class="text-sm font-bold text-slate-900 dark:text-white mt-2">
-                        Asunto:
-                        <span
-                            id="phishingAsunto"
-                            class="font-normal underline decoration-red-500 text-slate-900 dark:text-white">
-                            Asunto del correo
-                        </span>
-                    </p>
+                  <p class="text-sm font-bold text-slate-900 dark:text-white">De: <span id="phishingRemitente" class="text-blue-600 dark:text-blue-400 font-normal">remitente@ejemplo.com</span></p>
+                  <p class="text-sm font-bold text-slate-900 dark:text-white mt-2">Asunto: <span id="phishingAsunto" class="font-normal underline decoration-red-500 text-slate-900 dark:text-white">Asunto del correo</span></p>
                 </div>
                 <div class="space-y-4 py-4 text-slate-800 dark:text-slate-200">
-                    <p id="phishingSaludo" class="font-medium">
-                        Estimado usuario,
-                    </p>
-
-                    <p id="phishingMensajePrincipal">
-                        Mensaje principal del correo.
-                    </p>
-
-                    <div
-                        id="phishingBloqueAccion"
-                        class="bg-[#f8faff] dark:bg-[#18284f] p-6 text-center rounded-xl border border-[#cbdff7] dark:border-blue-900/50">
-                        <button
-                            id="phishingBotonAccion"
-                            type="button"
-                            class="bg-primary text-white px-8 py-3 rounded-xl font-bold shadow-md">
-                            Acción del correo
-                        </button>
-
-                        <p
-                            id="phishingEnlace"
-                            class="text-xs text-blue-700 dark:text-blue-300 mt-2"
-                        >
-                            Enlace: https://ejemplo.com
-                        </p>
-                    </div>
-
-                    <p
-                        id="phishingMensajeFinal"
-                        class="text-sm text-slate-600 dark:text-slate-400"
-                    >
-                        Mensaje final del correo.
-                    </p>
-
-                    <div
-                        id="phishingAdjunto"
-                        class="hidden bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-xl p-4 text-sm text-red-700 dark:text-red-300"
-                    >
-                        <span class="material-symbols-outlined text-sm align-middle">
-                            attach_file
-                        </span>
-
-                        <span id="phishingNombreAdjunto">
-                            archivo.zip
-                        </span>
-                    </div>
+                  <p id="phishingSaludo" class="font-medium">Estimado usuario,</p>
+                  <p id="phishingMensajePrincipal">Mensaje principal del correo.</p>
+                  <div id="phishingBloqueAccion" class="bg-[#f8faff] dark:bg-[#18284f] p-6 text-center rounded-xl border border-[#cbdff7] dark:border-blue-900/50">
+                    <button id="phishingBotonAccion" type="button" class="bg-primary text-white px-8 py-3 rounded-xl font-bold shadow-md">Acción del correo</button>
+                    <p id="phishingEnlace" class="text-xs text-blue-700 dark:text-blue-300 mt-2">Enlace: https://ejemplo.com</p>
+                  </div>
+                  <p id="phishingMensajeFinal" class="text-sm text-slate-600 dark:text-slate-400">Mensaje final del correo.</p>
+                  <div id="phishingAdjunto" class="hidden bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-xl p-4 text-sm text-red-700 dark:text-red-300">
+                    <span class="material-symbols-outlined text-sm align-middle">attach_file</span>
+                    <span id="phishingNombreAdjunto">archivo.zip</span>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-
-        <!-- Panel interactivo de evaluación -->
-        <div class="bg-white dark:bg-[#0f1b36] p-stack-md rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm flex flex-col gap-4 text-slate-900 dark:text-white">
-            <h4 class="font-label-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="material-symbols-outlined text-secondary" data-icon="check_circle">
-                    check_circle
-                </span>
+            <!-- Panel evaluación Phishing -->
+            <div class="bg-white dark:bg-[#0f1b36] p-stack-md rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm flex flex-col gap-4 text-slate-900 dark:text-white">
+              <h4 class="font-label-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
                 Lista de Verificación
-            </h4>
-
-            <p class="text-sm text-slate-700 dark:text-slate-300">
-                Seleccioná todas las señales sospechosas que encuentres en el correo.
-            </p>
-
-            <div
-                id="listaSenalesPhishing"
-                class="space-y-3"
-            ></div>
-
-            <div class="pt-2">
-                <p class="text-sm font-bold text-slate-900 dark:text-white mb-2">
-                    Decisión final
-                </p>
-
-                <div class="grid grid-cols-1 gap-2">
-                    <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-primary transition-colors text-slate-900 dark:text-white font-medium">
-                        <input
-                            name="decisionPhishing"
-                            value="legitimo"
-                            type="radio"
-                            class="text-primary focus:ring-primary"
-                        />
-
-                        <span class="text-sm">
-                            Parece legítimo
-                        </span>
-                    </label>
-
-                    <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-primary transition-colors text-slate-900 dark:text-white font-medium">
-                        <input
-                            name="decisionPhishing"
-                            value="phishing"
-                            type="radio"
-                            class="text-primary focus:ring-primary"
-                        />
-
-                        <span class="text-sm">
-                            Es sospechoso
-                        </span>
-                    </label>
-                </div>
-            </div>
-
-            <p
-                id="mensajePhishing"
-                class="hidden text-sm text-error font-semibold"
-            ></p>
-
-            <button
-                id="btnEvaluarPhishing"
-                type="button"
-                class="mt-auto w-full py-3 bg-secondary text-white rounded-xl font-bold hover:bg-secondary/90 shadow-sm transition-colors"
-            >
-                Enviar diagnóstico
-            </button>
-
-            <button
-                id="btnNuevoCasoPhishing"
-                type="button"
-                class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 shadow-sm transition-colors"
-            >
-                Nuevo caso
-            </button>
-
-            <div
-                id="resultadoPhishing"
-                class="hidden mt-4 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/50 p-4 text-slate-900 dark:text-white"
-            >
-                <h4
-                    id="tituloResultadoPhishing"
-                    class="font-bold text-slate-900 dark:text-white mb-2"
-                >
-                    Resultado
-                </h4>
-
-                <p
-                    id="puntajeResultadoPhishing"
-                    class="text-sm font-bold text-primary dark:text-blue-300 mb-2"
-                ></p>
-
-                <div
-                    id="detalleResultadoPhishing"
-                    class="space-y-2 text-sm text-slate-700 dark:text-slate-300"
-                ></div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- ############ Fin de simulador de phishing ############### -->
-
-<!-- ################## Simulador de Smishing / Vishing ########################### -->
-<section class="space-y-stack-md pt-stack-lg border-t border-[#94bdf2] dark:border-blue-900/60 mt-8">
-    <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-700 dark:text-purple-300">
-            <span class="material-symbols-outlined" data-icon="smartphone">
-                smartphone
-            </span>
-        </div>
-        <div>
-            <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">
-                Simulador de Smishing / Vishing
-            </h2>
-            <p class="text-slate-700 dark:text-slate-300 text-sm">
-                Aprende a identificar fraudes por mensajes de texto (SMS/WhatsApp) y llamadas telefónicas.
-            </p>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-        <!-- Simulación del Teléfono -->
-        <div class="lg:col-span-2 flex justify-center bg-[#f8faff] dark:bg-[#0f1b36] rounded-2xl shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 py-8">
-            <!-- Pantalla del celular -->
-            <div class="w-full max-w-[320px] bg-slate-900 rounded-[2.5rem] border-8 border-slate-800 shadow-xl overflow-hidden relative min-h-[550px] flex flex-col">
-                <!-- Status bar -->
-                <div class="bg-slate-900 text-white flex justify-between px-6 py-2 text-[10px] opacity-80">
-                    <span>14:32</span>
-                    <div class="flex gap-1 items-center">
-                        <span class="material-symbols-outlined text-[12px]">signal_cellular_4_bar</span>
-                        <span class="material-symbols-outlined text-[12px]">wifi</span>
-                        <span class="material-symbols-outlined text-[12px]">battery_full</span>
-                    </div>
-                </div>
-                
-                <!-- Chat Header -->
-                <div class="bg-slate-800 text-white p-3 flex items-center gap-3 border-b border-slate-700">
-                    <div class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-sm">person</span>
-                    </div>
-                    <div>
-                        <p id="svRemitente" class="font-bold text-sm">Desconocido</p>
-                        <p id="svTipoPantalla" class="text-[10px] text-slate-400">Mensaje de texto (SMS)</p>
-                    </div>
-                </div>
-                
-                <!-- Mensajes Body -->
-                <div class="flex-1 bg-slate-950 p-4 flex flex-col justify-end">
-                    <div class="bg-slate-800 text-white p-3 rounded-2xl rounded-tl-sm w-[85%] text-sm shadow">
-                        <p id="svMensaje">Cargando simulación...</p>
-                        <p id="svEnlace" class="text-blue-400 mt-2 text-xs underline break-all hidden"></p>
-                    </div>
-                    <span class="text-[10px] text-slate-500 mt-1 ml-1">14:30</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel interactivo de evaluación -->
-        <div class="bg-white dark:bg-[#0f1b36] p-stack-md rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm flex flex-col gap-4 text-slate-900 dark:text-white">
-            <h4 class="font-label-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <span class="material-symbols-outlined text-purple-600" data-icon="fact_check">
-                    fact_check
-                </span>
-                Identificar Señales
-            </h4>
-            <p class="text-sm text-slate-700 dark:text-slate-300">
-                Seleccioná los indicios de fraude detectados en el teléfono.
-            </p>
-            <div id="listaSenalesSV" class="space-y-3"></div>
-            
-            <div class="pt-2">
+              </h4>
+              <p class="text-sm text-slate-700 dark:text-slate-300">Seleccioná todas las señales sospechosas que encuentres en el correo.</p>
+              <div id="listaSenalesPhishing" class="space-y-3"></div>
+              <div class="pt-2">
                 <p class="text-sm font-bold text-slate-900 dark:text-white mb-2">Decisión final</p>
                 <div class="grid grid-cols-1 gap-2">
-                    <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-purple-500 transition-colors">
-                        <input name="decisionSV" value="legitimo" type="radio" class="text-purple-600 focus:ring-purple-600"/>
-                        <span class="text-sm text-slate-900 dark:text-white font-medium">Legítimo</span>
-                    </label>
-                    <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-purple-500 transition-colors">
-                        <input name="decisionSV" value="ataque" type="radio" class="text-purple-600 focus:ring-purple-600"/>
-                        <span class="text-sm text-slate-900 dark:text-white font-medium">Fraude (Phishing)</span>
-                    </label>
+                  <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-primary transition-colors text-slate-900 dark:text-white font-medium">
+                    <input name="decisionPhishing" value="legitimo" type="radio" class="text-primary focus:ring-primary"/>
+                    <span class="text-sm">Parece legítimo</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-primary transition-colors text-slate-900 dark:text-white font-medium">
+                    <input name="decisionPhishing" value="phishing" type="radio" class="text-primary focus:ring-primary"/>
+                    <span class="text-sm">Es sospechoso</span>
+                  </label>
                 </div>
+              </div>
+              <p id="mensajePhishing" class="hidden text-sm text-error font-semibold"></p>
+              <button id="btnEvaluarPhishing" type="button" class="mt-auto w-full py-3 bg-secondary text-white rounded-xl font-bold hover:bg-secondary/90 shadow-sm transition-colors">Enviar diagnóstico</button>
+              <button id="btnNuevoCasoPhishing" type="button" class="w-full py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 shadow-sm transition-colors">Nuevo caso</button>
+              <div id="resultadoPhishing" class="hidden mt-4 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/50 p-4 text-slate-900 dark:text-white">
+                <h4 id="tituloResultadoPhishing" class="font-bold text-slate-900 dark:text-white mb-2">Resultado</h4>
+                <p id="puntajeResultadoPhishing" class="text-sm font-bold text-primary dark:text-blue-300 mb-2"></p>
+                <div id="detalleResultadoPhishing" class="space-y-2 text-sm text-slate-700 dark:text-slate-300"></div>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <p id="mensajeErrorSV" class="hidden text-sm text-error font-semibold"></p>
-            
-            <button id="btnEvaluarSV" type="button" class="mt-auto w-full py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 shadow-sm transition-colors">Enviar diagnóstico</button>
-            <button id="btnNuevoCasoSV" type="button" class="w-full py-3 border-2 border-purple-600 text-purple-700 dark:text-purple-400 rounded-xl font-bold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">Nuevo caso</button>
-
-            <div id="resultadoSV" class="hidden mt-4 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/50 p-4 text-slate-900 dark:text-white">
+        <!-- ==================== Simulador de Smishing / Vishing ==================== -->
+        <div id="simSmishing" class="hidden space-y-stack-md pt-stack-lg border-t border-[#94bdf2] dark:border-blue-900/60">
+          <div class="flex items-center gap-3">
+            <button onclick="ocultarSimulador('simSmishing')" class="w-8 h-8 rounded-full bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 flex items-center justify-center text-slate-400 hover:text-purple-600 transition-colors shadow-sm">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+            </button>
+            <div class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-700 dark:text-purple-300">
+              <span class="material-symbols-outlined" data-icon="smartphone">smartphone</span>
+            </div>
+            <div>
+              <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">Simulador de Smishing / Vishing</h2>
+              <p class="text-slate-700 dark:text-slate-300 text-sm">Aprende a identificar fraudes por mensajes de texto (SMS/WhatsApp) y llamadas telef&oacute;nicas.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+            <!-- Simulación del Teléfono -->
+            <div class="lg:col-span-2 flex justify-center bg-[#f8faff] dark:bg-[#0f1b36] rounded-2xl shadow-sm border border-[#d2e3fc] dark:border-blue-900/40 py-8">
+              <div class="w-full max-w-[320px] bg-slate-900 rounded-[2.5rem] border-8 border-slate-800 shadow-xl overflow-hidden relative min-h-[550px] flex flex-col">
+                <div class="bg-slate-900 text-white flex justify-between px-6 py-2 text-[10px] opacity-80">
+                  <span>14:32</span>
+                  <div class="flex gap-1 items-center">
+                    <span class="material-symbols-outlined text-[12px]">signal_cellular_4_bar</span>
+                    <span class="material-symbols-outlined text-[12px]">wifi</span>
+                    <span class="material-symbols-outlined text-[12px]">battery_full</span>
+                  </div>
+                </div>
+                <div class="bg-slate-800 text-white p-3 flex items-center gap-3 border-b border-slate-700">
+                  <div class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-sm">person</span>
+                  </div>
+                  <div>
+                    <p id="svRemitente" class="font-bold text-sm">Desconocido</p>
+                    <p id="svTipoPantalla" class="text-[10px] text-slate-400">Mensaje de texto (SMS)</p>
+                  </div>
+                </div>
+                <div class="flex-1 bg-slate-950 p-4 flex flex-col justify-end">
+                  <div class="bg-slate-800 text-white p-3 rounded-2xl rounded-tl-sm w-[85%] text-sm shadow">
+                    <p id="svMensaje">Cargando simulación...</p>
+                    <p id="svEnlace" class="text-blue-400 mt-2 text-xs underline break-all hidden"></p>
+                  </div>
+                  <span class="text-[10px] text-slate-500 mt-1 ml-1">14:30</span>
+                </div>
+              </div>
+            </div>
+            <!-- Panel evaluación SV -->
+            <div class="bg-white dark:bg-[#0f1b36] p-stack-md rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm flex flex-col gap-4 text-slate-900 dark:text-white">
+              <h4 class="font-label-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-purple-600" data-icon="fact_check">fact_check</span>
+                Identificar Señales
+              </h4>
+              <p class="text-sm text-slate-700 dark:text-slate-300">Seleccioná los indicios de fraude detectados en el teléfono.</p>
+              <div id="listaSenalesSV" class="space-y-3"></div>
+              <div class="pt-2">
+                <p class="text-sm font-bold text-slate-900 dark:text-white mb-2">Decisión final</p>
+                <div class="grid grid-cols-1 gap-2">
+                  <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-purple-500 transition-colors">
+                    <input name="decisionSV" value="legitimo" type="radio" class="text-purple-600 focus:ring-purple-600"/>
+                    <span class="text-sm text-slate-900 dark:text-white font-medium">Legítimo</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/60 cursor-pointer hover:border-purple-500 transition-colors">
+                    <input name="decisionSV" value="ataque" type="radio" class="text-purple-600 focus:ring-purple-600"/>
+                    <span class="text-sm text-slate-900 dark:text-white font-medium">Fraude (Phishing)</span>
+                  </label>
+                </div>
+              </div>
+              <p id="mensajeErrorSV" class="hidden text-sm text-error font-semibold"></p>
+              <button id="btnEvaluarSV" type="button" class="mt-auto w-full py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 shadow-sm transition-colors">Enviar diagnóstico</button>
+              <button id="btnNuevoCasoSV" type="button" class="w-full py-3 border-2 border-purple-600 text-purple-700 dark:text-purple-400 rounded-xl font-bold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors">Nuevo caso</button>
+              <div id="resultadoSV" class="hidden mt-4 bg-[#f8faff] dark:bg-[#18284f] rounded-xl border border-[#cbdff7] dark:border-blue-900/50 p-4 text-slate-900 dark:text-white">
                 <h4 id="tituloResultadoSV" class="font-bold mb-2">Resultado</h4>
                 <div id="detalleResultadoSV" class="space-y-2 text-sm text-slate-700 dark:text-slate-300"></div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</section>
-<!-- ############ Fin de simulador de Smishing ############### -->
 
-     <!-- Section: Simulador de Ransomware -->
-     <section class="space-y-stack-md pt-stack-lg pb-margin-desktop">
-      <div class="flex items-center gap-3">
-       <div class="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center text-rose-700 dark:text-rose-300">
-        <span class="material-symbols-outlined" data-icon="lock_open">
-         lock_open
-        </span>
-       </div>
-       <div>
-        <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">
-         Simulador de Ransomware
-        </h2>
-        <p class="text-slate-700 dark:text-slate-300 text-sm">
-         Entiende el impacto de un secuestro de archivos en un entorno 100% seguro.
-        </p>
-       </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-       <!-- Visual Emulation Canvas -->
-       <div class="relative bg-slate-950 rounded-2xl p-stack-lg min-h-[350px] overflow-hidden group border border-slate-800">
-        <div class="absolute inset-0 bg-red-900/10 z-0">
-        </div>
-        <!-- SECURE EMULATION UI -->
-        <div class="relative z-10 flex flex-col h-full">
-         <div class="flex items-center justify-between mb-8">
-          <div class="flex gap-2">
-           <div class="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
-            <span class="material-symbols-outlined text-white" data-icon="description">
-             description
-            </span>
-           </div>
-           <div class="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
-            <span class="material-symbols-outlined text-white" data-icon="image">
-             image
-            </span>
-           </div>
-          </div>
-          <span class="text-error font-mono text-xs animate-pulse">
-           SYSTEM COMPROMISED - SECURE SANDBOX
-          </span>
-         </div>
-         <div class="space-y-4">
-          <div class="bg-red-500/20 border border-red-500/40 p-6 rounded-xl backdrop-blur-sm">
-           <h4 class="text-white font-bold text-xl mb-2 flex items-center gap-2">
-            <span class="material-symbols-outlined text-red-500" data-icon="warning">
-             warning
-            </span>
-            Tus archivos han sido cifrados
-           </h4>
-           <p class="text-red-100/80 text-sm">
-            Esta es una simulaci&oacute;n visual de c&oacute;mo se ver&iacute;a la pantalla de un ataque real. No hay peligro real para tu equipo.
-           </p>
-          </div>
-          <div class="grid grid-cols-3 gap-2">
-           <div class="h-1 bg-red-500 rounded-full w-full">
-           </div>
-           <div class="h-1 bg-red-500 rounded-full w-full opacity-50">
-           </div>
-           <div class="h-1 bg-red-500 rounded-full w-full opacity-20">
-           </div>
-          </div>
-         </div>
-         <div class="mt-auto flex justify-center">
-          <button class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-2 rounded-full text-sm font-medium transition-colors">
-           Reiniciar Simulaci&oacute;n
-          </button>
-         </div>
-        </div>
-        <img class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" data-alt="Abstract digital glitch background in deep red and black with pixelated artifacts and data encryption aesthetics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcxpNGMYHZxftvSCCRbXM-rPqyNBN9TkNeDAfyjg8zDgbUxYbK2e0S0YmxWwr_I19d-EMIjQU6uAEKZqq0haPUruA4weATBP-DUDdGO8Y6q-4tQKWv3HA87Jk9MppP_0XmU12P-KNdjZR8Pd7_GsOLwoFOY5thc8amvqggHTHSz11qY3z-lm61YYbx2Dh4S0_A0d7dpnPv_vonUQ4DY-BUrFLsyzLU5uxeJMUmBeIIKgnw6EFXfYrTwe2hDaRyFBNnL8wGk9P82nPo"/>
-       </div>
-       <!-- Recovery Steps -->
-       <div class="space-y-stack-md">
-        <h4 class="font-h3 text-h3 text-slate-900 dark:text-white">
-         Gu&iacute;a de Recuperaci&oacute;n Post-Ataque
-        </h4>
-        <div class="space-y-4">
-         <div class="flex gap-4 p-4 rounded-2xl bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm text-slate-900 dark:text-white">
-          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0">
-           1
-          </div>
-          <div>
-           <p class="font-bold text-slate-900 dark:text-white">
-            Aislamiento Inmediato
-           </p>
-           <p class="text-sm text-slate-700 dark:text-slate-300">
-            Desconecta el equipo de internet y de cualquier red local para evitar la propagaci&oacute;n.
-           </p>
-          </div>
-         </div>
-         <div class="flex gap-4 p-4 rounded-2xl bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm text-slate-900 dark:text-white">
-          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0">
-           2
-          </div>
-          <div>
-           <p class="font-bold text-slate-900 dark:text-white">
-            No Pagar el Rescate
-           </p>
-           <p class="text-sm text-slate-700 dark:text-slate-300">
-            El pago no garantiza la recuperaci&oacute;n y financia actividades delictivas.
-           </p>
-          </div>
-         </div>
-         <div class="flex gap-4 p-4 rounded-2xl bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm text-slate-900 dark:text-white">
-          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0">
-           3
-          </div>
-          <div>
-           <p class="font-bold text-slate-900 dark:text-white">
-            Restauraci&oacute;n desde Backup
-           </p>
-           <p class="text-sm text-slate-700 dark:text-slate-300">
-            Utiliza copias de seguridad externas y limpias para recuperar tu informaci&oacute;n.
-           </p>
-          </div>
-         </div>
-         <div class="flex gap-4 p-4 rounded-2xl bg-white dark:bg-[#0f1b36] border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm text-slate-900 dark:text-white">
-          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0">
-           4
-          </div>
-          <div>
-           <p class="font-bold text-slate-900 dark:text-white">
-            An&aacute;lisis Forense
-           </p>
-           <p class="text-sm text-slate-700 dark:text-slate-300">
-            Identifica el punto de entrada para parchar la vulnerabilidad.
-           </p>
-          </div>
-         </div>
-        </div>
-       </div>
-      </div>
-     </section>
+      <!-- ===== FIN PANEL SIMULADORES ===== -->
+
+      <!-- Script de navegación entre paneles -->
+      <script>
+        function mostrarPanel(id) {
+          ['panelFundamentos', 'panelTest', 'panelSimuladores'].forEach(function(p) {
+            document.getElementById(p).classList.add('hidden');
+          });
+          document.getElementById(id).classList.remove('hidden');
+          document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function ocultarPanel(id) {
+          document.getElementById(id).classList.add('hidden');
+          document.querySelector('.grid.grid-cols-1.md\\:grid-cols-3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function mostrarSimulador(id) {
+          ['simPhishing', 'simSmishing'].forEach(function(s) {
+            document.getElementById(s).classList.add('hidden');
+          });
+          document.getElementById(id).classList.remove('hidden');
+          document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function ocultarSimulador(id) {
+          document.getElementById(id).classList.add('hidden');
+        }
+      </script>
+
+
     </div>
    </main>
   </div>

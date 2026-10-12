@@ -23,7 +23,8 @@ const {
     obtenerUltimoPhishing,
 
     guardarResultadoTrivia,
-    obtenerUltimaTrivia
+    obtenerUltimaTrivia,
+    obtenerEstadisticasDashboard
 } = require("../src/database/db");
 
 const fs = require("fs");
@@ -587,10 +588,14 @@ ipcMain.handle(
         const proximoBackup =
             await obtenerProximoBackup(idUsuario);
 
+        const estadisticas =
+            await obtenerEstadisticasDashboard(idUsuario);
+
         return {
             ultimaTrivia,
             ultimoPhishing,
-            proximoBackup
+            proximoBackup,
+            estadisticas
         };
     }
 );
