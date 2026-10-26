@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
         rel="stylesheet"
     />
 
@@ -40,7 +40,7 @@
                         "error": "#ba1a1a"
                     },
                     fontFamily: {
-                        sans: ["Public Sans"]
+                        sans: ["Manrope"]
                     }
                 }
             }
@@ -63,31 +63,57 @@
 </head>
 
 <body class="bg-[#e9f1fa] dark:bg-[#050a17] text-slate-900 dark:text-white min-h-screen font-sans selection:bg-primary-container selection:text-white">
+    <header class="sticky top-0 z-50 flex items-center justify-between px-8 py-3 w-full bg-[#c4defc]/98 dark:bg-[#0e1e3e]/98 backdrop-blur-md shadow-sm border-b border-[#94bdf2] dark:border-blue-900/60">
+        <div class="flex items-center gap-4">
+            <img
+                src="../assets/img/logo_hades_v2.jpg"
+                alt="Logo de HADES"
+                class="w-8 h-8 object-contain"
+            />
+            <span class="text-xl font-bold text-slate-900 dark:text-blue-400 tracking-tighter">
+                HADES
+            </span>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3 text-slate-800 dark:text-gray-400">
+                <button
+                    type="button"
+                    class="hover:bg-blue-200 dark:hover:bg-gray-800 transition-colors p-2 rounded-full"
+                    aria-label="Notificaciones"
+                >
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button
+                    type="button"
+                    class="hover:bg-blue-200 dark:hover:bg-gray-800 transition-colors p-2 rounded-full"
+                    aria-label="Ayuda"
+                >
+                    <span class="material-symbols-outlined">help_outline</span>
+                </button>
+            </div>
+
+            <button
+                id="btnThemeToggle"
+                type="button"
+                class="bg-white hover:bg-blue-50 dark:bg-[#1a3162] dark:hover:bg-[#23467d] text-slate-900 dark:text-gray-100 font-semibold text-xs px-3.5 py-2 rounded-lg border border-[#94bdf2] dark:border-blue-700/60 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+                title="Cambiar tema"
+            >
+                <span id="iconoThemeToggle" class="material-symbols-outlined text-[18px] text-indigo-600 dark:text-amber-300">
+                    dark_mode
+                </span>
+                <span id="textoThemeToggle">
+                    Modo Oscuro
+                </span>
+            </button>
+        </div>
+    </header>
+
     <div class="min-h-screen flex">
 
         <!-- Sidebar simple -->
         <aside class="w-72 bg-[#d1e5fa] dark:bg-[#0e1e3e] border-r border-[#94bdf2] dark:border-blue-900/60 p-6 hidden md:flex flex-col justify-between">
             <div>
-                <div class="flex items-center gap-3 mb-10">
-                    <div class="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center overflow-hidden shadow-sm border border-[#c8daf5] dark:border-blue-900/40">
-                        <img
-                            src="../assets/img/logo_hades_v2.jpg"
-                            alt="Logo HADES"
-                            class="w-8 h-8 object-contain"
-                        />
-                    </div>
-
-                    <div>
-                        <h1 class="font-bold text-xl text-slate-900 dark:text-blue-400">
-                            HADES
-                        </h1>
-
-                        <p class="text-xs text-slate-600 dark:text-slate-400">
-                            Seguridad digital
-                        </p>
-                    </div>
-                </div>
-
                 <nav class="space-y-2">
                     <a
                         href="dashboard.html"
@@ -164,22 +190,6 @@
                     </p>
                 </div>
 
-                <!-- Botón de Alternancia de Tema Claro / Oscuro -->
-                <div>
-                    <button
-                        id="btnThemeToggle"
-                        type="button"
-                        class="bg-white hover:bg-blue-50 dark:bg-[#1a3162] dark:hover:bg-[#23467d] text-slate-900 dark:text-gray-100 font-semibold text-xs px-3.5 py-2 rounded-lg border border-[#94bdf2] dark:border-blue-700/60 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer shadow-sm"
-                        title="Cambiar tema"
-                    >
-                        <span id="iconoThemeToggle" class="material-symbols-outlined text-[18px] text-indigo-600 dark:text-amber-300">
-                            dark_mode
-                        </span>
-                        <span id="textoThemeToggle">
-                            Modo Oscuro
-                        </span>
-                    </button>
-                </div>
             </header>
 
             <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -231,6 +241,60 @@
 
                 <!-- Formularios -->
                 <div class="lg:col-span-2 space-y-6">
+
+                    <!-- Claves de servicios de seguridad -->
+                    <article class="bg-white dark:bg-[#14254b] rounded-2xl border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm p-6 text-slate-900 dark:text-white">
+                        <div class="flex items-start gap-4 mb-5">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 flex items-center justify-center">
+                                <span class="material-symbols-outlined">key</span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white">
+                                    Claves de servicios de seguridad
+                                </h3>
+                                <p class="text-sm text-slate-700 dark:text-slate-300">
+                                    Configurá las claves utilizadas por el analizador de archivos y el verificador de brechas.
+                                </p>
+                            </div>
+                        </div>
+
+                        <form id="formApiKeys" class="space-y-4">
+                            <div>
+                                <label for="apiKeyVirusTotal" class="block text-sm font-bold text-slate-900 dark:text-white mb-2">
+                                    Clave API de VirusTotal
+                                </label>
+                                <input
+                                    id="apiKeyVirusTotal"
+                                    type="password"
+                                    autocomplete="off"
+                                    placeholder="Ingresá tu clave API de VirusTotal"
+                                    class="w-full rounded-xl border border-[#a4c9f7] dark:border-blue-700/60 bg-[#f0f7ff] dark:bg-[#1a3162] text-slate-900 dark:text-white px-4 py-3 focus:border-primary dark:focus:border-blue-400 focus:ring-2 focus:ring-primary/20 outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="apiKeyHIBP" class="block text-sm font-bold text-slate-900 dark:text-white mb-2">
+                                    Clave API de Have I Been Pwned
+                                </label>
+                                <input
+                                    id="apiKeyHIBP"
+                                    type="password"
+                                    autocomplete="off"
+                                    placeholder="Ingresá tu clave API de Have I Been Pwned"
+                                    class="w-full rounded-xl border border-[#a4c9f7] dark:border-blue-700/60 bg-[#f0f7ff] dark:bg-[#1a3162] text-slate-900 dark:text-white px-4 py-3 focus:border-primary dark:focus:border-blue-400 focus:ring-2 focus:ring-primary/20 outline-none"
+                                />
+                            </div>
+
+                            <p id="mensajeApiKeys" class="hidden text-sm"></p>
+
+                            <button
+                                type="submit"
+                                class="bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors shadow-sm"
+                            >
+                                Guardar claves
+                            </button>
+                        </form>
+                    </article>
 
                     <!-- Cambiar nombre -->
                     <article class="bg-white dark:bg-[#14254b] rounded-2xl border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm p-6 text-slate-900 dark:text-white">

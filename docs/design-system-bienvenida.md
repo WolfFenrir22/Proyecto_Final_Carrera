@@ -50,39 +50,39 @@ colors:
   surface-variant: '#dce2f3'
 typography:
   h1:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 40px
     fontWeight: '700'
     lineHeight: '1.2'
     letterSpacing: -0.02em
   h2:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 32px
     fontWeight: '600'
     lineHeight: '1.3'
     letterSpacing: -0.01em
   h3:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 24px
     fontWeight: '600'
     lineHeight: '1.4'
   body-lg:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 18px
     fontWeight: '400'
     lineHeight: '1.6'
   body-md:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 16px
     fontWeight: '400'
     lineHeight: '1.6'
   label-md:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 14px
     fontWeight: '600'
     lineHeight: '1.2'
   caption:
-    fontFamily: Public Sans
+    fontFamily: Manrope
     fontSize: 12px
     fontWeight: '400'
     lineHeight: '1.4'
@@ -122,7 +122,7 @@ The color palette is functionally driven, using color as a primary communication
 
 ## Typography
 
-**Public Sans** is the exclusive typeface for this design system. Chosen for its institutional clarity and neutral, accessible tone, it provides excellent legibility across all age groups and vision types. 
+**Manrope** is the exclusive typeface for this design system. Its geometric forms give the interface a modern, approachable character while maintaining legibility across headings, controls, and body text.
 
 The typographic hierarchy is strictly enforced to guide users through tasks. Large, bold headlines clearly state the "current status" of the system, while body copy remains at a highly readable 16px-18px range to ensure instructions are never missed. Letter spacing is slightly tightened for headlines to maintain a modern, professional feel, while body text uses standard spacing for maximum readability.
 

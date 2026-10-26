@@ -8,7 +8,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
   <script id="tailwind-config">
    tailwind.config = {
@@ -81,13 +81,13 @@
                       "stack-lg": "32px"
               },
               "fontFamily": {
-                      "body-lg": ["Public Sans"],
-                      "h2": ["Public Sans"],
-                      "caption": ["Public Sans"],
-                      "label-md": ["Public Sans"],
-                      "body-md": ["Public Sans"],
-                      "h1": ["Public Sans"],
-                      "h3": ["Public Sans"]
+                      "body-lg": ["Manrope"],
+                      "h2": ["Manrope"],
+                      "caption": ["Manrope"],
+                      "label-md": ["Manrope"],
+                      "body-md": ["Manrope"],
+                      "h1": ["Manrope"],
+                      "h3": ["Manrope"]
               },
               "fontSize": {
                       "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
@@ -125,7 +125,7 @@
     </span>
    </div>
    <div class="flex items-center gap-6">
-    <div class="flex items-center gap-4 text-slate-800 dark:text-gray-400 font-['Public_Sans'] text-sm font-medium tracking-tight">
+    <div class="flex items-center gap-4 text-slate-800 dark:text-gray-400 font-['Manrope'] text-sm font-medium tracking-tight">
      <button class="hover:bg-blue-200 dark:hover:bg-gray-800 transition-colors p-2 rounded-full">
       <span class="material-symbols-outlined">
        notifications
@@ -153,7 +153,7 @@
     </button>
    </div>
   </header>
-  <aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-[#d1e5fa] dark:bg-[#0e1e3e] h-screen w-64 border-r border-[#94bdf2] dark:border-blue-900/60 font-['Public_Sans'] text-[14px] leading-relaxed">
+  <aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-[#d1e5fa] dark:bg-[#0e1e3e] h-screen w-64 border-r border-[#94bdf2] dark:border-blue-900/60 font-['Manrope'] text-base leading-relaxed">
     <nav class="flex-1 space-y-1 px-3">
         <a
             class="flex items-center gap-3 px-4 py-3 text-slate-800 dark:text-gray-300 hover:bg-[#bedbfc] dark:hover:bg-blue-900/40 rounded-xl cursor-pointer transition-all duration-200"
@@ -162,7 +162,7 @@
                 dashboard
             </span>
 
-            <span class="font-['Public_Sans'] text-[14px]">
+            <span class="font-['Manrope']">
                 Principal
             </span>
         </a>
@@ -173,7 +173,7 @@
                 security
             </span>
 
-            <span class="font-['Public_Sans'] text-[14px]">
+            <span class="font-['Manrope']">
                 Diagnóstico
             </span>
         </a>
@@ -184,7 +184,7 @@
                 school
             </span>
 
-            <span class="font-['Public_Sans'] text-[14px]">
+            <span class="font-['Manrope']">
                 Entrenamiento
             </span>
         </a>
@@ -194,7 +194,7 @@
             <span class="material-symbols-outlined" data-icon="settings">
                 settings
             </span>
-            <span class="font-['Public_Sans'] text-[14px]">
+            <span class="font-['Manrope']">
                 Configuración
             </span>
         </a>
@@ -227,26 +227,41 @@
      M&oacute;dulo de Diagn&oacute;stico
     </h1>
    </header>
-     <section class="mb-stack-lg bg-white dark:bg-[#14254b] rounded-2xl p-6 border border-[#a8cdfc] dark:border-blue-800/60 shadow-sm">
+     <section class="mb-stack-lg">
         <div class="mb-6">
          <h2 class="font-h3 text-h3 text-slate-900 dark:text-white">Herramientas de diagnóstico</h2>
          <p class="text-slate-700 dark:text-slate-300 mt-1">Seleccioná una categoría para acceder a sus herramientas de seguridad.</p>
         </div>
-        <div id="categoriasDiagnostico" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-         <button type="button" data-categoria-diagnostico="credenciales" class="categoriaDiagnostico group text-left rounded-xl border-2 border-transparent bg-slate-50 dark:bg-[#18284f] p-8 min-h-[200px] transition-all hover:shadow-md hover:border-primary">
-            <span class="material-symbols-outlined text-primary dark:text-blue-300 text-3xl">key</span>
-            <h3 class="font-bold text-slate-900 dark:text-white mt-3">Contraseñas / Credenciales</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Evaluador de robustez y gestor de contraseñas.</p>
+        <div id="categoriasDiagnostico" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+         <button type="button" data-categoria-diagnostico="credenciales" aria-pressed="false" class="categoriaDiagnostico group relative flex min-h-[200px] flex-col gap-4 overflow-hidden rounded-2xl border-2 border-blue-200 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:border-primary hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20 active:scale-[0.98] dark:border-blue-900/50 dark:bg-[#0f1b36] dark:hover:border-blue-400">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-primary transition-transform group-hover:scale-110 dark:bg-blue-900/40 dark:text-blue-300">
+                <span class="material-symbols-outlined text-3xl">key</span>
+            </span>
+            <span>
+                <span class="block font-h3 text-h3 font-bold text-slate-900 dark:text-white">Contraseñas / Credenciales</span>
+                <span class="mt-2 block text-sm text-slate-600 dark:text-slate-300">Evaluador de robustez y gestor de contraseñas.</span>
+            </span>
+            <span class="material-symbols-outlined absolute bottom-5 right-5 text-slate-300 transition-colors group-hover:text-primary dark:text-slate-600 dark:group-hover:text-blue-400">arrow_forward</span>
          </button>
-         <button type="button" data-categoria-diagnostico="verificadores" class="categoriaDiagnostico group text-left rounded-xl border-2 border-transparent bg-slate-50 dark:bg-[#18284f] p-8 min-h-[200px] transition-all hover:shadow-md hover:border-primary">
-            <span class="material-symbols-outlined text-secondary dark:text-emerald-300 text-3xl">verified_user</span>
-            <h3 class="font-bold text-slate-900 dark:text-white mt-3">Verificadores</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Verificador de brechas y escáner de archivos maliciosos.</p>
+         <button type="button" data-categoria-diagnostico="verificadores" aria-pressed="false" class="categoriaDiagnostico group relative flex min-h-[200px] flex-col gap-4 overflow-hidden rounded-2xl border-2 border-emerald-200 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:border-secondary hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-secondary/20 active:scale-[0.98] dark:border-emerald-900/50 dark:bg-[#0f1b36] dark:hover:border-emerald-400">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-secondary transition-transform group-hover:scale-110 dark:bg-emerald-900/40 dark:text-emerald-300">
+                <span class="material-symbols-outlined text-3xl">verified_user</span>
+            </span>
+            <span>
+                <span class="block font-h3 text-h3 font-bold text-slate-900 dark:text-white">Verificadores</span>
+                <span class="mt-2 block text-sm text-slate-600 dark:text-slate-300">Verificador de brechas y escáner de archivos maliciosos.</span>
+            </span>
+            <span class="material-symbols-outlined absolute bottom-5 right-5 text-slate-300 transition-colors group-hover:text-secondary dark:text-slate-600 dark:group-hover:text-emerald-400">arrow_forward</span>
          </button>
-         <button type="button" data-categoria-diagnostico="backup" class="categoriaDiagnostico group text-left rounded-xl border-2 border-transparent bg-slate-50 dark:bg-[#18284f] p-8 min-h-[200px] transition-all hover:shadow-md hover:border-primary">
-            <span class="material-symbols-outlined text-primary dark:text-blue-300 text-3xl">cloud_sync</span>
-            <h3 class="font-bold text-slate-900 dark:text-white mt-3">Backup</h3>
-            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Recordatorio de backups y copias de seguridad.</p>
+         <button type="button" data-categoria-diagnostico="backup" aria-pressed="false" class="categoriaDiagnostico group relative flex min-h-[200px] flex-col gap-4 overflow-hidden rounded-2xl border-2 border-amber-200 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:border-amber-500 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500/20 active:scale-[0.98] dark:border-amber-900/50 dark:bg-[#0f1b36] dark:hover:border-amber-400">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-700 transition-transform group-hover:scale-110 dark:bg-amber-900/40 dark:text-amber-300">
+                <span class="material-symbols-outlined text-3xl">cloud_sync</span>
+            </span>
+            <span>
+                <span class="block font-h3 text-h3 font-bold text-slate-900 dark:text-white">Backup</span>
+                <span class="mt-2 block text-sm text-slate-600 dark:text-slate-300">Recordatorio de backups y copias de seguridad.</span>
+            </span>
+            <span class="material-symbols-outlined absolute bottom-5 right-5 text-slate-300 transition-colors group-hover:text-amber-500 dark:text-slate-600 dark:group-hover:text-amber-400">arrow_forward</span>
          </button>
         </div>
      </section>
@@ -1017,19 +1032,6 @@
                 </div>
 
                 <form id="formVirusTotal" class="space-y-4 mt-6">
-                    <div class="mb-4">
-                        <label class="block text-label-md font-bold text-slate-900 dark:text-white mb-2">
-                            API Key de VirusTotal
-                            <span class="text-[10px] font-normal text-slate-500 bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-full ml-2">Requerido</span>
-                        </label>
-                        <input
-                            id="inputApiKeyVT"
-                            type="password"
-                            placeholder="Pegá tu API Key acá..."
-                            class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white text-sm"
-                            required
-                        />
-                    </div>
                     <div id="containerArchivo">
                         <label
                             class="block text-label-md font-bold text-slate-900 dark:text-white mb-2"

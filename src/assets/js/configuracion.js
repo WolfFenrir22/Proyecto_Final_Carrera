@@ -20,6 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     const mensajePassword = document.getElementById("mensajePassword");
 
+    const formApiKeys = document.getElementById("formApiKeys");
+    const apiKeyVirusTotal = document.getElementById("apiKeyVirusTotal");
+    const apiKeyHIBP = document.getElementById("apiKeyHIBP");
+    const mensajeApiKeys = document.getElementById("mensajeApiKeys");
+
+    apiKeyVirusTotal.value = localStorage.getItem("hades_vt_apikey") || "";
+    apiKeyHIBP.value = localStorage.getItem("hades_hibp_apikey") || "";
+
     let usuarioActual = null;
 
     function obtenerUsuarioActivoDesdeSesion() {
@@ -93,6 +101,33 @@ document.addEventListener("DOMContentLoaded", () => {
         elemento.textContent = "";
         elemento.classList.add("hidden");
     }
+
+    function mostrarMensajeApiKeys(mensaje, tipo) {
+        mensajeApiKeys.textContent = mensaje;
+        mensajeApiKeys.classList.remove("hidden", "text-error", "text-secondary");
+        mensajeApiKeys.classList.add(tipo === "exito" ? "text-secondary" : "text-error");
+    }
+
+    formApiKeys.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const virusTotalKey = apiKeyVirusTotal.value.trim();
+        const hibpKey = apiKeyHIBP.value.trim();
+
+        if (virusTotalKey) {
+            localStorage.setItem("hades_vt_apikey", virusTotalKey);
+        } else {
+            localStorage.removeItem("hades_vt_apikey");
+        }
+
+        if (hibpKey) {
+            localStorage.setItem("hades_hibp_apikey", hibpKey);
+        } else {
+            localStorage.removeItem("hades_hibp_apikey");
+        }
+
+        mostrarMensajeApiKeys("Claves guardadas correctamente.", "exito");
+    });
 
     function validarNombre(nombre) {
         if (!nombre || nombre.trim().length < 2) {

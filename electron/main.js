@@ -30,15 +30,6 @@ const {
 const fs = require("fs");
 const { Blob } = require("buffer");
 
-// Clave de prueba de Have I Been Pwned.
-// Para consultas reales se deberá configurar HIBP_API_KEY
-// como variable de entorno.
-const HIBP_API_KEY =
-    process.env.HIBP_API_KEY ||
-    "00000000000000000000000000000000";
-
-const HIBP_MODO_PRUEBA = !process.env.HIBP_API_KEY;
-
 const VT_API_KEY = process.env.VT_API_KEY || "fb3c9ba0dc065e1eb3268832a8932fc44dd8bc09d8be929a7516a245d625bc2b"; // Public default for demo, but highly restricted. In a real app we leave empty or prompt the user.
 
 /**
@@ -58,9 +49,10 @@ function validarFormatoCorreo(correo) {
  * aparece en brechas de datos conocidas.
  *
  * @param {string} correo
+ * @param {string} apiKey
  * @returns {Promise<object>}
  */
-async function verificarBrechasCorreo(correo) {
+async function verificarBrechasCorreo(correo, apiKey) {
     if (typeof correo !== "string") {
         throw new Error("El correo ingresado no es válido.");
     }
@@ -71,13 +63,8 @@ async function verificarBrechasCorreo(correo) {
         throw new Error("Ingresá una dirección de correo válida.");
     }
 
-    if (
-        HIBP_MODO_PRUEBA &&
-        !correoLimpio.endsWith("@hibp-integration-tests.com")
-    ) {
-        throw new Error(
-            "El modo de prueba solo permite correos del dominio hibp-integration-tests.com."
-        );
+    if (typeof apiKey !== "string" || !apiKey.trim()) {
+        throw new Error("Configurá una clave API válida de Have I Been Pwned.");
     }
 
     const correoCodificado = encodeURIComponent(correoLimpio);
@@ -92,7 +79,7 @@ async function verificarBrechasCorreo(correo) {
         respuesta = await fetch(url, {
             method: "GET",
             headers: {
-                "hibp-api-key": HIBP_API_KEY,
+                "hibp-api-key": apiKey.trim(),
                 "user-agent": "HADES-Proyecto-Final-Carrera",
                 accept: "application/json"
             }
@@ -305,10 +292,11 @@ async function esperarAnalisisVirusTotal(analysisId, apiKey) {
  */
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 1400,
-        height: 850,
-        minWidth: 1100,
-        minHeight: 700,
+        width: 560,
+        height: 780,
+        minWidth: 380,
+        minHeight: 560,
+        center: true,
         title: "HADES",
 
         icon: path.join(
@@ -324,6 +312,15 @@ function createWindow() {
             preload: path.join(__dirname, "preload.js"),
             contextIsolation: true,
             nodeIntegration: false
+        }
+    });
+
+    mainWindow.webContents.on("did-navigate", (_event, navigationUrl) => {
+        if (
+            navigationUrl.startsWith("file://") &&
+            path.basename(new URL(navigationUrl).pathname) === "dashboard.html"
+        ) {
+            mainWindow.maximize();
         }
     });
 
@@ -502,9 +499,9 @@ app.whenReady().then(() => {
 
     ipcMain.handle(
         "brechas:verificar",
-        async (event, correo) => {
+        async (event, correo, apiKey) => {
             const resultado =
-                await verificarBrechasCorreo(correo);
+            await verificarBrechasCorreo(correo, apiKey);
 
             console.log(
                 "Resultado enviado a la vista:",
@@ -608,4 +605,3 @@ app.on("window-all-closed", () => {
         app.quit();
     }
 });
-

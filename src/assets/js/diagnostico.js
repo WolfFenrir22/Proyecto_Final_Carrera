@@ -1006,11 +1006,19 @@ mostrarUsuarioEnSesion();
                     return;
                 }
 
+                const apiKey = localStorage.getItem("hades_hibp_apikey")?.trim();
+                if (!apiKey) {
+                    mostrarMensajeBrechas(
+                        "Configurá la clave API de Have I Been Pwned en Configuración."
+                    );
+                    return;
+                }
+
                 establecerCargaBrechas(true);
 
                 try {
                     const resultado =
-                        await window.hadesAPI.verificarBrechasCorreo(correo);
+                        await window.hadesAPI.verificarBrechasCorreo(correo, apiKey);
 
                     if (resultado.estado === "sin_brechas") {
                         mostrarCorreoSinBrechas();
@@ -1088,12 +1096,7 @@ function iniciarCategoriasDiagnostico() {
 
             botonesCategoria.forEach((item) => {
                 const esActivo = item === boton;
-                item.classList.toggle("border-primary", esActivo);
-                item.classList.toggle("border-transparent", !esActivo);
-                item.classList.toggle("bg-blue-50", esActivo);
-                item.classList.toggle("dark:bg-[#1a3162]", esActivo);
-                item.classList.toggle("bg-slate-50", !esActivo);
-                item.classList.toggle("dark:bg-[#18284f]", !esActivo);
+                item.setAttribute("aria-pressed", String(esActivo));
             });
 
             herramientas.forEach((herramienta) => {
@@ -1368,7 +1371,6 @@ function iniciarModuloGestorPasswords() {
 
 //#######################Funciones relacionadas con el Escáner VirusTotal#################################
 const formVirusTotal = document.getElementById("formVirusTotal");
-const inputApiKeyVT = document.getElementById("inputApiKeyVT");
 const btnTabArchivo = document.getElementById("btnTabArchivo");
 const btnTabUrl = document.getElementById("btnTabUrl");
 const containerArchivo = document.getElementById("containerArchivo");
@@ -1451,13 +1453,6 @@ function mostrarResultadosVT(stats) {
 function iniciarModuloScanner() {
     if (!formVirusTotal) return;
 
-    if (inputApiKeyVT) {
-        const savedApiKey = localStorage.getItem("hades_vt_apikey");
-        if (savedApiKey) {
-            inputApiKeyVT.value = savedApiKey;
-        }
-    }
-
     if (btnTabArchivo && btnTabUrl) {
         btnTabArchivo.addEventListener("click", () => {
             modoEscanerActivo = "archivo";
@@ -1500,14 +1495,11 @@ function iniciarModuloScanner() {
         e.preventDefault();
         ocultarErrorVT();
         
-        const apiKey = inputApiKeyVT ? inputApiKeyVT.value.trim() : "";
+        const apiKey = localStorage.getItem("hades_vt_apikey")?.trim() || "";
         if (!apiKey) {
-            mostrarErrorVT("Por favor ingresá tu API Key de VirusTotal.");
+            mostrarErrorVT("Configurá la clave API de VirusTotal en Configuración.");
             return;
         }
-        
-        // Guardar la API Key para futuras sesiones
-        localStorage.setItem("hades_vt_apikey", apiKey);
 
         if (modoEscanerActivo === "archivo") {
             if (!rutaArchivoSeleccionado) {

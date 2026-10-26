@@ -51,8 +51,8 @@ contextBridge.exposeInMainWorld("hadesAPI", {
     // BRECHAS
     // ============================================================
 
-    verificarBrechasCorreo: (correo) =>
-        ipcRenderer.invoke("brechas:verificar", correo),
+    verificarBrechasCorreo: (correo, apiKey) =>
+        ipcRenderer.invoke("brechas:verificar", correo, apiKey),
 
     // ============================================================
     // ARCHIVOS
