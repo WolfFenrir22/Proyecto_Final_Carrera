@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+use PHPMailer\PHPMailer\PHPMailer;
+
+function enviarCorreoRecuperacion(string $recipient, string $token): void
+{
+    $autoloadPath = __DIR__ . '/../vendor/autoload.php';
+
+    if (!is_file($autoloadPath)) {
+        throw new RuntimeException('PHPMailer no está instalado. Ejecutá composer install en backend.');
+    }
+
+    require_once $autoloadPath;
+
+    $config = require __DIR__ . '/../config/config.php';
+    $smtp = $config['smtp'] ?? null;
+    $recovery = $config['recovery'] ?? null;
+
+    if (!is_array($smtp) || !is_array($recovery)) {
+        throw new RuntimeException('Falta configurar SMTP o recuperación de contraseñas.');
+    }
+
+    foreach (['host', 'port', 'username', 'password', 'from_email', 'from_name'] as $key) {
+        if (!isset($smtp[$key]) || $smtp[$key] === '') {
+            throw new RuntimeException("Falta la configuración SMTP: {$key}.");
+        }
+    }
+
+    $resetUrl = $recovery['reset_url'] ?? '';
+
+    if (!is_string($resetUrl) || filter_var($resetUrl, FILTER_VALIDATE_URL) === false) {
+        throw new RuntimeException('La URL de recuperación no está configurada correctamente.');
+    }
+
+    $urlParts = parse_url($resetUrl);
+
+    if (!in_array($urlParts['scheme'] ?? '', ['http', 'https'], true)) {
+        throw new RuntimeException('La URL de recuperación debe usar HTTP o HTTPS.');
+    }
+
+    $resetLink = $resetUrl . '#' . http_build_query(['token' => $token]);
+
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = $smtp['host'];
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtp['username'];
+    $mail->Password = $smtp['password'];
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port = (int) $smtp['port'];
+    $mail->CharSet = PHPMailer::CHARSET_UTF8;
+    $mail->setFrom($smtp['from_email'], $smtp['from_name']);
+    $mail->addAddress($recipient);
+    $mail->isHTML(true);
+    $mail->Subject = 'Recuperación de contraseña de HADES';
+    $escapedLink = htmlspecialchars($resetLink, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $mail->Body = '<p>Recibimos una solicitud para cambiar tu contraseña de HADES.</p>'
+        . '<p><a href="' . $escapedLink . '">Crear una nueva contraseña</a></p>'
+        . '<p>El enlace vence en ' . (int) ($recovery['token_lifetime_minutes'] ?? 30)
+        . ' minutos y solo puede utilizarse una vez. Si no solicitaste este cambio, ignorá este correo.</p>';
+    $mail->AltBody = "Para cambiar tu contraseña de HADES, abrí este enlace:\n"
+        . $resetLink . "\nEl enlace es de un solo uso y tiene una duración limitada.";
+    $mail->send();
+}

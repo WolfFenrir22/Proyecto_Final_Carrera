@@ -17,7 +17,7 @@ La herramienta busca ofrecer una experiencia simple y guiada para que el usuario
 - recibir recomendaciones ante posibles incidentes;
 - registrar información básica de uso de manera local.
 
-La aplicación se desarrolla con **Electron**, utilizando vistas construidas con **HTML**, **Tailwind CSS** y **JavaScript**. Para el almacenamiento local se utiliza **SQLite**.
+La aplicación de escritorio se desarrolla con **Electron**, utilizando vistas construidas con **HTML**, **Tailwind CSS** y **JavaScript**. La persistencia de cuentas, actividad y contenido se realiza mediante la API PHP y MySQL.
 
 ---
 
@@ -27,7 +27,7 @@ La aplicación se desarrolla con **Electron**, utilizando vistas construidas con
 - **JavaScript:** lenguaje principal para la lógica de la aplicación.
 - **HTML:** estructura de las vistas.
 - **Tailwind CSS:** estilos y diseño visual de la interfaz.
-- **SQLite:** base de datos local para almacenar información de la herramienta.
+- **PHP / MySQL:** backend remoto para cuentas, actividad y contenido de la academia.
 - **Node.js / npm:** entorno y gestor de dependencias del proyecto.
 - **Git / GitHub:** control de versiones y repositorio del código fuente.
 
@@ -46,8 +46,12 @@ Proyecto_Final_Carrera/
 │   ├── pages/
 │   │   ├── bienvenida.html
 │   │   ├── dashboard.html
+│   │   ├── configuracion.html
 │   │   ├── diagnostico.html
-│   │   └── entrenamiento.html
+│   │   ├── entrenamiento.html
+│   │   └── admin/
+│   │       ├── analiticas.html
+│   │       ├── contenidos.html
 │   │
 │   ├── assets/
 │   │   ├── css/
@@ -55,7 +59,11 @@ Proyecto_Final_Carrera/
 │   │   │   └── bienvenida.css
 │   │   │
 │   │   └── js/
-│   │       └── bienvenida.js
+│   │       ├── bienvenida.js
+│   │       └── admin/
+│   │           ├── admin-session.js
+│   │           ├── analiticas.js
+│   │           └── contenidos.js
 │   │
 │   └── database/
 │       └── db.js
@@ -67,4 +75,3 @@ Proyecto_Final_Carrera/
 ├── package-lock.json
 ├── .gitignore
 └── README.md
-

@@ -123,7 +123,7 @@
     
     <div class="flex items-center gap-stack-md">
         <img
-            src="../assets/img/logo_hades_v2.jpg"
+            src="../assets/img/logo_final.png"
             alt="Logo de HADES"
             class="w-8 h-8 object-contain"/>
     <span class="text-xl font-bold text-slate-900 dark:text-blue-400 tracking-tighter">
@@ -393,7 +393,29 @@
      </div>
     </div>
 
-     <!-- =============== Academia de Defensa Digital Section ============== -->
+    <section class="rounded-2xl border border-[#a8cdfc] bg-white p-6 shadow-sm dark:border-blue-800/60 dark:bg-[#14254b]" aria-labelledby="tituloEncuesta">
+     <div class="mb-6">
+      <div class="mb-3 flex items-center gap-3">
+       <span class="material-symbols-outlined rounded-xl bg-blue-100 p-3 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">rate_review</span>
+       <h2 id="tituloEncuesta" class="font-h2 text-2xl font-bold text-slate-900 dark:text-white">¿Qué opinas de HADES?</h2>
+      </div>
+      <p class="text-sm text-slate-700 dark:text-slate-300">Tu opinión nos ayuda a mejorar. Elegí una valoración para cada afirmación, donde 1 es “Totalmente en desacuerdo” y 5 es “Totalmente de acuerdo”.</p>
+     </div>
+     <form id="formularioEncuesta">
+      <div class="mb-4 hidden grid-cols-5 gap-2 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 sm:grid">
+       <span>1 · Totalmente en desacuerdo</span>
+       <span>2</span>
+       <span>3</span>
+       <span>4</span>
+       <span>5 · Totalmente de acuerdo</span>
+      </div>
+      <div id="encuestaPreguntas" class="space-y-3"></div>
+      <p id="mensajeEncuesta" role="status" class="mt-4 hidden rounded-xl p-3 text-sm"></p>
+      <button id="guardarEncuesta" type="submit" class="mt-5 rounded-xl bg-blue-700 px-5 py-3 font-bold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60">Guardar mi valoración</button>
+     </form>
+    </section>
+
+    <!-- =============== Academia de Defensa Digital Section ============== -->
      <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
       <!-- Progress Summary -->
       <div class="lg:col-span-2 bg-primary-container dark:bg-[#14254b] text-white rounded-2xl border border-primary-container dark:border-blue-800/60 p-8 flex flex-col md:flex-row gap-gutter relative overflow-hidden">
@@ -584,6 +606,7 @@
   </nav>
   <!-- Scripts -->
   <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/session.js"></script>
   <script src="../assets/js/dashboard.js"></script>
   <!---------------------------------------------->
  </body>

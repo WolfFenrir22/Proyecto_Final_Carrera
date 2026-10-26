@@ -562,12 +562,12 @@ mostrarUsuarioEnSesion();
     }
 
     async function cargarBackups() {
-        if (!usuarioActual || !window.hadesAPI?.obtenerRecordatoriosBackup) {
+        if (!usuarioActual || !window.hadesAPI?.listarBackupsRemotos) {
             return;
         }
 
-        const recordatorios = await window.hadesAPI.obtenerRecordatoriosBackup(
-            usuarioActual.id_usuario
+        const recordatorios = await window.hadesAPI.listarBackupsRemotos(
+            usuarioActual.token
         );
 
         renderizarBackups(recordatorios);
@@ -631,8 +631,8 @@ mostrarUsuarioEnSesion();
         }
 
         try {
-            await window.hadesAPI.guardarRecordatorioBackup({
-                id_usuario: usuarioActual.id_usuario,
+            await window.hadesAPI.guardarBackupRemoto({
+                token: usuarioActual.token,
                 nombre,
                 ubicacion,
                 frecuencia,
@@ -664,22 +664,24 @@ mostrarUsuarioEnSesion();
                     botonRealizado.dataset.id
                 );
 
-                if (!window.hadesAPI?.marcarBackupRealizado) {
+                if (!window.hadesAPI?.actualizarBackupRemoto) {
                     mostrarMensajeBackup(
-                        "La función para marcar backup realizado no está disponible."
+                        "La función para actualizar el recordatorio no está disponible."
                     );
 
                     console.error(
-                        "No existe window.hadesAPI.marcarBackupRealizado"
+                        "No existe window.hadesAPI.actualizarBackupRemoto"
                     );
 
                     return;
                 }
 
                 try {
-                    await window.hadesAPI.marcarBackupRealizado(
-                        idRecordatorio
-                    );
+                    await window.hadesAPI.actualizarBackupRemoto({
+                        token: usuarioActual.token,
+                        id_recordatorio: idRecordatorio,
+                        accion: "realizado"
+                    });
 
                     await cargarBackups();
                 } catch (error) {
@@ -710,9 +712,11 @@ mostrarUsuarioEnSesion();
                 }
 
                 try {
-                    await window.hadesAPI.eliminarRecordatorioBackup(
-                        idRecordatorio
-                    );
+                    await window.hadesAPI.actualizarBackupRemoto({
+                        token: usuarioActual.token,
+                        id_recordatorio: idRecordatorio,
+                        accion: "eliminar"
+                    });
 
                     await cargarBackups();
                 } catch (error) {

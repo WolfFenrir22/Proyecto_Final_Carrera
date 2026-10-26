@@ -1,19 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
     const tituloBienvenida = document.getElementById("tituloBienvenida");
-    const textoBienvenida = document.getElementById("textoBienvenida");
 
     const btnModoLogin = document.getElementById("btnModoLogin");
     const btnModoRegistro = document.getElementById("btnModoRegistro");
 
     const formularioLogin = document.getElementById("formularioLogin");
-    const loginNombreUsuario = document.getElementById("loginNombreUsuario");
+    const loginCorreo = document.getElementById("loginCorreo");
     const loginPassword = document.getElementById("loginPassword");
     const mensajeErrorLogin = document.getElementById("mensajeErrorLogin");
+    const btnRecuperarPassword = document.getElementById("btnRecuperarPassword");
 
     const formularioRegistro = document.getElementById("formularioRegistro");
     const registroNombreUsuario = document.getElementById(
         "registroNombreUsuario"
     );
+    const registroCorreo = document.getElementById("registroCorreo");
     const registroPassword = document.getElementById("registroPassword");
     const registroPasswordConfirmacion = document.getElementById(
         "registroPasswordConfirmacion"
@@ -59,8 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         limpiarMensajes();
 
         tituloBienvenida.textContent = "Bienvenido a HADES";
-        textoBienvenida.textContent =
-            "Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital.";
 
         formularioLogin.classList.remove("hidden");
         formularioRegistro.classList.add("hidden");
@@ -71,15 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
         btnModoRegistro.className =
             "py-2 rounded-full text-sm font-bold text-outline-variant hover:text-white transition-colors";
 
-        loginNombreUsuario.focus();
+        loginCorreo.focus();
     }
 
     function activarModoRegistro() {
         limpiarMensajes();
 
         tituloBienvenida.textContent = "Crear usuario en HADES";
-        textoBienvenida.textContent =
-            "Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital.";
 
         formularioLogin.classList.add("hidden");
         formularioRegistro.classList.remove("hidden");
@@ -106,69 +103,114 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function validarPassword(password) {
-        if (!password || password.length < 4) {
-            return "La contraseña debe tener al menos 4 caracteres.";
+        if (!password || password.length < 12) {
+            return "La contraseña debe tener al menos 12 caracteres.";
         }
 
-        if (password.length > 100) {
-            return "La contraseña no puede superar los 100 caracteres.";
+        if (new TextEncoder().encode(password).length > 72) {
+            return "La contraseña no puede superar los 72 bytes.";
         }
 
         return null;
     }
 
-    function guardarUsuarioActivo(usuario) {
+    function setFormularioEnviando(formulario, enviando, textoBoton) {
+        const boton = formulario.querySelector('button[type="submit"]');
+
+        if (!boton) {
+            return;
+        }
+
+        boton.disabled = enviando;
+        boton.classList.toggle("opacity-60", enviando);
+        boton.classList.toggle("cursor-not-allowed", enviando);
+
+        if (!boton.dataset.textoOriginal) {
+            boton.dataset.textoOriginal =
+                boton.querySelector(".relative")?.firstChild?.textContent.trim() || "";
+        }
+
+        const contenido = boton.querySelector(".relative");
+
+        if (contenido) {
+            contenido.firstChild.textContent = enviando
+                ? textoBoton
+                : boton.dataset.textoOriginal;
+        }
+    }
+
+    function guardarUsuarioActivo(respuestaLogin) {
+        const usuario = respuestaLogin.usuario;
+
         localStorage.setItem(
             "hades_usuario_activo",
             JSON.stringify({
-                id_usuario: usuario.id_usuario,
+                id_usuario: usuario.id,
                 nombre: usuario.nombre,
-                fecha_creacion: usuario.fecha_creacion,
-                ultimo_acceso: usuario.ultimo_acceso
+                correo: usuario.correo,
+                rol: usuario.rol,
+                token: respuestaLogin.token,
+                fecha_expiracion: respuestaLogin.fecha_expiracion
             })
         );
     }
 
-    function irAlDashboard() {
+    function irAlPanelUsuario(respuestaLogin) {
         document.body.classList.add("page-transition-out");
 
         setTimeout(() => {
-            window.location.href = "dashboard.html";
+            window.location.href =
+                respuestaLogin.usuario.rol === "Administrador"
+                    ? "admin/analiticas.html"
+                    : "dashboard.html";
         }, 550);
     }
 
     btnModoLogin.addEventListener("click", activarModoLogin);
     btnModoRegistro.addEventListener("click", activarModoRegistro);
 
+    btnRecuperarPassword.addEventListener("click", async () => {
+        limpiarMensajes();
+
+        try {
+            await window.hadesAPI.abrirRecuperacionPassword();
+        } catch (error) {
+            mostrarMensajeLogin(
+                limpiarMensajeError(
+                    error.message ||
+                        "No se pudo abrir la página de recuperación."
+                )
+            );
+        }
+    });
+
     formularioLogin.addEventListener("submit", async (event) => {
         event.preventDefault();
         limpiarMensajes();
 
-        const nombre = loginNombreUsuario.value.trim();
+        const correo = loginCorreo.value.trim();
         const password = loginPassword.value;
 
-        const errorNombre = validarNombre(nombre);
-
-        if (errorNombre) {
-            mostrarMensajeLogin(errorNombre);
+        if (!loginCorreo.validity.valid || !correo) {
+            mostrarMensajeLogin("Ingresá una dirección de correo válida.");
             return;
         }
 
-        const errorPassword = validarPassword(password);
-
-        if (errorPassword) {
-            mostrarMensajeLogin(errorPassword);
+        if (!password) {
+            mostrarMensajeLogin("Ingresá tu contraseña.");
             return;
         }
+
+        setFormularioEnviando(formularioLogin, true, "Conectando...");
 
         try {
-            const usuario = await window.hadesAPI.iniciarSesion({
-                nombre,
+            const respuesta = await window.hadesAPI.iniciarSesionRemoto({
+                correo,
                 password
             });
 
-            guardarUsuarioActivo(usuario);
-            irAlDashboard();
+            guardarUsuarioActivo(respuesta);
+            irAlPanelUsuario(respuesta);
         } catch (error) {
             mostrarMensajeLogin(
                 limpiarMensajeError(
@@ -176,6 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         "No se pudo iniciar sesión. Verificá los datos ingresados."
                 )
             );
+        } finally {
+            setFormularioEnviando(formularioLogin, false);
         }
     });
 
@@ -184,6 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         limpiarMensajes();
 
         const nombre = registroNombreUsuario.value.trim();
+        const correo = registroCorreo.value.trim();
         const password = registroPassword.value;
         const passwordConfirmacion = registroPasswordConfirmacion.value;
 
@@ -191,6 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (errorNombre) {
             mostrarMensajeRegistro(errorNombre);
+            return;
+        }
+
+        if (!registroCorreo.validity.valid || !correo) {
+            mostrarMensajeRegistro("Ingresá una dirección de correo válida.");
             return;
         }
 
@@ -206,21 +256,36 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        setFormularioEnviando(formularioRegistro, true, "Conectando...");
+
+        let registroCompletado = false;
+
         try {
-            const usuario = await window.hadesAPI.crearUsuarioConPassword({
+            await window.hadesAPI.registrarUsuarioRemoto({
                 nombre,
+                correo,
+                password
+            });
+            registroCompletado = true;
+
+            const respuestaLogin = await window.hadesAPI.iniciarSesionRemoto({
+                correo,
                 password
             });
 
-            guardarUsuarioActivo(usuario);
-            irAlDashboard();
+            guardarUsuarioActivo(respuestaLogin);
+            irAlPanelUsuario(respuestaLogin);
         } catch (error) {
-            mostrarMensajeRegistro(
-                limpiarMensajeError(
-                    error.message ||
-                        "No se pudo crear el usuario. Intentá nuevamente."
-                )
+            const mensaje = limpiarMensajeError(
+                error.message || "Intentá iniciar sesión nuevamente."
             );
+            mostrarMensajeRegistro(
+                registroCompletado
+                    ? `La cuenta se creó, pero no se pudo iniciar sesión: ${mensaje}`
+                    : mensaje || "No se pudo crear el usuario. Intentá nuevamente."
+            );
+        } finally {
+            setFormularioEnviando(formularioRegistro, false);
         }
     });
 

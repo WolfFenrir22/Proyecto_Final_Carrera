@@ -2,7 +2,11 @@
    Estilos extraídos desde login.html para mantener el HTML más limpio.
    Se mantiene la configuración de Tailwind dentro del HTML para evitar romper las clases personalizadas. */
 
-body { font-family: 'Manrope', sans-serif; }
+body { font-family: 'IBM Plex Sans', sans-serif; }
+
+.welcome-title {
+    letter-spacing: -0.035em;
+}
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             display: inline-block;
@@ -15,27 +19,40 @@ body { font-family: 'Manrope', sans-serif; }
         }
 
 .hades-welcome-bg {
-    overflow-x: clip;
+    min-height: 100vh;
+    overflow-x: hidden;
     background:
-        radial-gradient(
-            circle at 50% 22%,
-            rgba(96, 165, 250, 0.42) 0%,
-            rgba(59, 130, 246, 0.28) 25%,
-            rgba(30, 64, 175, 0.2) 48%,
-            rgba(8, 30, 92, 0.9) 74%,
-            #06163f 100%
-        ),
-        radial-gradient(
-            circle at 82% 78%,
-            rgba(104, 219, 169, 0.18) 0%,
-            transparent 36%
-        ),
-        linear-gradient(
-            135deg,
-            #08266f 0%,
-            #0b328f 48%,
-            #1648a8 100%
-        );
+        radial-gradient(ellipse at 82% 50%, rgba(0, 115, 255, 0.2), transparent 42%),
+        linear-gradient(110deg, #041022 0%, #06162c 52%, #03101f 100%);
+}
+
+.welcome-layout {
+    overflow: hidden;
+}
+
+.welcome-copy {
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-brand-panel {
+    position: relative;
+    background:
+        radial-gradient(circle at 50% 48%, rgba(0, 111, 255, 0.2), transparent 56%),
+        linear-gradient(145deg, rgba(4, 18, 39, 0.28), rgba(3, 16, 31, 0.72));
+}
+
+.welcome-logo-frame {
+    aspect-ratio: 1;
+    border: 1px solid rgba(92, 178, 255, 0.12);
+    border-radius: 3rem;
+    background: radial-gradient(circle, rgba(5, 24, 48, 0.42), rgba(3, 16, 31, 0.08) 70%);
+    box-shadow: 0 0 100px rgba(0, 102, 255, 0.12);
+}
+
+.welcome-main-logo {
+    max-height: min(76vh, 680px);
+    filter: drop-shadow(0 28px 70px rgba(0, 102, 255, 0.25));
 }
 
 .welcome-grid-bg {
@@ -131,18 +148,22 @@ body.hades-welcome-bg > div.absolute.inset-0.z-0.pointer-events-none {
     }
 }
 
-@media (max-height: 820px) {
-    body.hades-welcome-bg {
-        justify-content: flex-start;
-        overflow-x: clip;
-        overflow-y: auto;
-        padding-block: 2rem 1rem;
+@media (max-width: 1023px) {
+    .welcome-layout {
+        min-height: auto;
+        overflow: visible;
     }
 
-    body.hades-welcome-bg > footer {
-        position: static;
-        margin-top: 1.5rem;
-        flex-shrink: 0;
+    .welcome-copy {
+        min-height: 100vh;
+        margin-inline: auto;
+        width: min(100%, 720px);
+    }
+
+    .welcome-footer {
+        position: relative;
+        width: 100%;
+        background: #03101f;
     }
 }
 

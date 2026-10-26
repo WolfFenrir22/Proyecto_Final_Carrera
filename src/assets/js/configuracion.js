@@ -142,12 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function validarPassword(password) {
-        if (!password || password.length < 4) {
-            return "La contraseña debe tener al menos 4 caracteres.";
+        if (!password || password.length < 12) {
+            return "La contraseña debe tener al menos 12 caracteres.";
         }
 
-        if (password.length > 100) {
-            return "La contraseña no puede superar los 100 caracteres.";
+        if (new TextEncoder().encode(password).length > 72) {
+            return "La contraseña no puede superar los 72 bytes.";
         }
 
         return null;
@@ -221,13 +221,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const usuarioActualizado =
-                await window.hadesAPI.actualizarNombreUsuario({
-                    idUsuario: usuarioActual.id_usuario,
-                    nuevoNombre
-                });
+            const respuesta = await window.hadesAPI.actualizarNombreRemoto({
+                token: usuarioActual.token,
+                nombre: nuevoNombre
+            });
 
-            guardarUsuarioActivo(usuarioActualizado);
+            guardarUsuarioActivo(respuesta.usuario);
             renderizarUsuario();
 
             mostrarMensaje(
@@ -262,9 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nueva = passwordNueva.value;
         const confirmacion = passwordNuevaConfirmacion.value;
 
-        const errorActual = validarPassword(actual);
-
-        if (errorActual) {
+        if (!actual) {
             mostrarMensaje(
                 mensajePassword,
                 "Ingresá la contraseña actual."
@@ -296,8 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            await window.hadesAPI.actualizarPasswordUsuario({
-                idUsuario: usuarioActual.id_usuario,
+            await window.hadesAPI.actualizarPasswordRemoto({
+                token: usuarioActual.token,
                 passwordActual: actual,
                 passwordNueva: nueva
             });
@@ -319,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    btnCerrarSesion.addEventListener("click", () => {
+    btnCerrarSesion.addEventListener("click", async () => {
         const confirmar = confirm(
             "¿Querés cerrar sesión? Tus datos no se eliminarán."
         );
@@ -328,8 +325,21 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        localStorage.removeItem("hades_usuario_activo");
-        window.location.href = "bienvenida.html";
+        btnCerrarSesion.disabled = true;
+
+        try {
+            await window.hadesAPI.cerrarSesionRemota(usuarioActual?.token);
+            localStorage.removeItem("hades_usuario_activo");
+            window.location.href = "bienvenida.html";
+        } catch (error) {
+            btnCerrarSesion.disabled = false;
+            alert(
+                limpiarMensajeError(
+                    error.message ||
+                        "No se pudo cerrar la sesión en el servidor. Intentá nuevamente."
+                )
+            );
+        }
     });
 
     verificarSesion();

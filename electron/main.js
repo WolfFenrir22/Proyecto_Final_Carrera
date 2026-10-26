@@ -1,36 +1,107 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
 const path = require("path");
-
-const {
-    initDatabase,
-    obtenerUsuarioPrincipal,
-    guardarUsuario,
-    actualizarUltimoAcceso,
-    eliminarUsuarioPrincipal,
-
-    crearUsuarioConPassword,
-    iniciarSesion,
-    actualizarNombreUsuario,
-    actualizarPasswordUsuario,
-
-    guardarRecordatorioBackup,
-    obtenerRecordatoriosBackup,
-    eliminarRecordatorioBackup,
-    marcarBackupRealizado,
-    obtenerProximoBackup,
-
-    guardarResultadoPhishing,
-    obtenerUltimoPhishing,
-
-    guardarResultadoTrivia,
-    obtenerUltimaTrivia,
-    obtenerEstadisticasDashboard
-} = require("../src/database/db");
 
 const fs = require("fs");
 const { Blob } = require("buffer");
 
 const VT_API_KEY = process.env.VT_API_KEY || "fb3c9ba0dc065e1eb3268832a8932fc44dd8bc09d8be929a7516a245d625bc2b"; // Public default for demo, but highly restricted. In a real app we leave empty or prompt the user.
+const AUTH_API_BASE_URL =
+    process.env.HADES_API_URL || "http://localhost/hades/api/v1";
+
+async function solicitarApiAutenticacion(endpoint, opciones = {}) {
+    let response;
+
+    try {
+        const headers = { Accept: "application/json" };
+        const request = {
+            method: opciones.method || "GET",
+            headers,
+            signal: AbortSignal.timeout(10000)
+        };
+
+        if (opciones.body !== undefined) {
+            headers["Content-Type"] = "application/json";
+            request.body = JSON.stringify(opciones.body);
+        }
+
+        if (opciones.token) {
+            headers.Authorization = `Bearer ${opciones.token}`;
+        }
+
+        response = await fetch(`${AUTH_API_BASE_URL}/${endpoint}`, request);
+    } catch (error) {
+        console.error("No se pudo conectar con la API de HADES:", error);
+        throw new Error(
+            "No se pudo conectar con el servidor central. Verificá que Apache y MySQL estén iniciados."
+        );
+    }
+
+    let result = null;
+
+    if (response.status !== 204) {
+        try {
+            result = await response.json();
+        } catch (error) {
+            console.error("La API de HADES devolvió una respuesta no válida:", error);
+            throw new Error("El servidor devolvió una respuesta no válida.");
+        }
+    }
+
+    return {
+        ok: response.ok,
+        status: response.status,
+        data: result
+    };
+}
+
+function exigirRespuestaApi(response) {
+    if (!response.ok) {
+        throw new Error(
+            response.data?.error?.message ||
+                `El servidor respondió con el código ${response.status}.`
+        );
+    }
+
+    return response.data;
+}
+
+async function solicitarApiAutenticacionPost(endpoint, datos) {
+    const response = await solicitarApiAutenticacion(endpoint, {
+        method: "POST",
+        body: datos
+    });
+
+    return exigirRespuestaApi(response);
+}
+
+async function solicitarApiPerfil(endpoint, token, datos) {
+    if (typeof token !== "string" || !token) {
+        throw new Error("No se encontró una sesión válida.");
+    }
+
+    const response = await solicitarApiAutenticacion(endpoint, {
+        method: "PATCH",
+        token,
+        body: datos
+    });
+
+    return exigirRespuestaApi(response);
+}
+
+async function solicitarApiConSesion(endpoint, method, datos) {
+    if (!datos || typeof datos !== "object" || typeof datos.token !== "string") {
+        throw new Error("No se encontró una sesión válida.");
+    }
+
+    const { token, ...body } = datos;
+    const response = await solicitarApiAutenticacion(endpoint, {
+        method,
+        token,
+        ...(method === "GET" ? {} : { body })
+    });
+
+    return exigirRespuestaApi(response);
+}
 
 /**
  * Valida el formato básico de una dirección de correo.
@@ -292,10 +363,10 @@ async function esperarAnalisisVirusTotal(analysisId, apiKey) {
  */
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 560,
-        height: 780,
-        minWidth: 380,
-        minHeight: 560,
+        width: 1280,
+        height: 820,
+        minWidth: 760,
+        minHeight: 620,
         center: true,
         title: "HADES",
 
@@ -305,7 +376,7 @@ function createWindow() {
             "src",
             "assets",
             "img",
-            "logo_hades.ico"
+            "logo_final.png"
         ),
 
         webPreferences: {
@@ -316,9 +387,11 @@ function createWindow() {
     });
 
     mainWindow.webContents.on("did-navigate", (_event, navigationUrl) => {
+        const page = path.basename(new URL(navigationUrl).pathname);
+
         if (
             navigationUrl.startsWith("file://") &&
-            path.basename(new URL(navigationUrl).pathname) === "dashboard.html"
+            ["dashboard.html", "analiticas.html", "contenidos.html"].includes(page)
         ) {
             mainWindow.maximize();
         }
@@ -339,159 +412,136 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-    initDatabase();
-    console.log("Carpeta userData:", app.getPath("userData"));
-
-    // ============================================================
-    // MANEJADORES DEL USUARIO
-    // ============================================================
-
-    ipcMain.handle("usuario:obtener", async () => {
-        const usuario = await obtenerUsuarioPrincipal();
-
-        if (usuario) {
-            await actualizarUltimoAcceso(
-                usuario.id_usuario
-            );
+    ipcMain.handle("auth:registrar", async (_event, datos) => {
+        if (!datos || typeof datos !== "object") {
+            throw new Error("Los datos de registro no son válidos.");
         }
 
-        return usuario || null;
+        return await solicitarApiAutenticacionPost("auth/registro.php", datos);
     });
 
-    ipcMain.handle(
-        "usuario:guardar",
-        async (event, nombre) => {
-            if (
-                !nombre ||
-                typeof nombre !== "string"
-            ) {
-                throw new Error(
-                    "El nombre ingresado no es válido."
-                );
-            }
-
-            const nombreLimpio = nombre.trim();
-
-            if (nombreLimpio.length < 2) {
-                throw new Error(
-                    "El nombre debe tener al menos 2 caracteres."
-                );
-            }
-
-            if (nombreLimpio.length > 40) {
-                throw new Error(
-                    "El nombre no puede superar los 40 caracteres."
-                );
-            }
-
-            return await guardarUsuario(nombreLimpio);
+    ipcMain.handle("auth:login", async (_event, datos) => {
+        if (!datos || typeof datos !== "object") {
+            throw new Error("Los datos de inicio de sesión no son válidos.");
         }
-    );
 
-    ipcMain.handle("usuario:eliminar", async () => {
-        return await eliminarUsuarioPrincipal();
+        return await solicitarApiAutenticacionPost("auth/login.php", datos);
     });
 
-        ipcMain.handle(
-        "usuario:crearConPassword",
-        async (event, datos) => {
-            if (!datos || typeof datos !== "object") {
-                throw new Error("Los datos del usuario no son válidos.");
+    ipcMain.handle("auth:abrirRecuperacion", async () => {
+        const apiUrl = new URL(AUTH_API_BASE_URL);
+
+        if (!["http:", "https:"].includes(apiUrl.protocol)) {
+            throw new Error("La URL de la API de HADES no es válida.");
+        }
+
+        apiUrl.pathname = `${apiUrl.pathname.replace(/\/api\/v1\/?$/, "").replace(/\/$/, "")}/recuperar-password.html`;
+        apiUrl.search = "";
+        apiUrl.hash = "";
+        await shell.openExternal(apiUrl.toString());
+    });
+
+    ipcMain.handle("auth:validarSesion", async (_event, token) => {
+        if (typeof token !== "string" || !token) {
+            return null;
+        }
+
+        const response = await solicitarApiAutenticacion("auth/sesion.php", {
+            method: "GET",
+            token
+        });
+
+        if (response.status === 401) {
+            return null;
+        }
+
+        return exigirRespuestaApi(response);
+    });
+
+    ipcMain.handle("auth:logout", async (_event, token) => {
+        if (typeof token !== "string" || !token) {
+            throw new Error("No se encontró el token de sesión.");
+        }
+
+        const response = await solicitarApiAutenticacion("auth/logout.php", {
+            method: "POST",
+            token
+        });
+
+        if (response.status === 401) {
+            return true;
+        }
+
+        exigirRespuestaApi(response);
+        return true;
+    });
+
+    ipcMain.handle("perfil:actualizarNombre", async (_event, datos) => {
+        if (!datos || typeof datos !== "object") {
+            throw new Error("Los datos para actualizar el nombre no son válidos.");
+        }
+
+        return await solicitarApiPerfil(
+            "perfil/nombre.php",
+            datos.token,
+            { nombre: datos.nombre }
+        );
+    });
+
+    ipcMain.handle("perfil:actualizarPassword", async (_event, datos) => {
+        if (!datos || typeof datos !== "object") {
+            throw new Error("Los datos para actualizar la contraseña no son válidos.");
+        }
+
+        return await solicitarApiPerfil(
+            "perfil/password.php",
+            datos.token,
+            {
+                password_actual: datos.passwordActual,
+                password_nueva: datos.passwordNueva
             }
+        );
+    });
 
-            const { nombre, password } = datos;
+    ipcMain.handle("backup:remoto:listar", async (_event, token) => {
+        const response = await solicitarApiAutenticacion("backups.php", {
+            method: "GET",
+            token
+        });
+        return exigirRespuestaApi(response).recordatorios;
+    });
 
-            return await crearUsuarioConPassword(nombre, password);
-        }
+    ipcMain.handle("backup:remoto:guardar", async (_event, datos) =>
+        await solicitarApiConSesion("backups.php", "POST", datos)
     );
 
-    ipcMain.handle(
-        "usuario:login",
-        async (event, datos) => {
-            if (!datos || typeof datos !== "object") {
-                throw new Error("Los datos de inicio de sesión no son válidos.");
-            }
-
-            const { nombre, password } = datos;
-
-            return await iniciarSesion(nombre, password);
-        }
+    ipcMain.handle("backup:remoto:actualizar", async (_event, datos) =>
+        await solicitarApiConSesion("backups.php", "PATCH", datos)
     );
 
-    ipcMain.handle(
-        "usuario:actualizarNombre",
-        async (event, datos) => {
-            if (!datos || typeof datos !== "object") {
-                throw new Error("Los datos para actualizar el nombre no son válidos.");
-            }
-
-            const { idUsuario, nuevoNombre } = datos;
-
-            return await actualizarNombreUsuario(
-                idUsuario,
-                nuevoNombre
-            );
-        }
+    ipcMain.handle("resultado:remoto:trivia", async (_event, datos) =>
+        await solicitarApiConSesion("resultados/trivia.php", "POST", datos)
     );
 
-    ipcMain.handle(
-        "usuario:actualizarPassword",
-        async (event, datos) => {
-            if (!datos || typeof datos !== "object") {
-                throw new Error("Los datos para actualizar la contraseña no son válidos.");
-            }
-
-            const {
-                idUsuario,
-                passwordActual,
-                passwordNueva
-            } = datos;
-
-            return await actualizarPasswordUsuario(
-                idUsuario,
-                passwordActual,
-                passwordNueva
-            );
-        }
+    ipcMain.handle("resultado:remoto:phishing", async (_event, datos) =>
+        await solicitarApiConSesion("resultados/phishing.php", "POST", datos)
     );
 
-    // ============================================================
-    // MANEJADORES DE BACKUPS
-    // ============================================================
-
-    ipcMain.handle(
-        "backup:guardar",
-        async (event, datos) => {
-            return await guardarRecordatorioBackup(datos);
-        }
+    ipcMain.handle("encuesta:remota:obtener", async (_event, token) =>
+        await solicitarApiConSesion("encuestas/usabilidad.php", "GET", { token })
     );
 
-    ipcMain.handle(
-        "backup:listar",
-        async (event, idUsuario) => {
-            return await obtenerRecordatoriosBackup(
-                idUsuario
-            );
-        }
+    ipcMain.handle("encuesta:remota:guardar", async (_event, datos) =>
+        await solicitarApiConSesion("encuestas/usabilidad.php", "POST", datos)
     );
 
-    ipcMain.handle(
-        "backup:eliminar",
-        async (event, idRecordatorio) => {
-            return await eliminarRecordatorioBackup(
-                idRecordatorio
-            );
-        }
-    );
-
-    ipcMain.handle(
-        "backup:realizado",
-        async (event, idRecordatorio) => {
-            return await marcarBackupRealizado(
-                idRecordatorio
-            );
-        }
-    );
+    ipcMain.handle("dashboard:remoto:resumen", async (_event, token) => {
+        const response = await solicitarApiAutenticacion("dashboard/resumen.php", {
+            method: "GET",
+            token
+        });
+        return exigirRespuestaApi(response);
+    });
 
     // ============================================================
     // MANEJADOR DEL VERIFICADOR DE BRECHAS
@@ -555,46 +605,28 @@ app.whenReady().then(() => {
         }
     });
 
-    // ============================================================
-// MANEJADOR DEL GUARDADO DE RESULTADOS DE PHISHING
-// ============================================================
-ipcMain.handle("phishing:guardarResultado", async (event, datos) => {
-    return await guardarResultadoPhishing(datos);
+    ipcMain.handle("academia:remoto:contenido", async (event, token) => {
+    return await solicitarApiConSesion(
+        "academia/contenido.php",
+        "GET",
+        { token }
+    );
 });
 
-//============================================================
-// MANEJADOR DEL GUARDADO DE RESULTADOS DE TRIVIA
-//============================================================
-ipcMain.handle("trivia:guardarResultado", async (event, datos) => {
-    return await guardarResultadoTrivia(datos);
-});
-
-// ============================================================
-// DASHBOARD
-// ============================================================
-
-ipcMain.handle(
-    "dashboard:resumen",
-    async (event, idUsuario) => {
-        const ultimaTrivia =
-            await obtenerUltimaTrivia(idUsuario);
-
-        const ultimoPhishing =
-            await obtenerUltimoPhishing(idUsuario);
-
-        const proximoBackup =
-            await obtenerProximoBackup(idUsuario);
-
-        const estadisticas =
-            await obtenerEstadisticasDashboard(idUsuario);
-
-        return {
-            ultimaTrivia,
-            ultimoPhishing,
-            proximoBackup,
-            estadisticas
-        };
+ipcMain.handle("admin:contenido", async (_event, method, datos) => {
+    if (!["GET", "POST", "PATCH", "DELETE"].includes(method)) {
+        throw new Error("El método de administración de contenido no es válido.");
     }
+
+    return await solicitarApiConSesion(
+        "academia/administrar.php",
+        method,
+        datos
+    );
+});
+
+ipcMain.handle("admin:analiticas", async (_event, token) =>
+    await solicitarApiConSesion("analiticas/resumen.php", "GET", { token })
 );
 
 });

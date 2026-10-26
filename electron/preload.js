@@ -2,50 +2,59 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("hadesAPI", {
     // ============================================================
-    // USUARIO - FUNCIONES VIEJAS
-    // Se mantienen por ahora para no romper las pantallas actuales.
-    // ============================================================
-
-    obtenerUsuario: () =>
-        ipcRenderer.invoke("usuario:obtener"),
-
-    guardarUsuario: (nombre) =>
-        ipcRenderer.invoke("usuario:guardar", nombre),
-
-    eliminarUsuario: () =>
-        ipcRenderer.invoke("usuario:eliminar"),
-
-    // ============================================================
     // USUARIO - LOGIN / REGISTRO / CONFIGURACIÓN
     // ============================================================
 
-    crearUsuarioConPassword: (datos) =>
-        ipcRenderer.invoke("usuario:crearConPassword", datos),
+    registrarUsuarioRemoto: (datos) =>
+        ipcRenderer.invoke("auth:registrar", datos),
 
-    iniciarSesion: (datos) =>
-        ipcRenderer.invoke("usuario:login", datos),
+    iniciarSesionRemoto: (datos) =>
+        ipcRenderer.invoke("auth:login", datos),
 
-    actualizarNombreUsuario: (datos) =>
-        ipcRenderer.invoke("usuario:actualizarNombre", datos),
+    abrirRecuperacionPassword: () =>
+        ipcRenderer.invoke("auth:abrirRecuperacion"),
 
-    actualizarPasswordUsuario: (datos) =>
-        ipcRenderer.invoke("usuario:actualizarPassword", datos),
+    validarSesionRemota: (token) =>
+        ipcRenderer.invoke("auth:validarSesion", token),
 
-    // ============================================================
-    // BACKUPS
-    // ============================================================
+    cerrarSesionRemota: (token) =>
+        ipcRenderer.invoke("auth:logout", token),
 
-    guardarRecordatorioBackup: (datos) =>
-        ipcRenderer.invoke("backup:guardar", datos),
+    actualizarNombreRemoto: (datos) =>
+        ipcRenderer.invoke("perfil:actualizarNombre", datos),
 
-    obtenerRecordatoriosBackup: (idUsuario) =>
-        ipcRenderer.invoke("backup:listar", idUsuario),
+    actualizarPasswordRemoto: (datos) =>
+        ipcRenderer.invoke("perfil:actualizarPassword", datos),
 
-    eliminarRecordatorioBackup: (idRecordatorio) =>
-        ipcRenderer.invoke("backup:eliminar", idRecordatorio),
+    listarBackupsRemotos: (token) =>
+        ipcRenderer.invoke("backup:remoto:listar", token),
 
-    marcarBackupRealizado: (idRecordatorio) =>
-        ipcRenderer.invoke("backup:realizado", idRecordatorio),
+    guardarBackupRemoto: (datos) =>
+        ipcRenderer.invoke("backup:remoto:guardar", datos),
+
+    actualizarBackupRemoto: (datos) =>
+        ipcRenderer.invoke("backup:remoto:actualizar", datos),
+
+    guardarResultadoTriviaRemoto: (datos) =>
+        ipcRenderer.invoke("resultado:remoto:trivia", datos),
+
+    guardarResultadoPhishingRemoto: (datos) =>
+        ipcRenderer.invoke("resultado:remoto:phishing", datos),
+
+    obtenerEncuestaUsabilidadRemota: (token) =>
+        ipcRenderer.invoke("encuesta:remota:obtener", token),
+
+    guardarEncuestaUsabilidadRemota: (datos) =>
+        ipcRenderer.invoke("encuesta:remota:guardar", datos),
+
+    obtenerResumenDashboardRemoto: (token) =>
+        ipcRenderer.invoke("dashboard:remoto:resumen", token),
+
+    administrarContenidoRemoto: (metodo, datos) =>
+        ipcRenderer.invoke("admin:contenido", metodo, datos),
+
+    obtenerAnaliticasAdminRemoto: (token) =>
+        ipcRenderer.invoke("admin:analiticas", token),
 
     // ============================================================
     // BRECHAS
@@ -73,18 +82,7 @@ contextBridge.exposeInMainWorld("hadesAPI", {
     // ENTRENAMIENTO
     // ============================================================
 
-    guardarResultadoPhishing: (datos) =>
-        ipcRenderer.invoke("phishing:guardarResultado", datos),
+    obtenerContenidoAcademiaRemoto: (token) =>
+        ipcRenderer.invoke("academia:remoto:contenido", token),
 
-    guardarResultadoTrivia: (datos) =>
-        ipcRenderer.invoke("trivia:guardarResultado", datos),
-
-    // ============================================================
-    // DASHBOARD
-    // ============================================================
-    obtenerResumenDashboard: (idUsuario) =>
-    ipcRenderer.invoke(
-        "dashboard:resumen",
-        idUsuario
-    ),
 });

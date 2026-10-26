@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HADES | Gestión de contenidos</title>
+    <script>
+        tailwind = { config: { darkMode: "class" } };
+        (() => {
+            const savedTheme = localStorage.getItem("hades_theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.documentElement.classList.toggle(
+                "dark",
+                savedTheme === "dark" || (!savedTheme && prefersDark)
+            );
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="../../assets/css/app.css" rel="stylesheet">
+    <style>body { font-family: Manrope, sans-serif; }</style>
+</head>
+<body class="min-h-screen bg-[#e9f1fa] text-slate-900 dark:bg-[#050a17] dark:text-white" style="visibility:hidden">
+    <div class="min-h-screen md:flex">
+        <aside class="flex w-full flex-col border-b border-[#94bdf2] bg-[#d1e5fa] p-5 text-slate-900 dark:border-blue-900/60 dark:bg-[#0e1e3e] dark:text-white md:fixed md:inset-y-0 md:w-64 md:border-b-0 md:border-r">
+            <a class="mb-10 flex items-center gap-3 text-xl font-extrabold" href="analiticas.html">
+                HADES <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">ADMIN</span>
+            </a>
+            <nav class="flex gap-2 md:flex-col">
+                <a href="analiticas.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-800 hover:bg-[#bedbfc] dark:text-slate-300 dark:hover:bg-blue-900/40">
+                    <span class="material-symbols-outlined">query_stats</span> Analíticas
+                </a>
+                <a href="contenidos.html" aria-current="page" class="flex items-center gap-3 rounded-xl bg-blue-700 px-4 py-3 font-bold text-white">
+                    <span class="material-symbols-outlined">library_books</span> Contenidos
+                </a>
+            </nav>
+            <div class="mt-auto hidden border-t border-[#94bdf2] pt-5 dark:border-blue-900/60 md:block">
+                <p class="truncate text-sm font-bold" data-admin-name></p>
+                <p class="mb-4 text-xs text-slate-600 dark:text-slate-400">Administrador</p>
+                <button id="cerrarSesionAdmin" class="w-full rounded-xl border border-[#94bdf2] px-4 py-2 text-left text-sm hover:bg-[#bedbfc] dark:border-blue-800 dark:hover:bg-blue-900/40">Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <main class="min-w-0 flex-1 p-5 md:ml-64 md:p-10">
+            <header class="mb-8 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-start gap-3">
+                    <img src="../../assets/img/logo_final.png" alt="Logo de HADES" class="h-12 w-12 shrink-0 object-contain">
+                    <div>
+                        <p class="mb-1 text-sm font-bold uppercase tracking-widest text-blue-700">Biblioteca de aprendizaje</p>
+                        <h1 class="text-3xl font-extrabold">Gestión de contenidos</h1>
+                        <p class="mt-2 text-slate-600 dark:text-slate-300">Creá, editá, publicá o eliminá el material de la academia.</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button id="btnThemeToggle" type="button" class="inline-flex items-center gap-2 rounded-xl border border-[#94bdf2] bg-white px-4 py-3 text-sm font-bold text-slate-900 hover:bg-blue-50 dark:border-blue-700/60 dark:bg-[#1a3162] dark:text-white dark:hover:bg-[#23467d]">
+                        <span id="iconoThemeToggle" class="material-symbols-outlined text-[18px]">dark_mode</span>
+                        <span id="textoThemeToggle">Modo Oscuro</span>
+                    </button>
+                    <button id="nuevoContenido" class="inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-3 font-bold text-white hover:bg-blue-800">
+                        <span class="material-symbols-outlined">add</span> Nuevo contenido
+                    </button>
+                </div>
+            </header>
+
+            <p id="mensajeContenidoAdmin" role="status" class="mb-5 hidden rounded-xl p-4 text-sm"></p>
+
+            <section class="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-[#b8d2f4] bg-white p-4 shadow-sm dark:border-[#2b4e80] dark:bg-[#14254b]">
+                <label for="filtroTipoContenido" class="text-sm font-bold">Filtrar por tipo</label>
+                <select id="filtroTipoContenido" class="rounded-xl border-[#a4c9f7] bg-[#f0f7ff] text-sm text-slate-900 dark:border-[#2d549a] dark:bg-[#1a3162] dark:text-white">
+                    <option value="">Todos los tipos</option>
+                    <option value="scenario_sv">Smishing / vishing</option>
+                    <option value="scenario_phishing">Phishing</option>
+                    <option value="concept">Conceptos</option>
+                    <option value="myth">Mitos y realidades</option>
+                    <option value="trivia">Preguntas de trivia</option>
+                    <option value="section">Secciones</option>
+                </select>
+                <span id="contadorContenido" class="ml-auto text-sm text-slate-600 dark:text-slate-300"></span>
+            </section>
+
+            <section id="listaContenidosAdmin" class="grid gap-4 lg:grid-cols-2" aria-live="polite"></section>
+
+            <div id="modalContenido" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-950/60 p-4">
+                <div class="mx-auto my-6 max-w-3xl rounded-2xl border border-[#b8d2f4] bg-white shadow-2xl dark:border-[#2b4e80] dark:bg-[#14254b]">
+                    <div class="flex items-center justify-between border-b border-[#b8d2f4] p-6 dark:border-[#2b4e80]">
+                        <div>
+                            <h2 id="tituloFormularioContenido" class="text-xl font-extrabold">Nuevo contenido</h2>
+                            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Completá los campos del tipo de material que vas a crear.</p>
+                        </div>
+                        <button id="cerrarModalContenido" type="button" aria-label="Cerrar" class="rounded-lg p-2 text-slate-600 hover:bg-[#e9f1fa] dark:text-slate-300 dark:hover:bg-[#1a3162]">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <form id="formularioContenido" class="space-y-5 p-6">
+                        <input id="contenidoId" type="hidden">
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <label class="block text-sm font-bold">Tipo
+                                <select id="contenidoTipo" required class="mt-2 w-full rounded-xl border-[#a4c9f7] bg-[#f0f7ff] font-normal text-slate-900 dark:border-[#2d549a] dark:bg-[#1a3162] dark:text-white">
+                                    <option value="scenario_sv">Smishing / vishing</option>
+                                    <option value="scenario_phishing">Phishing</option>
+                                    <option value="concept">Concepto</option>
+                                    <option value="myth">Mito y realidad</option>
+                                    <option value="trivia">Pregunta de trivia</option>
+                                    <option value="section">Sección</option>
+                                </select>
+                            </label>
+                            <label class="block text-sm font-bold">Clave única
+                                <input id="contenidoClave" maxlength="100" pattern="[A-Za-z0-9_-]+" placeholder="Se genera a partir del título o identificador" class="mt-2 w-full rounded-xl border-[#a4c9f7] bg-[#f0f7ff] font-normal text-slate-900 dark:border-[#2d549a] dark:bg-[#1a3162] dark:text-white">
+                                <span class="mt-1 block font-normal text-slate-600 dark:text-slate-300">Identificador interno; podés dejarlo vacío para generarlo automáticamente.</span>
+                            </label>
+                            <label class="block text-sm font-bold">Orden
+                                <input id="contenidoOrden" type="number" min="0" max="65535" value="0" required class="mt-2 w-full rounded-xl border-[#a4c9f7] bg-[#f0f7ff] font-normal text-slate-900 dark:border-[#2d549a] dark:bg-[#1a3162] dark:text-white">
+                            </label>
+                            <label class="block text-sm font-bold">Estado
+                                <select id="contenidoActivo" class="mt-2 w-full rounded-xl border-[#a4c9f7] bg-[#f0f7ff] font-normal text-slate-900 dark:border-[#2d549a] dark:bg-[#1a3162] dark:text-white">
+                                    <option value="true">Publicado</option>
+                                    <option value="false">Borrador</option>
+                                </select>
+                            </label>
+                        </div>
+                        <section id="camposContenido" class="grid gap-4 sm:grid-cols-2" aria-live="polite"></section>
+                        <p id="ayudaCamposContenido" class="text-sm text-slate-600 dark:text-slate-300"></p>
+                        <p id="errorFormularioContenido" role="alert" class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800 dark:bg-red-950/40 dark:text-red-200"></p>
+                        <div class="flex flex-wrap justify-end gap-3 border-t border-[#b8d2f4] pt-4 dark:border-[#2b4e80]">
+                            <button id="cancelarContenido" type="button" class="rounded-xl border border-[#94bdf2] px-5 py-3 font-bold hover:bg-[#e9f1fa] dark:border-blue-800 dark:hover:bg-[#1a3162]">Cancelar</button>
+                            <button id="guardarContenido" type="submit" class="rounded-xl bg-blue-700 px-5 py-3 font-bold text-white hover:bg-blue-800">Guardar contenido</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-6 md:hidden">
+                <p class="mb-3 truncate text-sm font-bold" data-admin-name></p>
+                <button id="cerrarSesionAdminMobile" class="rounded-xl border border-[#94bdf2] px-4 py-2 text-sm font-bold hover:bg-[#bedbfc] dark:border-blue-800 dark:hover:bg-blue-900/40">Cerrar sesión</button>
+            </div>
+        </main>
+    </div>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/admin/admin-session.js"></script>
+    <script src="../../assets/js/admin/contenidos.js"></script>
+</body>
+</html>

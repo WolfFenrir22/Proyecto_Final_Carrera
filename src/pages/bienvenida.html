@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     />
 
@@ -171,53 +171,16 @@
     <link rel="stylesheet" href="../assets/css/bienvenida.css" />
 </head>
 
-<body class="hades-welcome-bg text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden">   <!-- Fondo decorativo -->
-    <div class="absolute inset-0 z-0 opacity-20 welcome-grid-bg"></div>
-
-    <div class="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <div class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary-container/5 rounded-full blur-3xl"></div>
-
-        <div class="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-secondary-container/10 rounded-full blur-3xl"></div>
-
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-surface-container-highest opacity-[0.15]">
-            <span class="material-symbols-outlined !text-[500px]" data-icon="shield">
-                shield
-            </span>
-        </div>
-    </div>
+<body class="hades-welcome-bg min-h-screen text-white">
 
     <!-- Contenedor principal -->
-    <main class="relative z-10 w-full max-w-[1280px] px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center">
-
-        <!-- Identidad visual -->
-        <div class="mb-stack-lg flex flex-col items-center">
-            <div class="w-24 h-24 bg-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-primary/40 mb-6 transform rotate-3 ring-4 ring-white/10 overflow-hidden">
-                <img
-                    src="../assets/img/logo_hades.ico"
-                    alt="Logo de HADES"
-                    class="w-16 h-16 object-contain"/>
+    <main class="welcome-layout relative z-10 mx-auto grid min-h-screen w-full max-w-[1600px] items-center lg:grid-cols-2">
+        <section class="welcome-copy flex min-h-screen flex-col justify-center px-6 py-10 pb-20 sm:px-10 lg:px-14 xl:px-20">
+            <div class="mb-7 w-full max-w-xl text-center">
+                <h2 id="tituloBienvenida" class="welcome-title text-3xl font-semibold leading-tight text-white sm:text-4xl">
+                    Bienvenido a HADES
+                </h2>
             </div>
-
-            <!--
-            <span class="font-h1 text-4xl text-white tracking-tighter">
-                HADES
-            </span>
-        -->
-            <!--<span class="font-caption text-caption text-secondary-fixed uppercase tracking-[0.3em] mt-2">
-                Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital
-            </span>-->
-        </div>
-
-        <!-- Mensaje de bienvenida -->
-        <div class="max-w-2xl">
-            <h2 id="tituloBienvenida" class="font-h1 text-h1 text-white mb-4">
-                Bienvenido a HADES
-            </h2>
-
-            <p id="textoBienvenida" class="font-body-lg text-body-lg text-primary-fixed-dim mb-stack-lg leading-relaxed">
-                Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital.
-            </p>
-        </div>
 
         <!-- Tarjetas informativas -->
      <!--   <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter w-full max-w-4xl mb-stack-lg">
@@ -270,7 +233,7 @@
         </div> -->
 
         <!-- Formulario de acceso -->
-<div class="welcome-auth-panel flex flex-col items-center gap-stack-md mt-stack-md w-full max-w-md">
+<div class="welcome-auth-panel mt-2 flex w-full max-w-xl flex-col items-center gap-stack-md">
 
     <!-- Selector de modo -->
     <div class="w-full grid grid-cols-2 gap-2 bg-white/10 border border-white/10 rounded-full p-1">
@@ -295,19 +258,20 @@
     <form id="formularioLogin" class="w-full flex flex-col gap-4">
         <div class="text-left">
             <label
-                for="loginNombreUsuario"
+                for="loginCorreo"
                 class="block font-label-md text-label-md text-white mb-2"
             >
-                Nombre de usuario
+                Correo electrónico
             </label>
 
             <input
-                id="loginNombreUsuario"
-                type="text"
-                maxlength="40"
-                placeholder="Ejemplo: Fabio"
+                id="loginCorreo"
+                type="email"
+                maxlength="254"
+                placeholder="nombre@ejemplo.com"
                 class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
-                autocomplete="username"
+                autocomplete="email"
+                required
             />
         </div>
 
@@ -326,6 +290,7 @@
                 placeholder="Ingresá tu contraseña"
                 class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
                 autocomplete="current-password"
+                required
             />
         </div>
 
@@ -351,6 +316,14 @@
                 </span>
             </span>
         </button>
+
+        <button
+            id="btnRecuperarPassword"
+            type="button"
+            class="text-sm text-blue-200 hover:text-white underline underline-offset-4"
+        >
+            Olvidé mi contraseña
+        </button>
     </form>
 
     <!-- Formulario de registro -->
@@ -370,6 +343,26 @@
                     placeholder="Ejemplo: Fabio"
                     class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
                     autocomplete="username"
+                    required
+                />
+            </div>
+
+            <div class="text-left">
+                <label
+                    for="registroCorreo"
+                    class="block font-label-md text-label-md text-white mb-2"
+                >
+                    Correo electrónico
+                </label>
+
+                <input
+                    id="registroCorreo"
+                    type="email"
+                    maxlength="254"
+                    placeholder="nombre@ejemplo.com"
+                    class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                    autocomplete="email"
+                    required
                 />
             </div>
 
@@ -384,10 +377,11 @@
                 <input
                     id="registroPassword"
                     type="password"
-                    maxlength="100"
-                    placeholder="Mínimo 4 caracteres"
+                    maxlength="72"
+                    placeholder="Mínimo 12 caracteres"
                     class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
                     autocomplete="new-password"
+                    required
                 />
             </div>
 
@@ -406,6 +400,7 @@
                     placeholder="Repetí la contraseña"
                     class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
                     autocomplete="new-password"
+                    required
                 />
             </div>
 
@@ -437,7 +432,17 @@
             Cada usuario conserva sus propios recordatorios, resultados y progreso.
         </p>-->
     </div>
-        </div>
+        </section>
+
+        <aside class="welcome-brand-panel hidden min-h-screen items-center justify-center p-10 lg:flex" aria-label="Identidad visual de HADES">
+            <div class="welcome-logo-frame flex w-full max-w-[680px] items-center justify-center">
+                <img
+                    src="../assets/img/logo_final.png"
+                    alt="Escudo con la letra H, logo de HADES"
+                    class="welcome-main-logo w-full object-contain"
+                />
+            </div>
+        </aside>
     </main>
 
     <!-- Imagen decorativa 
@@ -451,8 +456,8 @@
     </div>-->
 
     <!-- Footer -->
-    <footer class="absolute bottom-stack-md w-full text-center px-margin-mobile z-20">
-        <p class="font-caption text-caption text-white/40">
+    <footer class="welcome-footer relative z-20 w-full px-margin-mobile py-4 text-center lg:fixed lg:bottom-0 lg:left-0 lg:w-1/2">
+        <p class="font-caption text-caption text-white/50">
             © 2026 HADES(Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital). Proyecto Final de Carrera.
         </p>
     </footer>
