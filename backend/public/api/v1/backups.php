@@ -14,6 +14,25 @@ function backupDate(mixed $value): ?DateTimeImmutable
     }
 
     try {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) === 1) {
+            $date = DateTimeImmutable::createFromFormat(
+                '!Y-m-d',
+                $value,
+                new DateTimeZone('UTC')
+            );
+            $errors = DateTimeImmutable::getLastErrors();
+
+            if (
+                $date === false
+                || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
+                || $date->format('Y-m-d') !== $value
+            ) {
+                return null;
+            }
+
+            return $date;
+        }
+
         return (new DateTimeImmutable($value))->setTimezone(new DateTimeZone('UTC'));
     } catch (Throwable) {
         return null;

@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const nombreUsuarioActual = document.getElementById(
         "nombreUsuarioActual"
     );
-    const idUsuarioActual = document.getElementById("idUsuarioActual");
 
     const btnCerrarSesion = document.getElementById("btnCerrarSesion");
 
@@ -31,6 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const apiKeyVirusTotal = document.getElementById("apiKeyVirusTotal");
     const apiKeyHIBP = document.getElementById("apiKeyHIBP");
     const mensajeApiKeys = document.getElementById("mensajeApiKeys");
+    const btnAyudaApiKeys = document.getElementById("btnAyudaApiKeys");
+    const tarjetaAyudaApiKeys = document.getElementById("tarjetaAyudaApiKeys");
+    const btnCerrarAyudaApiKeys = document.getElementById(
+        "btnCerrarAyudaApiKeys"
+    );
 
     apiKeyVirusTotal.value = localStorage.getItem("hades_vt_apikey") || "";
     apiKeyHIBP.value = localStorage.getItem("hades_hibp_apikey") || "";
@@ -109,6 +113,36 @@ document.addEventListener("DOMContentLoaded", () => {
         elemento.classList.add("hidden");
     }
 
+    function mostrarAyudaApiKeys() {
+        tarjetaAyudaApiKeys.classList.remove("hidden");
+        tarjetaAyudaApiKeys.classList.add("flex");
+        tarjetaAyudaApiKeys.setAttribute("aria-hidden", "false");
+        btnCerrarAyudaApiKeys.focus();
+    }
+
+    function ocultarAyudaApiKeys() {
+        tarjetaAyudaApiKeys.classList.add("hidden");
+        tarjetaAyudaApiKeys.classList.remove("flex");
+        tarjetaAyudaApiKeys.setAttribute("aria-hidden", "true");
+        btnAyudaApiKeys.focus();
+    }
+
+    btnAyudaApiKeys.addEventListener("click", mostrarAyudaApiKeys);
+    btnCerrarAyudaApiKeys.addEventListener("click", ocultarAyudaApiKeys);
+    tarjetaAyudaApiKeys.addEventListener("click", (event) => {
+        if (event.target === tarjetaAyudaApiKeys) {
+            ocultarAyudaApiKeys();
+        }
+    });
+    document.addEventListener("keydown", (event) => {
+        if (
+            event.key === "Escape" &&
+            !tarjetaAyudaApiKeys.classList.contains("hidden")
+        ) {
+            ocultarAyudaApiKeys();
+        }
+    });
+
     function mostrarMensajeApiKeys(mensaje, tipo) {
         mensajeApiKeys.textContent = mensaje;
         mensajeApiKeys.classList.remove("hidden", "text-error", "text-secondary");
@@ -166,8 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         nombreUsuarioActual.textContent = usuarioActual.nombre;
-        idUsuarioActual.textContent =
-            `ID de usuario: ${usuarioActual.id_usuario}`;
 
         nuevoNombreUsuario.value = usuarioActual.nombre;
 

@@ -81,18 +81,30 @@
 
     function renderContentTypes(rows) {
         contentTypesElement.replaceChildren();
-        if (!rows.length) {
+        const typeLabels = {
+            scenario_sv: "Escenarios smishing/vishing",
+            scenario_phishing: "Escenarios de phishing",
+            concept: "Conceptos",
+            myth: "Mitos y verdades",
+            trivia: "Trivias",
+            section: "Secciones",
+            presentation: "Presentaciones educativas"
+        };
+        const visibleRows = rows.filter(
+            (row) => typeof row.tipo === "string" && row.tipo.trim() !== ""
+        );
+        if (!visibleRows.length) {
             contentTypesElement.textContent = "Todavía no hay contenidos cargados.";
             return;
         }
 
-        rows.forEach((row) => {
+        visibleRows.forEach((row) => {
             const wrapper = document.createElement("div");
             const labelRow = document.createElement("div");
             labelRow.className = "mb-2 flex justify-between gap-3 text-sm";
             const label = document.createElement("span");
             label.className = "font-bold";
-            label.textContent = `${row.tipo} · ${row.publicados}/${row.total} publicados`;
+            label.textContent = typeLabels[row.tipo] || row.tipo;
             const count = document.createElement("span");
             count.className = "text-slate-600 dark:text-slate-300";
             count.textContent = String(row.total);
@@ -113,7 +125,7 @@
         if (!rows.length) {
             const row = document.createElement("tr");
             const cell = document.createElement("td");
-            cell.colSpan = 4;
+            cell.colSpan = 3;
             cell.className = "px-6 py-8 text-center text-slate-600 dark:text-slate-300";
             cell.textContent = "Todavía no hay usuarios registrados.";
             row.appendChild(cell);
@@ -124,7 +136,7 @@
         rows.forEach((user) => {
             const row = document.createElement("tr");
             row.className = "border-t border-[#d1e5fa] dark:border-[#2b4e80]";
-            [user.nombre, user.correo, user.rol, new Date(user.fecha_creacion).toLocaleDateString("es-AR")].forEach((value) => {
+            [user.nombre, user.rol, new Date(user.fecha_creacion).toLocaleDateString("es-AR")].forEach((value) => {
                 const cell = document.createElement("td");
                 cell.className = "px-6 py-4";
                 cell.textContent = value;

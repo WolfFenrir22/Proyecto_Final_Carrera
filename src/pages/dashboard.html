@@ -259,35 +259,6 @@
 
      <!-- Bento Grid Status Cards -->
      <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-      <!-- tarjeta Ultimo Backup -->
-      <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between group hover:shadow-md transition-all">
-       <div class="flex items-start justify-between">
-        <div class="p-3 bg-blue-100 dark:bg-blue-900/60 rounded-xl text-primary dark:text-blue-300">
-         <span class="material-symbols-outlined" data-icon="cloud_upload">
-          cloud_upload
-         </span>
-        </div>
-        <span
-            id="dashboardFechaBackup"
-            class="text-caption text-slate-500 dark:text-slate-400 font-semibold">
-            Sin datos
-        </span>
-       </div>
-       <div class="mt-stack-lg">
-        <h3
-            id="dashboardTituloBackup"
-            class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">
-            Próximo Backup
-        </h3>
-        <p
-            id="dashboardDescripcionBackup"
-            class="text-body-md text-slate-700 dark:text-slate-300">
-            Sin recordatorios configurados.
-        </p>
-       </div>
-      </div>
-
-      <!-- tarjeta ultima simulacion de phishing-->
       <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
         <div class="p-3 bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 rounded-xl">
@@ -302,13 +273,13 @@
             0%
         </span>
          <span class="text-caption text-slate-600 dark:text-slate-400 font-medium">
-          Puntuaci&oacute;n
+         Promedio
          </span>
         </div>
        </div>
        <div class="mt-stack-lg flex-1">
         <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">
-            Última Simulación de Phishing
+            Progreso en simulación de phishing
         </h3>
         <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 mt-4">
          <div id="dashboardBarraPhishing"
@@ -324,29 +295,33 @@
        </div>
       </div>
 
-      <!--tarjeta ultima trivia-->
       <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between group hover:shadow-md transition-all">
        <div class="flex items-start justify-between">
-        <div class="p-3 bg-rose-100 dark:bg-rose-900/50 text-rose-800 dark:text-rose-300 rounded-xl">
-         <span class="material-symbols-outlined" data-icon="gpp_maybe">
-          gpp_maybe
-         </span>
+        <div class="p-3 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 rounded-xl">
+         <span class="material-symbols-outlined">sms</span>
         </div>
-        <span
-            id="dashboardNivelTrivia"
-            class="px-2 py-1 bg-rose-100 dark:bg-rose-900/50 text-rose-800 dark:text-rose-200 text-[10px] font-bold rounded">
-            SIN DATOS
-        </span>
+        <span id="dashboardPromedioSmishingVishing" class="text-h3 font-bold text-purple-800 dark:text-purple-300">0%</span>
        </div>
        <div class="mt-stack-lg flex-1">
-        <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">
-            Última Trivia
-        </h3>
-        <p
-            id="dashboardDetalleTrivia"
-            class="text-body-md text-slate-700 dark:text-slate-300">
-            No hay resultados registrados.
-        </p>
+        <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Progreso en simulador de smishing/vishing</h3>
+        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 mt-4">
+         <div id="dashboardBarraSmishingVishing" class="bg-purple-500 h-2 rounded-full" style="width: 0%"></div>
+        </div>
+        <p id="dashboardDetalleSmishingVishing" class="text-caption mt-4 text-slate-700 dark:text-slate-300">Todavía no hay casos completados.</p>
+       </div>
+      </div>
+
+      <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between group hover:shadow-md transition-all">
+       <div class="flex items-start">
+        <div class="p-3 bg-blue-100 dark:bg-blue-900/60 rounded-xl text-primary dark:text-blue-300">
+         <span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
+        </div>
+       </div>
+       <div class="mt-stack-lg">
+        <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Próximo Backup</h3>
+        <p id="dashboardDescripcionBackup" class="text-body-md font-semibold text-slate-900 dark:text-white">Sin recordatorios configurados.</p>
+        <p id="dashboardFechaBackup" class="mt-1 text-caption text-slate-600 dark:text-slate-400">Sin fecha programada.</p>
+        <p id="dashboardUbicacionBackup" class="mt-1 text-caption text-slate-600 dark:text-slate-400"></p>
        </div>
       </div>
      </div>
@@ -363,19 +338,6 @@
       <div class="mt-stack-lg">
        <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Actividad completada</h3>
        <p id="dashboardDetalleActividades" class="text-caption text-slate-700 dark:text-slate-300">Todavía no hay actividades registradas.</p>
-      </div>
-     </div>
-
-     <div class="bg-white dark:bg-[#14254b] p-6 rounded-2xl shadow-sm border border-[#a8cdfc] dark:border-blue-800/60 flex flex-col justify-between">
-      <div class="flex items-center justify-between">
-       <div class="p-3 bg-amber-100 dark:bg-amber-900/40 rounded-xl text-amber-700 dark:text-amber-300">
-        <span class="material-symbols-outlined">analytics</span>
-       </div>
-       <span id="dashboardPromedioSimulaciones" class="text-h3 font-bold text-amber-700 dark:text-amber-300">0%</span>
-      </div>
-      <div class="mt-stack-lg">
-       <h3 class="font-h3 text-h3 text-slate-900 dark:text-white mb-2">Rendimiento en simuladores</h3>
-       <p id="dashboardDetalleSimulaciones" class="text-caption text-slate-700 dark:text-slate-300">Completá un caso para generar tu promedio.</p>
       </div>
      </div>
 
@@ -419,39 +381,29 @@
         <h2 class="font-h2 text-h2 text-white">
          Academia de Defensa
         </h2>
-        <p class="text-white/90 dark:text-slate-300 font-body-md">
-         Has completado el 65% de tu entrenamiento b&aacute;sico en ciberseguridad. &iexcl;Sigue as&iacute;!
+        <p id="dashboardDetalleProgresoAcademia" class="text-white/90 dark:text-slate-300 font-body-md">
+         Cargando tu progreso de lectura en ciberseguridad...
         </p>
         <div class="space-y-2">
          <div class="flex justify-between text-caption">
           <span>
-           Progreso General
+           Progreso de lectura de Academia
           </span>
-          <span>
-           65%
-          </span>
+          <span id="dashboardPorcentajeAcademia">0%</span>
          </div>
          <div class="w-full bg-white/20 dark:bg-slate-800 rounded-full h-3">
-          <div class="bg-secondary-fixed h-3 rounded-full w-[65%]">
+          <div id="dashboardBarraProgresoAcademia" class="bg-secondary-fixed h-3 rounded-full transition-all duration-500" role="progressbar" aria-label="Progreso de lectura de Academia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: 0%">
           </div>
          </div>
         </div>
         <div class="flex flex-wrap gap-stack-sm pt-4">
          <div class="flex items-center gap-2 bg-white/10 dark:bg-[#1a3162] px-3 py-2 rounded-lg border border-white/10 dark:border-blue-700/40">
-          <span class="material-symbols-outlined text-sm">
-           check_circle
-          </span>
-          <span class="text-caption">
-           Phishing (Completado)
-          </span>
+          <span class="material-symbols-outlined text-sm" aria-hidden="true">check_circle</span>
+          <span id="dashboardConceptosLeidos" class="text-caption">0 elementos leídos</span>
          </div>
          <div class="flex items-center gap-2 bg-white/20 dark:bg-[#1a3162] px-3 py-2 rounded-lg border border-white/20 dark:border-blue-700/40">
-          <span class="material-symbols-outlined text-sm">
-           pending
-          </span>
-          <span class="text-caption">
-           2FA Avanzado (En curso)
-          </span>
+          <span class="material-symbols-outlined text-sm" aria-hidden="true">pending</span>
+          <span id="dashboardConceptosPendientes" class="text-caption">0 elementos pendientes</span>
          </div>
         </div>
        </div>
@@ -461,26 +413,6 @@
         </a>
        </div>
       </div>
-      <!-- ==================== BOTÓN DE PANÍCO(VER SI SE UTILIZARA) =====================-->
-      <div class="bg-white dark:bg-[#14254b] border-2 border-dashed border-error/30 rounded-2xl p-6 flex flex-col items-center text-center justify-center space-y-stack-md">
-       <div class="w-20 h-20 rounded-full bg-error/10 flex items-center justify-center">
-        <span class="material-symbols-outlined text-error text-4xl" style="font-variation-settings: 'FILL' 1;">
-         bolt
-        </span>
-       </div>
-       <div>
-        <h3 class="font-h3 text-h3 text-slate-900 dark:text-white">
-         Respuesta R&aacute;pida
-        </h3>
-        <p class="text-caption text-slate-700 dark:text-slate-300 px-4">
-         &iquest;Algo no va bien? Activa el protocolo de contenci&oacute;n inmediata.
-        </p>
-       </div>
-       <button class="w-full bg-error text-white font-h3 py-4 rounded-xl shadow-xl hover:brightness-110 active:scale-[0.98] transition-all">
-        PROTOCOLO DE ALERTA
-       </button>
-      </div>
-      <!-- ===================================================================================-->
      </div>
       <!-- ===================================================================================-->
 

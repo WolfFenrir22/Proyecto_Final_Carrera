@@ -43,12 +43,13 @@ try {
         'SELECT tipo, COUNT(*) AS total,
                 SUM(CASE WHEN activo = 1 THEN 1 ELSE 0 END) AS publicados
          FROM contenido_academia
+         WHERE TRIM(tipo) <> ""
          GROUP BY tipo
          ORDER BY tipo'
     )->fetchAll();
 
     $recentUsers = $connection->query(
-        'SELECT nombre, correo, rol,
+        'SELECT nombre, rol,
                 DATE_FORMAT(fecha_creacion, "%Y-%m-%dT%H:%i:%sZ") AS fecha_creacion
          FROM usuarios
          ORDER BY fecha_creacion DESC, id DESC

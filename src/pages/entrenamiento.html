@@ -404,6 +404,15 @@
                 <span class="material-symbols-outlined">close</span>
               </button>
             </div>
+            <div id="filtroCategoriasConceptos" class="hidden flex-col gap-3 rounded-xl border border-[#cbdff7] dark:border-blue-900/50 bg-[#f8faff] dark:bg-[#142244] p-4 sm:flex-row sm:items-end sm:justify-between">
+              <div class="w-full sm:max-w-sm">
+                <label for="selectCategoriaConceptos" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">Categorías</label>
+                <select id="selectCategoriaConceptos" class="w-full rounded-xl border border-[#a4c9f7] dark:border-blue-700/60 bg-white dark:bg-[#1a3162] px-4 py-3 text-slate-900 dark:text-white focus:border-primary dark:focus:border-blue-400 focus:ring-2 focus:ring-primary/20">
+                  <option value="todas">Todas las categorías</option>
+                </select>
+              </div>
+              <p id="progresoLecturaConceptos" class="text-sm font-semibold text-slate-700 dark:text-slate-300" aria-live="polite">0 de 0 elementos leídos</p>
+            </div>
             <div id="contenidoAcademia" class="space-y-4 text-sm text-slate-800 dark:text-slate-200"></div>
             <div id="recomendacionesAcademia" class="bg-[#f8faff] dark:bg-[#142244] border border-[#cbdff7] dark:border-blue-900/50 rounded-xl p-4 text-sm text-slate-800 dark:text-slate-200"></div>
           </div>
@@ -427,6 +436,10 @@
                   <p class="text-sm font-bold text-primary dark:text-blue-300 mb-1">Recomendación de HADES</p>
                   <p id="recomendacionConceptoAcademia" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">Recomendación del concepto.</p>
                 </div>
+                <button id="btnMarcarConceptoLeidoModal" type="button" class="hidden inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500 px-5 py-3 font-bold text-white transition-colors hover:bg-blue-600">
+                  <span class="material-symbols-outlined" aria-hidden="true">checklist</span>
+                  Marcar como leído
+                </button>
               </div>
             </div>
           </div>
@@ -450,33 +463,30 @@
           </div>
         </div>
 
-        <!-- Contenido: tarjeta del test -->
-        <div class="bg-white dark:bg-[#0f1b36] rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-sm overflow-hidden">
-          <div class="relative h-52 overflow-hidden">
-            <img
-              class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80"
-              alt="Test de nivel"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-white text-4xl">quiz</span>
-                <h3 class="text-2xl font-bold text-white">Test de Nivel</h3>
-              </div>
-            </div>
+        <section class="rounded-2xl border border-[#d2e3fc] bg-white p-6 shadow-sm dark:border-blue-900/40 dark:bg-[#0f1b36]">
+          <div class="mb-5">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Elegí el nivel del test</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">Cada nivel tiene 10 preguntas, divididas en dos tandas de cinco.</p>
           </div>
-          <div class="p-6 flex flex-col gap-4">
-            <p class="text-slate-700 dark:text-slate-300">
-              Respond&eacute; las preguntas para conocer tu nivel actual de conocimiento sobre ciberseguridad. Al finalizar recibirás un resultado personalizado con recomendaciones.
-            </p>
-            <button
-              id="btnTestNivel"
-              type="button"
-              class="w-full py-3 bg-secondary text-white rounded-xl font-bold hover:bg-secondary/90 shadow-sm transition-colors active:scale-[0.98] flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">play_arrow</span>
-              Elegir dificultad
+          <div id="opcionesDificultadTrivia" class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <button type="button" data-dificultad-test="Básico" aria-pressed="false" class="rounded-xl border border-emerald-300 bg-emerald-50 p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-500 hover:bg-emerald-100 focus:outline-none focus:ring-4 focus:ring-emerald-200 dark:border-emerald-800 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:focus:ring-emerald-900">
+              <span class="material-symbols-outlined text-emerald-700 dark:text-emerald-300">signal_cellular_alt_1_bar</span>
+              <span class="mt-2 block text-lg font-extrabold text-emerald-950 dark:text-emerald-100">Nivel básico</span>
+              <span class="mt-1 block text-sm text-emerald-800 dark:text-emerald-200">Conceptos y hábitos esenciales.</span>
+            </button>
+            <button type="button" data-dificultad-test="Intermedio" aria-pressed="false" class="rounded-xl border border-amber-300 bg-amber-50 p-5 text-left transition hover:-translate-y-0.5 hover:border-amber-500 hover:bg-amber-100 focus:outline-none focus:ring-4 focus:ring-amber-200 dark:border-amber-800 dark:bg-amber-950/50 dark:hover:bg-amber-900/60 dark:focus:ring-amber-900">
+              <span class="material-symbols-outlined text-amber-700 dark:text-amber-300">signal_cellular_alt_2_bar</span>
+              <span class="mt-2 block text-lg font-extrabold text-amber-950 dark:text-amber-100">Nivel intermedio</span>
+              <span class="mt-1 block text-sm text-amber-800 dark:text-amber-200">Aplicá buenas prácticas en situaciones cotidianas.</span>
+            </button>
+            <button type="button" data-dificultad-test="Avanzado" aria-pressed="false" class="rounded-xl border border-rose-300 bg-rose-50 p-5 text-left transition hover:-translate-y-0.5 hover:border-rose-500 hover:bg-rose-100 focus:outline-none focus:ring-4 focus:ring-rose-200 dark:border-rose-800 dark:bg-rose-950/50 dark:hover:bg-rose-900/60 dark:focus:ring-rose-900">
+              <span class="material-symbols-outlined text-rose-700 dark:text-rose-300">signal_cellular_alt</span>
+              <span class="mt-2 block text-lg font-extrabold text-rose-950 dark:text-rose-100">Nivel avanzado</span>
+              <span class="mt-1 block text-sm text-rose-800 dark:text-rose-200">Analizá riesgos y respuestas más complejas.</span>
             </button>
           </div>
-        </div>
+          <p id="mensajeTestNivel" role="status" class="mt-4 hidden rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-200"></p>
+        </section>
 
         <div id="panelTestContenido" class="hidden bg-white dark:bg-[#0f1b36] rounded-2xl border border-[#d2e3fc] dark:border-blue-900/40 shadow-md p-6 space-y-4 text-slate-900 dark:text-white">
           <div>
@@ -484,7 +494,7 @@
             <h3 class="font-h3 text-h3 text-slate-900 dark:text-white">Test de Nivel en Seguridad Digital</h3>
             <p class="text-sm text-slate-700 dark:text-slate-300 mt-2">Respondé las preguntas para conocer tu nivel inicial de conocimientos sobre ciberseguridad cotidiana.</p>
           </div>
-          <div id="contenidoTestNivel" class="space-y-4"></div>
+          <div id="contenidoTestNivel" class="space-y-4" aria-live="polite"></div>
         </div>
       </div>
       <!-- ===== FIN PANEL TEST ===== -->

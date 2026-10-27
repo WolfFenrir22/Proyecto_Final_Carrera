@@ -496,6 +496,15 @@
                 Ingresá una contraseña para recibir sugerencias.
             </p>
         </div>
+        <button
+            id="btnGuardarPasswordEvaluada"
+            type="button"
+            class="mt-4 w-full bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+        >
+            <span class="material-symbols-outlined">save</span>
+            Guardar contraseña
+        </button>
+        <p id="mensajePasswordEvaluada" class="hidden mt-2 text-sm text-secondary dark:text-emerald-300" role="status"></p>
     </div>
 </section>
 
@@ -718,6 +727,24 @@
                         class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white"
                         placeholder="Ej: Correo electrónico principal"
                         required
+                    />
+                </div>
+
+                <div>
+                    <label
+                        for="correoPassword"
+                        class="block text-label-md font-bold text-slate-900 dark:text-white mb-2"
+                    >
+                        Correo
+                    </label>
+
+                    <input
+                        id="correoPassword"
+                        type="email"
+                        maxlength="254"
+                        autocomplete="email"
+                        class="w-full bg-white dark:bg-[#1a3162] border-2 border-[#a4c9f7] dark:border-blue-700/60 focus:border-primary dark:focus:border-blue-400 focus:ring-0 rounded-xl px-4 py-3 transition-all text-slate-900 dark:text-white"
+                        placeholder="Ej: nombre@correo.com"
                     />
                 </div>
 

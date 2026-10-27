@@ -24,24 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const difficulty = difficultyByOption[option];
         if (!difficulty) return;
 
-        if (activityWaitingForDifficulty === "testNivel") {
-            const questions = preguntasTriviaSeguridad.filter(
-                (question) => question.dificultad === difficulty
-            );
-            if (!questions.length) {
-                levelPickerMessage.textContent = `Todavía no hay preguntas de trivia para el nivel ${difficulty}. Pedile al administrador que agregue contenido de esta dificultad.`;
-                levelPickerMessage.classList.remove("hidden");
-                return;
-            }
-
-            preguntasTriviaActivas = questions;
-            renderizarTriviaSeguridad(contenidoTestNivel, questions);
-            panelTestContenido.classList.remove("hidden");
-            hideLevelPicker();
-            panelTestContenido.scrollIntoView({ behavior: "smooth", block: "start" });
-            return;
-        }
-
         const scenarios = activityWaitingForDifficulty === "simPhishing"
             ? escenariosPhishing
             : activityWaitingForDifficulty === "simSmishing"
@@ -211,7 +193,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCursoCiberHigiene = document.getElementById("btnCursoCiberHigiene");
     const btnMitosRealidades = document.getElementById("btnMitosRealidades");
     const btnAnatomiaAtaque = document.getElementById("btnAnatomiaAtaque");
-    const btnTestNivel = document.getElementById("btnTestNivel");
+    const opcionesDificultadTrivia = document.getElementById(
+        "opcionesDificultadTrivia"
+    );
+    const mensajeTestNivel = document.getElementById("mensajeTestNivel");
     const panelTestContenido = document.getElementById("panelTestContenido");
     const contenidoTestNivel = document.getElementById("contenidoTestNivel");
 
@@ -244,8 +229,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const recomendacionConceptoAcademia = document.getElementById(
         "recomendacionConceptoAcademia"
     );
+    const btnMarcarConceptoLeidoModal = document.getElementById(
+        "btnMarcarConceptoLeidoModal"
+    );
     const btnCerrarModalConcepto = document.getElementById(
         "btnCerrarModalConcepto"
+    );
+    const filtroCategoriasConceptos = document.getElementById(
+        "filtroCategoriasConceptos"
+    );
+    const selectCategoriaConceptos = document.getElementById(
+        "selectCategoriaConceptos"
+    );
+    const progresoLecturaConceptos = document.getElementById(
+        "progresoLecturaConceptos"
     );
     //######### FIN Elementos del modal Academia ############
 
@@ -772,11 +769,18 @@ mostrarUsuarioEnSesion();
     let contenidosAcademia = {};
 
 let conceptosCiberHigiene = [];
+let conceptosLeidos = new Set();
+let conceptoActualModal = null;
 
 let mitosRealidades = [];
+let mitosLeidos = new Set();
+let mitoActualModal = null;
+let tipoTarjetasAcademiaActual = null;
 
     let preguntasTriviaSeguridad = [];
     let preguntasTriviaActivas = [];
+    let respuestasTrivia = new Map();
+    let paginaTrivia = 0;
 
 function mostrarContenidoAcademia(claveContenido) {
     const contenido = contenidosAcademia[claveContenido];
@@ -796,11 +800,22 @@ function mostrarContenidoAcademia(claveContenido) {
     categoriaAcademia.textContent = contenido.categoria;
     tituloAcademia.textContent = contenido.titulo;
     descripcionAcademia.textContent = contenido.descripcion;
+    const esTarjetasConceptos = contenido.tipo === "tarjetasConceptos";
+    const esTarjetasMitos = contenido.tipo === "tarjetasMitos";
+    const esColeccionFiltrable = esTarjetasConceptos || esTarjetasMitos;
+    tipoTarjetasAcademiaActual = esTarjetasConceptos
+        ? "conceptos"
+        : esTarjetasMitos
+            ? "mitos"
+            : null;
+    tituloAcademia.classList.toggle("hidden", esColeccionFiltrable);
+    filtroCategoriasConceptos.classList.toggle("hidden", !esColeccionFiltrable);
+    filtroCategoriasConceptos.classList.toggle("flex", esColeccionFiltrable);
 
     contenidoAcademia.innerHTML = "";
 
-    if (contenido.tipo === "tarjetasConceptos") {
-    renderizarTarjetasConceptos();
+    if (esTarjetasConceptos) {
+        renderizarTarjetasConceptos();
     } else if (contenido.tipo === "tarjetasMitos") {
         renderizarTarjetasMitos();
     } else if (contenido.tipo === "tarjetasInfografias") {
@@ -848,188 +863,516 @@ function mostrarContenidoAcademia(claveContenido) {
     });
 }
 
+function actualizarProgresoLecturaConceptos() {
+    if (!progresoLecturaConceptos) {
+        return;
+    }
+
+    const cantidadLeidos = conceptosCiberHigiene.filter((concepto) =>
+        conceptosLeidos.has(String(concepto.id))
+    ).length;
+    progresoLecturaConceptos.textContent =
+        `${cantidadLeidos} de ${conceptosCiberHigiene.length} conceptos leídos`;
+}
+
+function actualizarProgresoLecturaMitos() {
+    if (!progresoLecturaConceptos) {
+        return;
+    }
+
+    const cantidadLeidos = mitosRealidades.filter((mito) =>
+        mitosLeidos.has(String(mito.id))
+    ).length;
+    progresoLecturaConceptos.textContent =
+        `${cantidadLeidos} de ${mitosRealidades.length} mitos leídos`;
+}
+
+function actualizarFiltroCategorias(elementos) {
+    const categorias = [...new Set(
+        elementos.map((elemento) => elemento.categoria).filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b, "es"));
+    const categoriaSeleccionada = selectCategoriaConceptos.value || "todas";
+    selectCategoriaConceptos.replaceChildren();
+
+    const opcionTodas = document.createElement("option");
+    opcionTodas.value = "todas";
+    opcionTodas.textContent = "Todas las categorías";
+    selectCategoriaConceptos.appendChild(opcionTodas);
+
+    categorias.forEach((categoria) => {
+        const opcion = document.createElement("option");
+        opcion.value = categoria;
+        opcion.textContent = categoria;
+        selectCategoriaConceptos.appendChild(opcion);
+    });
+
+    selectCategoriaConceptos.value = categorias.includes(categoriaSeleccionada)
+        ? categoriaSeleccionada
+        : "todas";
+
+    return selectCategoriaConceptos.value;
+}
+
+function actualizarBotonLecturaConcepto(boton, leido, etiquetaLeida = "Leído") {
+    boton.setAttribute("aria-pressed", String(leido));
+    boton.classList.toggle("bg-emerald-500", leido);
+    boton.classList.toggle("hover:bg-emerald-600", leido);
+    boton.classList.toggle("bg-blue-500", !leido);
+    boton.classList.toggle("hover:bg-blue-600", !leido);
+    boton.innerHTML = `
+        <span class="material-symbols-outlined text-base" aria-hidden="true">${leido ? "check_circle" : "checklist"}</span>
+        ${leido ? etiquetaLeida : "Marcar como leído"}
+    `;
+}
+
+function persistirEstadoConceptosLeidos() {
+    const idUsuario = usuarioActual?.id_usuario ?? usuarioActual?.id;
+    if (!idUsuario) {
+        throw new Error("No se encontró el identificador de usuario para guardar el progreso.");
+    }
+
+    localStorage.setItem(
+        `hades_conceptos_leidos_${idUsuario}`,
+        JSON.stringify([...conceptosLeidos])
+    );
+}
+
+function persistirEstadoMitosLeidos() {
+    const idUsuario = usuarioActual?.id_usuario ?? usuarioActual?.id;
+    if (!idUsuario) {
+        throw new Error("No se encontró el identificador de usuario para guardar el progreso.");
+    }
+
+    localStorage.setItem(
+        `hades_mitos_leidos_${idUsuario}`,
+        JSON.stringify([...mitosLeidos])
+    );
+}
+
+function cargarConceptosLeidos() {
+    const idUsuario = usuarioActual?.id_usuario ?? usuarioActual?.id;
+    if (!idUsuario) {
+        throw new Error("No se encontró el identificador de usuario para cargar el progreso.");
+    }
+
+    try {
+        const datos = localStorage.getItem(
+            `hades_conceptos_leidos_${idUsuario}`
+        );
+        if (!datos) {
+            return new Set();
+        }
+
+        const idsLeidos = JSON.parse(datos);
+        if (!Array.isArray(idsLeidos)) {
+            throw new Error("El progreso de lectura guardado no es válido.");
+        }
+
+        return new Set(idsLeidos.filter((id) => typeof id === "string"));
+    } catch (error) {
+        console.error("No se pudo leer el progreso de lectura guardado:", error);
+        if (progresoLecturaConceptos) {
+            progresoLecturaConceptos.textContent =
+                "No se pudo cargar el progreso de lectura guardado.";
+        }
+        return new Set();
+    }
+}
+
+function cargarMitosLeidos() {
+    const idUsuario = usuarioActual?.id_usuario ?? usuarioActual?.id;
+    if (!idUsuario) {
+        throw new Error("No se encontró el identificador de usuario para cargar el progreso.");
+    }
+
+    try {
+        const datos = localStorage.getItem(`hades_mitos_leidos_${idUsuario}`);
+        if (!datos) {
+            return new Set();
+        }
+
+        const idsLeidos = JSON.parse(datos);
+        if (!Array.isArray(idsLeidos)) {
+            throw new Error("El progreso de mitos guardado no es válido.");
+        }
+
+        return new Set(idsLeidos.filter((id) => typeof id === "string"));
+    } catch (error) {
+        console.error("No se pudo leer el progreso de mitos guardado:", error);
+        if (progresoLecturaConceptos) {
+            progresoLecturaConceptos.textContent =
+                "No se pudo cargar el progreso de lectura guardado.";
+        }
+        return new Set();
+    }
+}
+
+function cambiarEstadoConceptoLeido(idConcepto) {
+    const id = String(idConcepto);
+    const estabaLeido = conceptosLeidos.has(id);
+    if (estabaLeido) {
+        conceptosLeidos.delete(id);
+    } else {
+        conceptosLeidos.add(id);
+    }
+
+    try {
+        persistirEstadoConceptosLeidos();
+    } catch (error) {
+        if (estabaLeido) {
+            conceptosLeidos.add(id);
+        } else {
+            conceptosLeidos.delete(id);
+        }
+        console.error("No se pudo guardar el progreso de lectura:", error);
+        progresoLecturaConceptos.textContent =
+            "No se pudo guardar el progreso de lectura.";
+        return;
+    }
+
+    actualizarProgresoLecturaConceptos();
+    renderizarTarjetasConceptos();
+    if (conceptoActualModal?.id === idConcepto) {
+        actualizarBotonLecturaConcepto(
+            btnMarcarConceptoLeidoModal,
+            conceptosLeidos.has(id),
+            "Marcar como no leído"
+        );
+    }
+}
+
+function cambiarEstadoMitoLeido(idMito) {
+    const id = String(idMito);
+    const estabaLeido = mitosLeidos.has(id);
+    if (estabaLeido) {
+        mitosLeidos.delete(id);
+    } else {
+        mitosLeidos.add(id);
+    }
+
+    try {
+        persistirEstadoMitosLeidos();
+    } catch (error) {
+        if (estabaLeido) {
+            mitosLeidos.add(id);
+        } else {
+            mitosLeidos.delete(id);
+        }
+        console.error("No se pudo guardar el progreso de mitos:", error);
+        progresoLecturaConceptos.textContent =
+            "No se pudo guardar el progreso de lectura.";
+        return;
+    }
+
+    actualizarProgresoLecturaMitos();
+    renderizarTarjetasMitos();
+    if (mitoActualModal?.id === idMito) {
+        actualizarBotonLecturaConcepto(
+            btnMarcarConceptoLeidoModal,
+            mitosLeidos.has(id),
+            "Marcar como no leído"
+        );
+    }
+}
+
 function renderizarTarjetasConceptos() {
     contenidoAcademia.innerHTML = "";
+
+    const categoriaSeleccionada =
+        actualizarFiltroCategorias(conceptosCiberHigiene);
 
     const grilla = document.createElement("div");
 
     grilla.className =
         "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4";
 
-    conceptosCiberHigiene.forEach((concepto) => {
-        const tarjeta = document.createElement("button");
+    const conceptosFiltrados = conceptosCiberHigiene.filter(
+        (concepto) =>
+            categoriaSeleccionada === "todas" ||
+            concepto.categoria === categoriaSeleccionada
+    );
 
-        tarjeta.type = "button";
+    conceptosFiltrados.forEach((concepto) => {
+        const tarjeta = document.createElement("article");
         tarjeta.className =
-            `${concepto.color} border rounded-xl p-4 text-left hover:shadow-md transition-all active:scale-[0.98]`;
+            `${concepto.color} border rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-all`;
 
-        tarjeta.innerHTML = `
-            <span class="text-xs font-bold opacity-70">
-                ${concepto.categoria}
-            </span>
+        const categoria = document.createElement("span");
+        categoria.className = "text-xs font-bold opacity-70";
+        categoria.textContent = concepto.categoria;
 
-            <h4 class="font-bold text-base mt-2">
-                ${concepto.titulo}
-            </h4>
+        const titulo = document.createElement("h4");
+        titulo.className = "font-bold text-base";
+        titulo.textContent = concepto.titulo;
 
-            <p class="text-xs opacity-80 mt-2">
-                Ver explicación y recomendación
-            </p>
-        `;
+        const acciones = document.createElement("div");
+        acciones.className = "mt-auto grid grid-cols-2 gap-3 pt-2";
 
-        tarjeta.addEventListener("click", () => {
+        const botonLeer = document.createElement("button");
+        botonLeer.type = "button";
+        botonLeer.className =
+            "flex min-w-0 w-full items-center justify-center rounded-lg border border-current/20 px-2 py-2 text-center text-xs font-bold leading-tight transition-colors hover:bg-white/50";
+        botonLeer.textContent = "Ver concepto";
+        botonLeer.addEventListener("click", () => {
             mostrarModalConcepto(concepto);
         });
+
+        const botonLeido = document.createElement("button");
+        botonLeido.type = "button";
+        botonLeido.className =
+            "inline-flex min-w-0 w-full items-center justify-center gap-1 whitespace-normal rounded-lg px-2 py-2 text-center text-xs font-bold leading-tight text-white transition-colors";
+        const idConcepto = String(concepto.id);
+        actualizarBotonLecturaConcepto(
+            botonLeido,
+            conceptosLeidos.has(idConcepto)
+        );
+        botonLeido.addEventListener("click", () => {
+            cambiarEstadoConceptoLeido(concepto.id);
+        });
+
+        acciones.append(botonLeer, botonLeido);
+        tarjeta.append(categoria, titulo, acciones);
 
         grilla.appendChild(tarjeta);
     });
 
+    actualizarProgresoLecturaConceptos();
     contenidoAcademia.appendChild(grilla);
 }
 
 function renderizarTarjetasMitos() {
     contenidoAcademia.innerHTML = "";
+    const categoriaSeleccionada = actualizarFiltroCategorias(mitosRealidades);
 
     const grilla = document.createElement("div");
 
     grilla.className =
         "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4";
 
-    mitosRealidades.forEach((mito) => {
-        const tarjeta = document.createElement("button");
+    const mitosFiltrados = mitosRealidades.filter(
+        (mito) =>
+            categoriaSeleccionada === "todas" ||
+            mito.categoria === categoriaSeleccionada
+    );
 
-        tarjeta.type = "button";
+    mitosFiltrados.forEach((mito) => {
+        const tarjeta = document.createElement("article");
         tarjeta.className =
-            `${mito.color} border rounded-xl p-4 text-left hover:shadow-md transition-all active:scale-[0.98]`;
+            `${mito.color} border rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-all`;
 
-        tarjeta.innerHTML = `
-            <span class="text-xs font-bold opacity-70">
-                ${mito.categoria}
-            </span>
+        const categoria = document.createElement("span");
+        categoria.className = "text-xs font-bold opacity-70";
+        categoria.textContent = mito.categoria;
 
-            <h4 class="font-bold text-base mt-2">
-                ${mito.mito}
-            </h4>
+        const titulo = document.createElement("h4");
+        titulo.className = "font-bold text-base";
+        titulo.textContent = mito.mito;
 
-            <p class="text-xs opacity-80 mt-2">
-                Ver realidad y explicación
-            </p>
-        `;
+        const acciones = document.createElement("div");
+        acciones.className = "mt-auto grid grid-cols-2 gap-3 pt-2";
 
-        tarjeta.addEventListener("click", () => {
+        const botonVerMito = document.createElement("button");
+        botonVerMito.type = "button";
+        botonVerMito.className =
+            "flex min-w-0 w-full items-center justify-center rounded-lg border border-current/20 px-2 py-2 text-center text-xs font-bold leading-tight transition-colors hover:bg-white/50";
+        botonVerMito.textContent = "Ver realidad";
+        botonVerMito.addEventListener("click", () => {
             mostrarModalMito(mito);
         });
 
+        const botonLeido = document.createElement("button");
+        botonLeido.type = "button";
+        botonLeido.className =
+            "inline-flex min-w-0 w-full items-center justify-center gap-1 whitespace-normal rounded-lg px-2 py-2 text-center text-xs font-bold leading-tight text-white transition-colors";
+        actualizarBotonLecturaConcepto(
+            botonLeido,
+            mitosLeidos.has(String(mito.id))
+        );
+        botonLeido.addEventListener("click", () => {
+            cambiarEstadoMitoLeido(mito.id);
+        });
+
+        acciones.append(botonVerMito, botonLeido);
+        tarjeta.append(categoria, titulo, acciones);
         grilla.appendChild(tarjeta);
     });
 
+    actualizarProgresoLecturaMitos();
     contenidoAcademia.appendChild(grilla);
+}
+
+function iniciarTestNivel(dificultad) {
+    const preguntas = preguntasTriviaSeguridad.filter(
+        (pregunta) => pregunta.dificultad === dificultad
+    );
+    if (preguntas.length !== 10) {
+        panelTestContenido.classList.add("hidden");
+        contenidoTestNivel.replaceChildren();
+        mensajeTestNivel.textContent =
+            `El nivel ${dificultad} necesita 10 preguntas y actualmente tiene ${preguntas.length}. Para cargar las preguntas iniciales, ejecutá desde la raíz del proyecto: C:\\xampp\\php\\php.exe backend\\database\\seeds\\import_academy.php. Después, volvé a abrir Entrenamiento.`;
+        mensajeTestNivel.classList.remove("hidden");
+        opcionesDificultadTrivia
+            .querySelectorAll("[data-dificultad-test]")
+            .forEach((boton) => boton.setAttribute("aria-pressed", "false"));
+        return;
+    }
+
+    mensajeTestNivel.classList.add("hidden");
+    panelTestContenido.classList.remove("hidden");
+
+    opcionesDificultadTrivia
+        .querySelectorAll("[data-dificultad-test]")
+        .forEach((boton) => {
+            boton.setAttribute(
+                "aria-pressed",
+                String(boton.dataset.dificultadTest === dificultad)
+            );
+            boton.classList.toggle(
+                "ring-4",
+                boton.dataset.dificultadTest === dificultad
+            );
+        });
+
+    renderizarTriviaSeguridad(contenidoTestNivel, preguntas);
+    panelTestContenido.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function renderizarTriviaSeguridad(
     contenedorDestino = contenidoAcademia,
     preguntas = preguntasTriviaSeguridad
 ) {
-    triviaEvaluada = false;
-
     if (!contenedorDestino) {
         return;
     }
 
-    contenedorDestino.innerHTML = "";
+    respuestasTrivia = new Map();
+    paginaTrivia = 0;
+    triviaEvaluada = false;
+    preguntasTriviaActivas = preguntas;
+    renderizarPaginaTrivia(contenedorDestino);
+}
+
+function renderizarPaginaTrivia(contenedorDestino) {
+    contenedorDestino.replaceChildren();
 
     const contenedorTrivia = document.createElement("div");
-
     contenedorTrivia.className = "space-y-5";
 
-    preguntasTriviaActivas = preguntas;
-    preguntas.forEach((pregunta, indicePregunta) => {
-        const bloquePregunta = document.createElement("div");
+    const inicio = paginaTrivia * 5;
+    const preguntasPagina = preguntasTriviaActivas.slice(inicio, inicio + 5);
+    const listaPreguntas = document.createElement("div");
+    listaPreguntas.id = "preguntasTriviaActuales";
+    listaPreguntas.className = "space-y-5";
 
+    const progreso = document.createElement("p");
+    progreso.className = "text-sm font-bold text-slate-700 dark:text-slate-300";
+    progreso.textContent =
+        `Preguntas ${inicio + 1} a ${inicio + preguntasPagina.length} de ${preguntasTriviaActivas.length}`;
+    listaPreguntas.appendChild(progreso);
+
+    preguntasPagina.forEach((pregunta, indicePagina) => {
+        const indicePregunta = inicio + indicePagina;
+        const bloquePregunta = document.createElement("div");
         bloquePregunta.className =
-            "bg-white dark:bg-[#0b2340] border border-blue-100 dark:border-blue-700/40 rounded-xl p-5 shadow-sm text-slate-900 dark:text-white";
+            "rounded-xl border border-blue-100 bg-white p-5 text-slate-900 shadow-sm dark:border-blue-700/40 dark:bg-[#0b2340] dark:text-white";
 
         const opcionesHTML = pregunta.opciones
-            .map((opcion, indiceOpcion) => {
-                return `
-                    <label class="flex items-start gap-3 p-3 mt-3 rounded-lg border border-gray-100 dark:border-blue-700/40 cursor-pointer bg-blue-50 dark:bg-[#0f2b4a] hover:border-primary hover:bg-blue-50 dark:hover:bg-[#0f2b4a] transition-colors">
-                        <input
-                            type="radio"
-                            name="${pregunta.id}"
-                            value="${indiceOpcion}"
-                            class="mt-1 text-primary focus:ring-primary"
-                        />
-
-                        <span class="text-sm text-slate-900 dark:text-white">
-                            ${opcion}
-                        </span>
-                    </label>
-                `;
-            })
+            .map((opcion, indiceOpcion) => `
+                <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-lg border border-gray-100 bg-blue-50 p-3 transition-colors hover:border-primary dark:border-blue-700/40 dark:bg-[#0f2b4a]">
+                    <input
+                        type="radio"
+                        name="respuesta-${pregunta.id}"
+                        value="${indiceOpcion}"
+                        ${respuestasTrivia.get(String(pregunta.id)) === indiceOpcion ? "checked" : ""}
+                        class="mt-1 text-primary focus:ring-primary"
+                    />
+                    <span class="text-sm text-slate-900 dark:text-white">${opcion}</span>
+                </label>
+            `)
             .join("");
 
         bloquePregunta.innerHTML = `
             <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+                <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                     ${indicePregunta + 1}
                 </div>
-
                 <div class="flex-1">
-                    <h4 class="font-bold text-primary dark:text-blue-300">
-                        ${pregunta.pregunta}
-                    </h4>
-
-                    <div>
-                        ${opcionesHTML}
-                    </div>
+                    <h4 class="font-bold text-primary dark:text-blue-300">${pregunta.pregunta}</h4>
+                    <div>${opcionesHTML}</div>
                 </div>
             </div>
         `;
 
-        contenedorTrivia.appendChild(bloquePregunta);
+        bloquePregunta
+            .querySelectorAll(`input[name="respuesta-${pregunta.id}"]`)
+            .forEach((opcion) => {
+                opcion.addEventListener("change", () => {
+                    respuestasTrivia.set(
+                        String(pregunta.id),
+                        Number(opcion.value)
+                    );
+                    actualizarAccionTrivia();
+                });
+            });
+
+        listaPreguntas.appendChild(bloquePregunta);
     });
 
+    contenedorTrivia.appendChild(listaPreguntas);
+
     const accionesTrivia = document.createElement("div");
-
+    accionesTrivia.id = "accionesTrivia";
     accionesTrivia.className =
-        "bg-white/70 dark:bg-[#0f1b36] border border-blue-100 dark:border-blue-900/40 rounded-xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-slate-900 dark:text-white";
-
+        "flex flex-col gap-4 rounded-xl border border-blue-100 bg-white/70 p-5 text-slate-900 dark:border-blue-900/40 dark:bg-[#0f1b36] dark:text-white md:flex-row md:items-center md:justify-between";
     accionesTrivia.innerHTML = `
         <div>
-            <p class="font-bold text-on-surface">
-                Finalizá el test para conocer tu nivel.
-            </p>
-            <p class="text-sm text-outline">
-                Respondé todas las preguntas antes de enviar.
-            </p>
+            <p class="font-bold">Respondé todas las preguntas de esta tanda para continuar.</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300">Tus respuestas se conservan al avanzar.</p>
         </div>
-
         <button
-            id="btnFinalizarTrivia"
+            id="btnAvanzarTrivia"
             type="button"
-            class="bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors"
-        >
-            Finalizar test
-        </button>
+            class="hidden rounded-lg bg-primary px-6 py-3 font-bold text-white transition-colors hover:bg-primary/90"
+        ></button>
     `;
-
     contenedorTrivia.appendChild(accionesTrivia);
 
     const resultadoTrivia = document.createElement("div");
-
     resultadoTrivia.id = "resultadoTriviaSeguridad";
     resultadoTrivia.className =
-        "hidden bg-white dark:bg-[#0f1b36] border border-blue-100 dark:border-blue-900/40 rounded-xl p-5 shadow-sm text-slate-900 dark:text-white";
-
+        "hidden rounded-xl border border-blue-100 bg-white p-5 text-slate-900 shadow-sm dark:border-blue-900/40 dark:bg-[#0f1b36] dark:text-white";
     contenedorTrivia.appendChild(resultadoTrivia);
 
     contenedorDestino.appendChild(contenedorTrivia);
+    actualizarAccionTrivia();
+}
 
-    const btnFinalizarTrivia = document.getElementById("btnFinalizarTrivia");
-
-    if (btnFinalizarTrivia) {
-        btnFinalizarTrivia.addEventListener("click", evaluarTriviaSeguridad);
+function actualizarAccionTrivia() {
+    const boton = document.getElementById("btnAvanzarTrivia");
+    if (!boton) {
+        return;
     }
+
+    const inicio = paginaTrivia * 5;
+    const preguntasPagina = preguntasTriviaActivas.slice(inicio, inicio + 5);
+    const tandaCompleta = preguntasPagina.every((pregunta) =>
+        respuestasTrivia.has(String(pregunta.id))
+    );
+    boton.classList.toggle("hidden", !tandaCompleta);
+    const esUltimaPagina = inicio + preguntasPagina.length >=
+        preguntasTriviaActivas.length;
+    boton.textContent = esUltimaPagina ? "Finalizar test" : "Siguiente";
+    boton.onclick = () => {
+        if (!tandaCompleta) {
+            return;
+        }
+        if (!esUltimaPagina) {
+            paginaTrivia += 1;
+            renderizarPaginaTrivia(contenidoTestNivel);
+        } else {
+            evaluarTriviaSeguridad();
+        }
+    };
 }
 
 function evaluarTriviaSeguridad() {
@@ -1046,16 +1389,12 @@ function evaluarTriviaSeguridad() {
     const detalle = [];
 
     preguntasTriviaActivas.forEach((pregunta) => {
-        const respuestaSeleccionada = document.querySelector(
-            `input[name="${pregunta.id}"]:checked`
-        );
-
-        if (!respuestaSeleccionada) {
+        const indiceSeleccionado = respuestasTrivia.get(String(pregunta.id));
+        if (indiceSeleccionado === undefined) {
             preguntasSinResponder += 1;
             return;
         }
 
-        const indiceSeleccionado = Number(respuestaSeleccionada.value);
         const esCorrecta = indiceSeleccionado === pregunta.respuestaCorrecta;
 
         if (esCorrecta) {
@@ -1079,6 +1418,8 @@ function evaluarTriviaSeguridad() {
     }
 
     ocultarMensaje();
+    document.getElementById("preguntasTriviaActuales")?.classList.add("hidden");
+    document.getElementById("accionesTrivia")?.classList.add("hidden");
 
     const totalPreguntas = preguntasTriviaActivas.length;
     const porcentaje = Math.round(
@@ -1167,13 +1508,9 @@ function mostrarResultadoTrivia(
                         Tu respuesta: ${item.respuestaUsuario}
                     </p>
 
-                    ${
-                        item.esCorrecta
-                            ? ""
-                            : `<p class="text-xs text-outline mt-1">
-                                Respuesta correcta: ${item.respuestaCorrecta}
-                               </p>`
-                    }
+                    <p class="text-xs text-outline mt-1">
+                        Respuesta correcta: ${item.respuestaCorrecta}
+                    </p>
 
                     <p class="text-xs text-outline mt-2">
                         ${item.explicacion}
@@ -1278,6 +1615,14 @@ function mostrarModalMito(mito) {
     imagenConceptoAcademia.src = mito.imagen;
     categoriaConceptoAcademia.textContent = mito.categoria;
     tituloConceptoAcademia.textContent = "Mito vs. Realidad";
+    conceptoActualModal = null;
+    mitoActualModal = mito;
+    btnMarcarConceptoLeidoModal.classList.remove("hidden");
+    actualizarBotonLecturaConcepto(
+        btnMarcarConceptoLeidoModal,
+        mitosLeidos.has(String(mito.id)),
+        "Marcar como no leído"
+    );
 
     descripcionConceptoAcademia.innerHTML = `
         <span class="block font-bold text-error mb-2">
@@ -1320,10 +1665,19 @@ function mostrarModalConcepto(concepto) {
     }
 
     imagenConceptoAcademia.src = concepto.imagen;
+    imagenConceptoAcademia.alt = `Imagen educativa de ${concepto.titulo}`;
     categoriaConceptoAcademia.textContent = concepto.categoria;
     tituloConceptoAcademia.textContent = concepto.titulo;
     descripcionConceptoAcademia.textContent = concepto.descripcion;
     recomendacionConceptoAcademia.textContent = concepto.recomendacion;
+    conceptoActualModal = concepto;
+    mitoActualModal = null;
+    btnMarcarConceptoLeidoModal.classList.remove("hidden");
+    actualizarBotonLecturaConcepto(
+        btnMarcarConceptoLeidoModal,
+        conceptosLeidos.has(String(concepto.id)),
+        "Marcar como no leído"
+    );
 
     modalConceptoAcademia.classList.remove("hidden");
 }
@@ -1334,6 +1688,8 @@ function cerrarModalConcepto() {
     }
 
     modalConceptoAcademia.classList.add("hidden");
+    conceptoActualModal = null;
+    mitoActualModal = null;
 }
 
 function iniciarAcademiaDigital() {
@@ -1361,9 +1717,14 @@ function iniciarAcademiaDigital() {
         });
     }
 
-    if (btnTestNivel) {
-        btnTestNivel.addEventListener("click", () => {
-            window.mostrarSelectorDificultad("testNivel");
+    if (opcionesDificultadTrivia) {
+        opcionesDificultadTrivia.addEventListener("click", (event) => {
+            const boton = event.target instanceof Element
+                ? event.target.closest("[data-dificultad-test]")
+                : null;
+            if (boton) {
+                iniciarTestNivel(boton.dataset.dificultadTest);
+            }
         });
     }
 
@@ -1372,9 +1733,29 @@ function iniciarAcademiaDigital() {
             panelAcademia.classList.add("hidden");
         });
     }
+
+    if (selectCategoriaConceptos) {
+        selectCategoriaConceptos.addEventListener("change", () => {
+            if (tipoTarjetasAcademiaActual === "mitos") {
+                renderizarTarjetasMitos();
+            } else if (tipoTarjetasAcademiaActual === "conceptos") {
+                renderizarTarjetasConceptos();
+            }
+        });
+    }
 }
         if (btnCerrarModalConcepto) {
             btnCerrarModalConcepto.addEventListener("click", cerrarModalConcepto);
+        }
+
+        if (btnMarcarConceptoLeidoModal) {
+            btnMarcarConceptoLeidoModal.addEventListener("click", () => {
+                if (conceptoActualModal) {
+                    cambiarEstadoConceptoLeido(conceptoActualModal.id);
+                } else if (mitoActualModal) {
+                    cambiarEstadoMitoLeido(mitoActualModal.id);
+                }
+            });
         }
 
         if (modalConceptoAcademia) {
@@ -1605,8 +1986,58 @@ document
             });
         }
         detalleResultadoSV.appendChild(explicacion);
-        
+
+        const puntaje =
+            (presentes.length > 0
+                ? (correctas.length / presentes.length) * 70
+                : senalesSeleccionadas.length === 0 ? 70 : 0) +
+            (esDecisionCorrecta ? 30 : 0);
+
         casoSVEvaluado = true;
+        guardarResultadoSmishingVishing({
+            puntaje: Math.round(puntaje),
+            aciertos: correctas.length,
+            errores: incorrectas.length + faltantes.length,
+            decisionSeleccionada
+        });
+    }
+
+    async function guardarResultadoSmishingVishing(resultado) {
+        let usuario;
+        try {
+            usuario = JSON.parse(
+                localStorage.getItem("hades_usuario_activo") || "null"
+            );
+        } catch (error) {
+            console.error("No se pudo leer el usuario activo:", error);
+            return;
+        }
+
+        if (!usuario?.token || !window.hadesAPI?.guardarResultadoPhishingRemoto) {
+            console.error(
+                "No se pudo guardar el resultado de smishing/vishing: falta la sesión o la API."
+            );
+            return;
+        }
+
+        try {
+            await window.hadesAPI.guardarResultadoPhishingRemoto({
+                token: usuario.token,
+                id_escenario: escenarioSVActual.id,
+                tipo_escenario: "smishing_vishing",
+                dificultad: escenarioSVActual.dificultad,
+                decision_usuario: resultado.decisionSeleccionada,
+                decision_correcta: escenarioSVActual.decisionCorrecta,
+                puntaje: resultado.puntaje,
+                aciertos: resultado.aciertos,
+                errores: resultado.errores
+            });
+        } catch (error) {
+            console.error(
+                "No se pudo guardar el resultado de smishing/vishing:",
+                error
+            );
+        }
     }
 
     function iniciarSimuladorSV() {
@@ -1627,6 +2058,8 @@ document
             if (!usuario?.token) {
                 throw new Error("No se encontró una sesión activa.");
             }
+
+            usuarioActual = usuario;
 
             const respuesta =
                 await window.hadesAPI.obtenerContenidoAcademiaRemoto(
@@ -1694,7 +2127,9 @@ document
             escenariosSV = contenido.scenario_sv;
             escenariosPhishing = contenido.scenario_phishing;
             conceptosCiberHigiene = contenido.concept;
+            conceptosLeidos = cargarConceptosLeidos();
             mitosRealidades = contenido.myth;
+            mitosLeidos = cargarMitosLeidos();
             preguntasTriviaSeguridad = contenido.trivia;
             contenidosAcademia = contenido.section;
             presentaciones = contenido.presentation;

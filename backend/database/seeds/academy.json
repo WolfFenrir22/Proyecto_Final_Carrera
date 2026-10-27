@@ -92,6 +92,261 @@
     }
   },
   {
+    "type": "scenario_sv",
+    "key": "105",
+    "sort_order": 5,
+    "payload": {
+      "id": 105,
+      "tipo": "smishing",
+      "dificultad": "Básico",
+      "remitente": "Número desconocido: +54 9 11 2468-1357",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "¡Felicitaciones! Tu número ganó un premio. Entrá al enlace para reclamarlo y completar tus datos.",
+      "enlace": "http://premio-inmediato.net/reclamo",
+      "senalesPresentes": [
+        "sv_premio_falso",
+        "sv_link_sospechoso",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_premio_falso": "Promete un premio inesperado para atraer a la persona.",
+        "sv_link_sospechoso": "El enlace dirige a un dominio desconocido.",
+        "sv_remitente_desconocido": "El mensaje llega desde un número personal no verificado."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "106",
+    "sort_order": 6,
+    "payload": {
+      "id": 106,
+      "tipo": "smishing",
+      "dificultad": "Básico",
+      "remitente": "Servicio de entregas: +54 9 11 5831-2046",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "No pudimos entregar tu paquete. Confirmá tus datos en este enlace para coordinar una nueva visita.",
+      "enlace": "https://entregas-reprogramar.info/turno",
+      "senalesPresentes": [
+        "sv_link_sospechoso",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_link_sospechoso": "El dominio no identifica a una empresa postal oficial.",
+        "sv_remitente_desconocido": "El mensaje proviene de un número móvil no verificado."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "107",
+    "sort_order": 7,
+    "payload": {
+      "id": 107,
+      "tipo": "legitimo",
+      "dificultad": "Básico",
+      "remitente": "Club Deportivo Norte",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "Te recordamos que mañana vence la inscripción a las actividades del club. Consultá horarios en la secretaría.",
+      "enlace": null,
+      "senalesPresentes": [],
+      "decisionCorrecta": "legitimo",
+      "explicaciones": {
+        "legitimo": "Es un recordatorio informativo, no incluye enlaces ni solicita datos personales o códigos."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "108",
+    "sort_order": 8,
+    "payload": {
+      "id": 108,
+      "tipo": "vishing",
+      "dificultad": "Básico",
+      "remitente": "Llamada entrante: número privado",
+      "tipoPantalla": "Transcripción de llamada (vishing)",
+      "mensaje": "Hola, soy del soporte de tu banco. Necesito que me dictes el código que acaba de llegar por SMS para cancelar una compra.",
+      "enlace": null,
+      "senalesPresentes": [
+        "sv_pide_otp",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_pide_otp": "Un código de verificación nunca debe dictarse por teléfono.",
+        "sv_remitente_desconocido": "La llamada no está verificada y no se debe confiar en la identidad declarada."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "109",
+    "sort_order": 9,
+    "payload": {
+      "id": 109,
+      "tipo": "smishing",
+      "dificultad": "Intermedio",
+      "remitente": "Soporte de billetera virtual: +54 9 11 4072-9183",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "Detectamos un acceso inusual. Para mantener tu cuenta activa, respondé con el código de seguridad que recibiste.",
+      "enlace": null,
+      "senalesPresentes": [
+        "sv_pide_otp",
+        "sv_urgencia",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_pide_otp": "Solicita un código de seguridad que permite validar el acceso a la cuenta.",
+        "sv_urgencia": "Insinúa que la cuenta puede quedar inactiva para presionar una respuesta rápida.",
+        "sv_remitente_desconocido": "El mensaje llega desde un número móvil no verificado."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "110",
+    "sort_order": 10,
+    "payload": {
+      "id": 110,
+      "tipo": "smishing",
+      "dificultad": "Intermedio",
+      "remitente": "Administración de servicios: +54 9 11 3301-7790",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "Tu factura registra un pago pendiente. Evitá la suspensión del servicio abonando hoy desde este enlace.",
+      "enlace": "http://pagos-servicio-online.com/factura",
+      "senalesPresentes": [
+        "sv_urgencia",
+        "sv_link_sospechoso",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_urgencia": "Usa la amenaza de suspensión para apurar el pago.",
+        "sv_link_sospechoso": "El dominio no corresponde a un portal oficial verificable.",
+        "sv_remitente_desconocido": "El remitente es un número móvil no identificado."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "111",
+    "sort_order": 11,
+    "payload": {
+      "id": 111,
+      "tipo": "legitimo",
+      "dificultad": "Intermedio",
+      "remitente": "Transporte Urbano",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "La línea 12 tendrá demoras aproximadas de 15 minutos por tareas de mantenimiento. Consultá los canales oficiales para más información.",
+      "enlace": null,
+      "senalesPresentes": [],
+      "decisionCorrecta": "legitimo",
+      "explicaciones": {
+        "legitimo": "El aviso solo comunica una demora, no solicita pagos, credenciales ni códigos y no incluye enlaces dudosos."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "113",
+    "sort_order": 13,
+    "payload": {
+      "id": 113,
+      "tipo": "smishing",
+      "dificultad": "Avanzado",
+      "remitente": "Aviso de seguridad: +54 9 11 2804-6612",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "Se inició una transferencia desde un dispositivo nuevo. Si no reconocés la operación, cancelala en el portal de seguridad.",
+      "enlace": "https://banco-seguridad-validacion.net/cancelar",
+      "senalesPresentes": [
+        "sv_urgencia",
+        "sv_link_sospechoso",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_urgencia": "La alerta sobre una operación puede generar alarma y llevar a actuar impulsivamente.",
+        "sv_link_sospechoso": "El enlace usa un dominio externo que no es el portal bancario oficial.",
+        "sv_remitente_desconocido": "El remitente no está verificado; conviene revisar desde la aplicación oficial."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "114",
+    "sort_order": 14,
+    "payload": {
+      "id": 114,
+      "tipo": "vishing",
+      "dificultad": "Avanzado",
+      "remitente": "Llamada entrante: supuesta mesa de ayuda de la empresa",
+      "tipoPantalla": "Transcripción de llamada (vishing)",
+      "mensaje": "La persona dice estar respondiendo a un incidente y solicita que confirmes tu usuario, apruebes una notificación de acceso y leas el código de recuperación para cerrar el caso.",
+      "enlace": null,
+      "senalesPresentes": [
+        "sv_pide_otp",
+        "sv_urgencia",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_pide_otp": "Los códigos de recuperación y aprobación de acceso no deben compartirse con quien llama.",
+        "sv_urgencia": "Presenta el pedido como parte de un incidente activo para evitar que se verifique.",
+        "sv_remitente_desconocido": "La identidad del supuesto equipo de ayuda debe confirmarse por un canal corporativo conocido."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "115",
+    "sort_order": 15,
+    "payload": {
+      "id": 115,
+      "tipo": "smishing",
+      "dificultad": "Avanzado",
+      "remitente": "Proveedor de almacenamiento: +54 9 11 5190-7426",
+      "tipoPantalla": "Mensaje de texto (SMS)",
+      "mensaje": "No se pudo renovar tu plan. Tus archivos se eliminarán en 2 horas. Ingresá al enlace para validar el medio de pago y conservar tu cuenta.",
+      "enlace": "https://nube-renovacion-cuenta.com/validar",
+      "senalesPresentes": [
+        "sv_urgencia",
+        "sv_link_sospechoso",
+        "sv_amenaza",
+        "sv_remitente_desconocido"
+      ],
+      "decisionCorrecta": "ataque",
+      "explicaciones": {
+        "sv_urgencia": "El plazo de dos horas busca impedir una verificación cuidadosa.",
+        "sv_link_sospechoso": "El dominio no es el sitio oficial del proveedor.",
+        "sv_amenaza": "Amenaza con borrar archivos para obtener una reacción inmediata.",
+        "sv_remitente_desconocido": "El mensaje proviene de un número móvil no verificado."
+      }
+    }
+  },
+  {
+    "type": "scenario_sv",
+    "key": "116",
+    "sort_order": 16,
+    "payload": {
+      "id": 116,
+      "tipo": "legitimo",
+      "dificultad": "Avanzado",
+      "remitente": "Aplicación de autenticación",
+      "tipoPantalla": "Notificación de seguridad",
+      "mensaje": "Se aprobó un inicio de sesión desde tu dispositivo habitual. Si no reconocés la actividad, abrí la aplicación oficial y revisá la sección de seguridad; no respondas a este aviso.",
+      "enlace": null,
+      "senalesPresentes": [],
+      "decisionCorrecta": "legitimo",
+      "explicaciones": {
+        "legitimo": "Es un aviso informativo que no solicita códigos, contraseñas ni pagos, y recomienda revisar la actividad en la aplicación oficial."
+      }
+    }
+  },
+  {
     "type": "scenario_phishing",
     "key": "1",
     "sort_order": 1,
@@ -254,6 +509,253 @@
       "decisionCorrecta": "legitimo",
       "explicaciones": {
         "legitimo": "El dominio es oficial, no solicita credenciales por correo y dirige a una página legítima de configuración."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "7",
+    "sort_order": 7,
+    "payload": {
+      "id": 7,
+      "tipo": "phishing",
+      "dificultad": "Básico",
+      "remitente": "Correo Argentino <avisos@seguimiento-envio.info>",
+      "asunto": "Tu paquete no pudo ser entregado",
+      "saludo": "Hola,",
+      "mensajePrincipal": "El correo indica que falta confirmar la dirección para completar la entrega de un paquete.",
+      "textoBoton": "Confirmar dirección",
+      "enlace": "http://seguimiento-envio.info/entrega",
+      "mensajeFinal": "Completá tus datos personales para coordinar una nueva visita.",
+      "adjunto": null,
+      "senalesPresentes": [
+        "dominio_falso",
+        "solicita_datos",
+        "enlace_sospechoso"
+      ],
+      "decisionCorrecta": "phishing",
+      "explicaciones": {
+        "dominio_falso": "El dominio no corresponde al sitio oficial del correo.",
+        "solicita_datos": "Pide ingresar información personal para liberar la entrega.",
+        "enlace_sospechoso": "El enlace dirige a un dominio genérico y no verificable."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "8",
+    "sort_order": 8,
+    "payload": {
+      "id": 8,
+      "tipo": "phishing",
+      "dificultad": "Básico",
+      "remitente": "Club de Beneficios <regalos@beneficios-sorpresa.net>",
+      "asunto": "Tenés un cupón de compra esperando",
+      "saludo": "¡Hola!",
+      "mensajePrincipal": "El mensaje anuncia un cupón que no solicitaste y pide completar una encuesta para recibirlo.",
+      "textoBoton": "Reclamar cupón",
+      "enlace": "http://beneficios-sorpresa.net/cupon",
+      "mensajeFinal": "El beneficio vence en una hora y requiere confirmar tu identidad.",
+      "adjunto": null,
+      "senalesPresentes": [
+        "premio_inesperado",
+        "urgencia",
+        "solicita_datos",
+        "enlace_sospechoso"
+      ],
+      "decisionCorrecta": "phishing",
+      "explicaciones": {
+        "premio_inesperado": "Promete un beneficio que la persona no solicitó.",
+        "urgencia": "El plazo breve busca que actúe sin revisar el mensaje.",
+        "solicita_datos": "Pide datos personales para reclamar el cupón.",
+        "enlace_sospechoso": "El dominio no identifica a una tienda o servicio oficial."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "9",
+    "sort_order": 9,
+    "payload": {
+      "id": 9,
+      "tipo": "legitimo",
+      "dificultad": "Básico",
+      "remitente": "Biblioteca Municipal <novedades@biblioteca.gob.ar>",
+      "asunto": "Confirmación de reserva de libro",
+      "saludo": "Hola,",
+      "mensajePrincipal": "Tu reserva está lista para retirar hasta el viernes. Este aviso no solicita contraseñas ni datos de pago.",
+      "textoBoton": "Consultar horario",
+      "enlace": "https://biblioteca.gob.ar/horarios",
+      "mensajeFinal": "También podés consultar los horarios escribiendo manualmente la dirección oficial en tu navegador.",
+      "adjunto": null,
+      "senalesPresentes": [],
+      "decisionCorrecta": "legitimo",
+      "explicaciones": {
+        "legitimo": "El mensaje es informativo, no genera presión, no pide información sensible y utiliza el dominio institucional."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "10",
+    "sort_order": 10,
+    "payload": {
+      "id": 10,
+      "tipo": "phishing",
+      "dificultad": "Intermedio",
+      "remitente": "Administración de Microsoft 365 <admin@micros0ft-empresa.com>",
+      "asunto": "Documento compartido: revisión de presupuesto",
+      "saludo": "Buen día,",
+      "mensajePrincipal": "El mensaje inesperado informa que un compañero compartió un documento y solicita iniciar sesión para verlo.",
+      "textoBoton": "Abrir documento",
+      "enlace": "https://micros0ft-empresa.com/documentos/4821",
+      "mensajeFinal": "La página solicita el correo y la contraseña institucional antes de mostrar el archivo.",
+      "adjunto": null,
+      "senalesPresentes": [
+        "dominio_falso",
+        "enlace_sospechoso",
+        "solicita_datos"
+      ],
+      "decisionCorrecta": "phishing",
+      "explicaciones": {
+        "dominio_falso": "El dominio usa un cero en lugar de la letra o y no es el oficial.",
+        "enlace_sospechoso": "El enlace lleva a un dominio imitador.",
+        "solicita_datos": "Solicita credenciales para acceder a un documento inesperado."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "11",
+    "sort_order": 11,
+    "payload": {
+      "id": 11,
+      "tipo": "legitimo",
+      "dificultad": "Intermedio",
+      "remitente": "GitHub <noreply@github.com>",
+      "asunto": "Aviso de vencimiento de un token de acceso",
+      "saludo": "Hola,",
+      "mensajePrincipal": "El aviso informa que un token de acceso personal creado por vos vencerá pronto y explica cómo revisar su configuración.",
+      "textoBoton": "Ver configuración de tokens",
+      "enlace": "https://github.com/settings/tokens",
+      "mensajeFinal": "Si no reconocés el token, ingresá manualmente a github.com y revisá la seguridad de tu cuenta.",
+      "adjunto": null,
+      "senalesPresentes": [],
+      "decisionCorrecta": "legitimo",
+      "explicaciones": {
+        "legitimo": "El remitente y el dominio son oficiales; el aviso no pide la contraseña y recomienda revisar la cuenta desde su configuración."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "12",
+    "sort_order": 12,
+    "payload": {
+      "id": 12,
+      "tipo": "phishing",
+      "dificultad": "Avanzado",
+      "remitente": "Recursos Humanos <beneficios@empresa-nomina.com>",
+      "asunto": "Actualización de datos para acreditar el bono",
+      "saludo": "Hola,",
+      "mensajePrincipal": "El mensaje imita una comunicación interna y solicita revisar un supuesto cambio en la acreditación del bono mediante un formulario externo.",
+      "textoBoton": "Revisar acreditación",
+      "enlace": "https://empresa-nomina.com/portal/beneficios",
+      "mensajeFinal": "El formulario pide usuario, contraseña corporativa y datos bancarios. Verificá la solicitud con RR. HH. por un canal conocido.",
+      "adjunto": null,
+      "senalesPresentes": [
+        "dominio_falso",
+        "solicita_datos",
+        "enlace_sospechoso"
+      ],
+      "decisionCorrecta": "phishing",
+      "explicaciones": {
+        "dominio_falso": "El dominio externo no coincide con el dominio institucional esperado.",
+        "solicita_datos": "El formulario pide credenciales y datos bancarios, información que no debería solicitarse por ese medio.",
+        "enlace_sospechoso": "El enlace lleva a un portal externo no verificado."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "13",
+    "sort_order": 13,
+    "payload": {
+      "id": 13,
+      "tipo": "phishing",
+      "dificultad": "Avanzado",
+      "remitente": "Equipo de colaboración <notificaciones@sharepoint-documentos.net>",
+      "asunto": "Se actualizó un archivo compartido",
+      "saludo": "Hola,",
+      "mensajePrincipal": "Una notificación inesperada indica que se modificó un documento compartido y adjunta una copia comprimida para revisarlo.",
+      "textoBoton": "Ver actividad del documento",
+      "enlace": "https://sharepoint-documentos.net/actividad",
+      "mensajeFinal": "El archivo adjunto solicita habilitar macros para visualizar el contenido.",
+      "adjunto": "Actualizacion_documento.zip",
+      "senalesPresentes": [
+        "dominio_falso",
+        "adjunto_sospechoso",
+        "enlace_sospechoso"
+      ],
+      "decisionCorrecta": "phishing",
+      "explicaciones": {
+        "dominio_falso": "El dominio no pertenece al servicio de colaboración oficial.",
+        "adjunto_sospechoso": "Un archivo comprimido inesperado que pide habilitar macros es un riesgo.",
+        "enlace_sospechoso": "El enlace lleva a un dominio que imita una plataforma conocida."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "14",
+    "sort_order": 14,
+    "payload": {
+      "id": 14,
+      "tipo": "legitimo",
+      "dificultad": "Avanzado",
+      "remitente": "GitHub <noreply@github.com>",
+      "asunto": "Se modificaron los permisos de un repositorio",
+      "saludo": "Hola,",
+      "mensajePrincipal": "El aviso informa que se actualizó el acceso de un colaborador en un repositorio que administrás y detalla el cambio realizado.",
+      "textoBoton": "Revisar colaboradores",
+      "enlace": "https://github.com/owner/repository/settings/access",
+      "mensajeFinal": "Si no reconocés el cambio, ingresá manualmente a github.com y revisá el historial de actividad.",
+      "adjunto": null,
+      "senalesPresentes": [],
+      "decisionCorrecta": "legitimo",
+      "explicaciones": {
+        "legitimo": "El dominio es oficial, el aviso describe una acción de seguridad sin pedir credenciales y recomienda revisar la cuenta desde el sitio conocido."
+      }
+    }
+  },
+  {
+    "type": "scenario_phishing",
+    "key": "15",
+    "sort_order": 15,
+    "payload": {
+      "id": 15,
+      "tipo": "phishing",
+      "dificultad": "Avanzado",
+      "remitente": "Firma electrónica <documentos@firma-validacion.com>",
+      "asunto": "Documento pendiente de firma: acuerdo de servicios",
+      "saludo": "Buen día,",
+      "mensajePrincipal": "El correo inesperado informa que hay un documento pendiente y solicita descargar un archivo para iniciar la revisión.",
+      "textoBoton": "Revisar documento",
+      "enlace": "http://firma-validacion.com/descarga",
+      "mensajeFinal": "El mensaje advierte que el documento será cancelado hoy y pide iniciar sesión con una cuenta de correo externa.",
+      "adjunto": "Acuerdo_servicios.iso",
+      "senalesPresentes": [
+        "urgencia",
+        "adjunto_sospechoso",
+        "enlace_sospechoso",
+        "solicita_datos"
+      ],
+      "decisionCorrecta": "phishing",
+      "explicaciones": {
+        "urgencia": "El vencimiento inmediato presiona para que se actúe sin verificar.",
+        "adjunto_sospechoso": "El archivo ISO es inesperado y no debería abrirse sin confirmar su origen.",
+        "enlace_sospechoso": "El dominio no permite verificar que se trate de un proveedor legítimo.",
+        "solicita_datos": "Pide iniciar sesión con una cuenta externa desde un enlace recibido."
       }
     }
   },
@@ -635,6 +1137,456 @@
       ],
       "respuestaCorrecta": 0,
       "explicacion": "Los backups actualizados permiten recuperar archivos sin depender del atacante."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_6",
+    "sort_order": 6,
+    "payload": {
+      "id": "pregunta_6",
+      "dificultad": "Básico",
+      "pregunta": "¿Qué conviene hacer cuando una aplicación ofrece una actualización de seguridad?",
+      "opciones": [
+        "Instalarla desde la tienda o el sitio oficial.",
+        "Ignorarla para evitar cambios.",
+        "Descargarla desde cualquier anuncio que aparezca.",
+        "Compartir la notificación con otras personas."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Las actualizaciones oficiales suelen corregir fallas y proteger el dispositivo."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_7",
+    "sort_order": 7,
+    "payload": {
+      "id": "pregunta_7",
+      "dificultad": "Básico",
+      "pregunta": "¿Qué deberías hacer con un código de verificación que recibiste por SMS?",
+      "opciones": [
+        "Compartirlo con quien diga ser soporte.",
+        "Publicarlo para recordar dónde llegó.",
+        "No compartirlo con nadie.",
+        "Enviar una captura a tus contactos."
+      ],
+      "respuestaCorrecta": 2,
+      "explicacion": "Los códigos de verificación son personales; compartirlos puede permitir que otra persona acceda a tu cuenta."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_8",
+    "sort_order": 8,
+    "payload": {
+      "id": "pregunta_8",
+      "dificultad": "Básico",
+      "pregunta": "¿Cuál es una práctica recomendable para las copias de seguridad?",
+      "opciones": [
+        "Hacerlas solo después de perder archivos.",
+        "Realizarlas periódicamente y comprobar que puedan restaurarse.",
+        "Guardar la única copia en el mismo dispositivo.",
+        "Desactivarlas para ahorrar espacio."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Las copias periódicas y verificadas ayudan a recuperar información ante pérdidas o fallas."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_9",
+    "sort_order": 9,
+    "payload": {
+      "id": "pregunta_9",
+      "dificultad": "Básico",
+      "pregunta": "¿Qué información es mejor evitar publicar de forma abierta en redes sociales?",
+      "opciones": [
+        "Una recomendación de una película.",
+        "Una foto de una mascota sin datos adicionales.",
+        "Contraseñas, documentos o datos que permitan ubicarte.",
+        "Un saludo de cumpleaños."
+      ],
+      "respuestaCorrecta": 2,
+      "explicacion": "Los datos personales sensibles pueden usarse para suplantar identidades o preparar engaños."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_10",
+    "sort_order": 10,
+    "payload": {
+      "id": "pregunta_10",
+      "dificultad": "Básico",
+      "pregunta": "¿Cómo deberías conectarte a la cuenta de tu banco?",
+      "opciones": [
+        "Desde un enlace inesperado que llegó por mensaje.",
+        "Escribiendo la dirección conocida o usando la aplicación oficial.",
+        "Desde una página sugerida en un comentario.",
+        "A través de cualquier ventana emergente."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Usar la dirección conocida o la aplicación oficial reduce el riesgo de entrar a una página falsa."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_11",
+    "sort_order": 11,
+    "payload": {
+      "id": "pregunta_11",
+      "dificultad": "Básico",
+      "pregunta": "¿Qué indica el candado del navegador en una página web?",
+      "opciones": [
+        "Que el sitio es necesariamente legítimo.",
+        "Que la conexión está cifrada, pero no garantiza que el sitio sea confiable.",
+        "Que el sitio no recopila datos.",
+        "Que el dispositivo está libre de virus."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "El candado indica una conexión cifrada; igualmente hay que revisar que el dominio sea el correcto."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_12",
+    "sort_order": 12,
+    "payload": {
+      "id": "pregunta_12",
+      "dificultad": "Básico",
+      "pregunta": "¿Qué es recomendable hacer antes de instalar una aplicación nueva?",
+      "opciones": [
+        "Revisar quién la publica y qué permisos solicita.",
+        "Aceptar todos los permisos sin leer.",
+        "Instalar cualquier archivo recibido por chat.",
+        "Desactivar las protecciones del dispositivo."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "La tienda oficial, el editor y los permisos ayudan a evaluar si una aplicación es adecuada."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_13",
+    "sort_order": 13,
+    "payload": {
+      "id": "pregunta_13",
+      "dificultad": "Básico",
+      "pregunta": "¿Qué deberías hacer si una persona desconocida te pide tu contraseña?",
+      "opciones": [
+        "Dársela si conoce tu nombre.",
+        "Enviar solo una parte.",
+        "No compartirla y verificar la solicitud por un canal oficial.",
+        "Cambiarla por una contraseña fácil."
+      ],
+      "respuestaCorrecta": 2,
+      "explicacion": "Nadie necesita que le compartas tu contraseña; verificá cualquier solicitud por canales oficiales."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_14",
+    "sort_order": 14,
+    "payload": {
+      "id": "pregunta_14",
+      "dificultad": "Intermedio",
+      "pregunta": "Recibís una alerta de inicio de sesión que no reconocés. ¿Cuál es el mejor primer paso?",
+      "opciones": [
+        "Ignorarla porque puede ser automática.",
+        "Abrir el enlace de la alerta sin revisar el remitente.",
+        "Entrar al servicio desde su aplicación o sitio oficial y revisar la actividad.",
+        "Responder la alerta con tu contraseña."
+      ],
+      "respuestaCorrecta": 2,
+      "explicacion": "Ingresar directamente por el canal oficial permite verificar la alerta sin exponerte a enlaces falsos."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_15",
+    "sort_order": 15,
+    "payload": {
+      "id": "pregunta_15",
+      "dificultad": "Intermedio",
+      "pregunta": "¿Qué ventaja ofrece un administrador de contraseñas confiable?",
+      "opciones": [
+        "Permite reutilizar la misma clave en todos los sitios.",
+        "Ayuda a crear y guardar contraseñas únicas.",
+        "Evita la necesidad de proteger el dispositivo.",
+        "Comparte automáticamente las claves con contactos."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Un administrador facilita el uso de claves diferentes y robustas para cada servicio."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_16",
+    "sort_order": 16,
+    "payload": {
+      "id": "pregunta_16",
+      "dificultad": "Intermedio",
+      "pregunta": "¿Cómo es más seguro compartir un documento almacenado en la nube?",
+      "opciones": [
+        "Hacerlo público para cualquiera con el enlace.",
+        "Dar acceso solo a las personas necesarias y revisar los permisos.",
+        "Publicar el enlace en redes sociales.",
+        "Usar una cuenta compartida sin control de acceso."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Limitar el acceso y revisar permisos reduce la exposición accidental de información."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_17",
+    "sort_order": 17,
+    "payload": {
+      "id": "pregunta_17",
+      "dificultad": "Intermedio",
+      "pregunta": "Un mensaje de una persona conocida te pide dinero con urgencia desde un número nuevo. ¿Qué hacés?",
+      "opciones": [
+        "Transferís de inmediato porque reconocés su nombre.",
+        "Verificás la solicitud llamando a un número que ya tenías guardado.",
+        "Le pedís los datos de tu tarjeta para confirmar.",
+        "Compartís el mensaje para que otros paguen."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Los atacantes pueden suplantar identidades; confirmar por un canal conocido evita actuar bajo presión."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_18",
+    "sort_order": 18,
+    "payload": {
+      "id": "pregunta_18",
+      "dificultad": "Intermedio",
+      "pregunta": "¿Qué medida reduce el riesgo al usar una red Wi-Fi pública?",
+      "opciones": [
+        "Realizar operaciones sensibles en cualquier red abierta.",
+        "Compartir archivos con todos los dispositivos cercanos.",
+        "Evitar operaciones sensibles y usar sitios con conexión segura.",
+        "Desactivar el bloqueo de pantalla."
+      ],
+      "respuestaCorrecta": 2,
+      "explicacion": "En redes públicas conviene limitar actividades sensibles y mantener las conexiones protegidas."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_19",
+    "sort_order": 19,
+    "payload": {
+      "id": "pregunta_19",
+      "dificultad": "Intermedio",
+      "pregunta": "¿Qué deberías hacer con los permisos de una aplicación que ya no usás?",
+      "opciones": [
+        "Revisarlos y revocarlos si ya no son necesarios.",
+        "Aumentarlos para que funcione en segundo plano.",
+        "Compartirlos con otras aplicaciones.",
+        "Desactivar todas las medidas de seguridad del teléfono."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Revisar periódicamente los permisos limita el acceso innecesario a datos y funciones del dispositivo."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_20",
+    "sort_order": 20,
+    "payload": {
+      "id": "pregunta_20",
+      "dificultad": "Intermedio",
+      "pregunta": "¿Qué es más recomendable ante un código QR inesperado en un lugar público?",
+      "opciones": [
+        "Escanearlo y aceptar cualquier solicitud.",
+        "Revisar que no esté cubriendo otro código y comprobar el destino antes de ingresar datos.",
+        "Ingresar la contraseña bancaria si la página la solicita.",
+        "Compartirlo con otras personas para que lo prueben."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Un QR puede dirigir a sitios falsos; verificá el destino y no ingreses datos sin confirmar su legitimidad."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_21",
+    "sort_order": 21,
+    "payload": {
+      "id": "pregunta_21",
+      "dificultad": "Intermedio",
+      "pregunta": "Si sospechás que tu contraseña fue expuesta, ¿qué acción es prioritaria?",
+      "opciones": [
+        "Cambiarla desde el sitio oficial y revisar los accesos recientes.",
+        "Esperar a que el servicio te contacte.",
+        "Usarla en menos sitios, sin cambiarla.",
+        "Enviar la contraseña a soporte para que la revise."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Cambiar la clave comprometida y revisar la actividad ayuda a proteger la cuenta cuanto antes."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_22",
+    "sort_order": 22,
+    "payload": {
+      "id": "pregunta_22",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Qué describe mejor el principio de mínimo privilegio?",
+      "opciones": [
+        "Cada cuenta recibe solo los permisos necesarios para su tarea.",
+        "Todas las cuentas deben tener permisos de administrador.",
+        "Los permisos nunca deben revisarse.",
+        "Una cuenta compartida simplifica el control."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Limitar permisos reduce el impacto de errores, cuentas comprometidas o accesos indebidos."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_23",
+    "sort_order": 23,
+    "payload": {
+      "id": "pregunta_23",
+      "dificultad": "Avanzado",
+      "pregunta": "Una organización detecta que una cuenta fue comprometida. ¿Qué medida ayuda a contener el incidente?",
+      "opciones": [
+        "Mantener la sesión activa para observar qué sucede.",
+        "Revocar sesiones y credenciales afectadas, y seguir el procedimiento de respuesta.",
+        "Publicar las credenciales para advertir a otros.",
+        "Borrar los registros de actividad."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Contener el acceso comprometido y preservar los registros permite reducir daños e investigar el incidente."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_24",
+    "sort_order": 24,
+    "payload": {
+      "id": "pregunta_24",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Por qué es importante probar periódicamente la restauración de copias de seguridad?",
+      "opciones": [
+        "Para confirmar que los datos y el proceso de recuperación funcionan.",
+        "Para aumentar la cantidad de archivos duplicados.",
+        "Para evitar aplicar actualizaciones.",
+        "Para compartir las copias con cualquier usuario."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Una copia que no puede restaurarse no ofrece una recuperación confiable ante un incidente."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_25",
+    "sort_order": 25,
+    "payload": {
+      "id": "pregunta_25",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Qué riesgo presenta reutilizar una contraseña filtrada en otros servicios?",
+      "opciones": [
+        "Ninguno si la contraseña tiene números.",
+        "Que intenten acceder a otras cuentas con la misma combinación.",
+        "Que se borren automáticamente las copias de seguridad.",
+        "Que la autenticación en dos pasos deje de existir."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Los atacantes pueden probar credenciales expuestas en otros servicios; por eso cada cuenta debe tener una clave única."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_26",
+    "sort_order": 26,
+    "payload": {
+      "id": "pregunta_26",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Qué respuesta es más adecuada ante una posible infección de un equipo de trabajo?",
+      "opciones": [
+        "Seguir usándolo para comprobar si mejora.",
+        "Desconectarlo de la red si el procedimiento lo indica y avisar al equipo responsable.",
+        "Conectar unidades externas para copiar archivos.",
+        "Eliminar todos los registros antes de informar."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Seguir el procedimiento de respuesta y reportar pronto puede limitar la propagación y conservar evidencia."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_27",
+    "sort_order": 27,
+    "payload": {
+      "id": "pregunta_27",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Cuál es una ventaja de separar las cuentas administrativas de las cuentas de uso diario?",
+      "opciones": [
+        "Reduce el uso de privilegios elevados en tareas cotidianas.",
+        "Hace que las contraseñas puedan compartirse.",
+        "Elimina la necesidad de actualizar el sistema.",
+        "Permite omitir los registros de acceso."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Usar privilegios administrativos solo cuando hacen falta reduce el impacto de una cuenta de uso diario comprometida."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_28",
+    "sort_order": 28,
+    "payload": {
+      "id": "pregunta_28",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Qué práctica fortalece la protección de una cuenta crítica además de una contraseña única?",
+      "opciones": [
+        "Desactivar las alertas de seguridad.",
+        "Activar autenticación multifactor y mantener actualizadas las opciones de recuperación.",
+        "Usar una pregunta de seguridad cuya respuesta sea pública.",
+        "Guardar los códigos de recuperación en un chat abierto."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "La autenticación multifactor y los métodos de recuperación protegidos aportan capas adicionales de seguridad."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_29",
+    "sort_order": 29,
+    "payload": {
+      "id": "pregunta_29",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Qué información conviene preservar al reportar un correo sospechoso a un equipo de soporte?",
+      "opciones": [
+        "El mensaje original y sus datos de envío, siguiendo el canal indicado.",
+        "Solo una transcripción editada del texto.",
+        "La contraseña de la cuenta afectada.",
+        "Una copia reenviada a toda la organización."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "Conservar el mensaje original y reportarlo por el canal apropiado ayuda a verificarlo sin ampliar su distribución."
+    }
+  },
+  {
+    "type": "trivia",
+    "key": "pregunta_30",
+    "sort_order": 30,
+    "payload": {
+      "id": "pregunta_30",
+      "dificultad": "Avanzado",
+      "pregunta": "¿Qué significa verificar una solicitud sensible por un segundo canal?",
+      "opciones": [
+        "Responder al mismo mensaje sospechoso.",
+        "Confirmarla usando un contacto o medio previamente conocido e independiente.",
+        "Pedir confirmación en una publicación pública.",
+        "Confiar en que el nombre visible del remitente sea correcto."
+      ],
+      "respuestaCorrecta": 1,
+      "explicacion": "Un canal independiente dificulta que quien originó una solicitud falsa controle también su verificación."
     }
   },
   {

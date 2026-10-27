@@ -205,11 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         limpiarMensajes();
 
-        const correo = loginCorreo.value.trim();
+        const identificador = loginCorreo.value.trim();
         const password = loginPassword.value;
 
-        if (!loginCorreo.validity.valid || !correo) {
-            mostrarMensajeLogin("Ingresá una dirección de correo válida.");
+        if (!identificador) {
+            mostrarMensajeLogin("Ingresá tu correo electrónico o nombre de usuario.");
             return;
         }
 
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const respuesta = await window.hadesAPI.iniciarSesionRemoto({
-                correo,
+                identificador,
                 password
             });
 

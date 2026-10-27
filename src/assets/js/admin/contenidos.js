@@ -2,12 +2,53 @@
     const contentTypes = {
         scenario_sv: "Smishing / vishing",
         scenario_phishing: "Phishing",
-        concept: "Concepto",
-        myth: "Mito y realidad",
+        concept: "Conceptos",
+        myth: "Mitos y realidades",
         trivia: "Pregunta de trivia",
         section: "Sección",
         presentation: "Diapositivas educativas"
     };
+    const typeOptions = [
+        ["scenario_sv", "Smishing / vishing"],
+        ["scenario_phishing", "Phishing"],
+        ["concept", "Conceptos"],
+        ["myth", "Mitos y realidades"],
+        ["trivia", "Pregunta de trivia"],
+        ["presentation", "Diapositivas educativas"],
+        ["section", "Sección"]
+    ];
+    const visualColors = [
+        {
+            name: "Azul",
+            value: "bg-blue-50 border-blue-100 text-blue-900",
+            swatch: "bg-blue-400"
+        },
+        {
+            name: "Verde",
+            value: "bg-emerald-50 border-emerald-100 text-emerald-900",
+            swatch: "bg-emerald-400"
+        },
+        {
+            name: "Violeta",
+            value: "bg-purple-50 border-purple-100 text-purple-900",
+            swatch: "bg-purple-400"
+        },
+        {
+            name: "Ámbar",
+            value: "bg-amber-50 border-amber-100 text-amber-900",
+            swatch: "bg-amber-400"
+        },
+        {
+            name: "Rosa",
+            value: "bg-rose-50 border-rose-100 text-rose-900",
+            swatch: "bg-rose-400"
+        },
+        {
+            name: "Cian",
+            value: "bg-cyan-50 border-cyan-100 text-cyan-900",
+            swatch: "bg-cyan-400"
+        }
+    ];
     const contentCategories = [
         {
             type: "scenario_sv",
@@ -79,7 +120,7 @@
             { name: "id", label: "Identificador", type: "text", required: true, help: "Sin espacios; se usa para identificar el concepto." },
             { name: "titulo", label: "Título", type: "text", required: true },
             { name: "categoria", label: "Categoría", type: "text", required: true },
-            { name: "color", label: "Estilo visual", type: "text", help: "Clase CSS opcional utilizada por la tarjeta." },
+            { name: "color", label: "Color de la tarjeta", type: "color", required: true },
             { name: "imagen", label: "URL de imagen", type: "nullableText", fullWidth: true },
             { name: "descripcion", label: "Descripción", type: "textarea", required: true, fullWidth: true },
             { name: "recomendacion", label: "Recomendación práctica", type: "textarea", required: true, fullWidth: true }
@@ -89,7 +130,7 @@
             { name: "mito", label: "Mito", type: "textarea", required: true, fullWidth: true },
             { name: "realidad", label: "Realidad", type: "textarea", required: true, fullWidth: true },
             { name: "categoria", label: "Categoría", type: "text", required: true },
-            { name: "color", label: "Estilo visual", type: "text", help: "Clase CSS opcional utilizada por la tarjeta." },
+            { name: "color", label: "Color de la tarjeta", type: "color", required: true },
             { name: "imagen", label: "URL de imagen", type: "nullableText", fullWidth: true },
             { name: "explicacion", label: "Explicación", type: "textarea", required: true, fullWidth: true },
             { name: "recomendacion", label: "Recomendación práctica", type: "textarea", required: true, fullWidth: true }
@@ -158,7 +199,19 @@
         formError.textContent = "";
         form.reset();
         typeSelect.disabled = false;
+        configureTypeOptions(typeOptions, false);
         keyWasEdited = false;
+    }
+
+    function configureTypeOptions(options, disabled) {
+        typeSelect.replaceChildren();
+        options.forEach(([value, label]) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            typeSelect.appendChild(option);
+        });
+        typeSelect.disabled = disabled;
     }
 
     function slugify(value) {
@@ -200,6 +253,7 @@
     }
 
     function serializeFieldValue(definition, value) {
+        if (definition.type === "color") return value;
         if (definition.type === "number") return value === "" ? null : Number(value);
         if (definition.type === "nullableText") return value.trim() || null;
         if (definition.type === "list") {
@@ -265,6 +319,85 @@
         }[type];
 
         fieldDefinitions[type].forEach((definition) => {
+            if (definition.type === "color") {
+                const wrapper = document.createElement("fieldset");
+                wrapper.className = `text-sm font-bold ${definition.fullWidth ? "sm:col-span-2" : ""}`;
+
+                const legend = document.createElement("legend");
+                legend.textContent = definition.label;
+                wrapper.appendChild(legend);
+
+                const initialColor = String(
+                    payload.color || visualColors[0].value
+                );
+                const hasKnownColor = visualColors.some(
+                    (color) => color.value === initialColor
+                );
+                const colorValue = document.createElement("input");
+                colorValue.type = "hidden";
+                colorValue.dataset.payloadField = definition.name;
+                colorValue.value = initialColor;
+                wrapper.appendChild(colorValue);
+
+                const options = document.createElement("div");
+                options.className = "mt-3 flex flex-wrap gap-3";
+                visualColors.forEach((color, index) => {
+                    const label = document.createElement("label");
+                    label.className = "group flex cursor-pointer flex-col items-center gap-1.5 text-xs font-semibold";
+                    label.title = color.name;
+
+                    const radio = document.createElement("input");
+                    radio.type = "radio";
+                    radio.name = "colorSeleccionado";
+                    radio.value = color.value;
+                    radio.checked = initialColor === color.value ||
+                        (index === 0 && !payload.color);
+                    radio.setAttribute("aria-label", color.name);
+                    radio.required = Boolean(definition.required) && hasKnownColor;
+                    radio.className = "peer sr-only";
+                    radio.addEventListener("change", () => {
+                        colorValue.value = radio.value;
+                        options.querySelectorAll("input[type='radio']").forEach((input) => {
+                            const swatchElement = input.nextElementSibling;
+                            if (!swatchElement) return;
+                            swatchElement.replaceChildren();
+                            if (input.checked) {
+                                const check = document.createElement("span");
+                                check.className = "material-symbols-outlined text-xl text-white drop-shadow";
+                                check.textContent = "check";
+                                swatchElement.appendChild(check);
+                            }
+                        });
+                    });
+
+                    const swatch = document.createElement("span");
+                    swatch.className = `flex h-10 w-10 items-center justify-center rounded-full border-2 border-white ${color.swatch} shadow ring-1 ring-slate-300 transition group-hover:scale-105 peer-checked:ring-4 peer-checked:ring-blue-600 dark:ring-slate-500`;
+                    swatch.setAttribute("aria-hidden", "true");
+                    if (radio.checked) {
+                        const check = document.createElement("span");
+                        check.className = "material-symbols-outlined text-xl text-white drop-shadow";
+                        check.textContent = "check";
+                        swatch.appendChild(check);
+                    }
+
+                    const name = document.createElement("span");
+                    name.textContent = color.name;
+                    label.append(radio, swatch, name);
+                    options.appendChild(label);
+                });
+                wrapper.appendChild(options);
+
+                if (!visualColors.some((color) => color.value === initialColor)) {
+                    const help = document.createElement("span");
+                    help.className = "mt-2 block font-normal text-slate-600 dark:text-slate-300";
+                    help.textContent = "El estilo actual se conserva. Elegí un color para cambiarlo.";
+                    wrapper.appendChild(help);
+                }
+
+                payloadFields.appendChild(wrapper);
+                return;
+            }
+
             const wrapper = document.createElement("label");
             wrapper.className = `block text-sm font-bold ${definition.fullWidth ? "sm:col-span-2" : ""}`;
             wrapper.textContent = definition.label;
@@ -332,10 +465,19 @@
         document.getElementById("contenidoId").value = "";
         document.getElementById("contenidoOrden").value = "0";
         document.getElementById("contenidoActivo").value = "true";
-        typeSelect.disabled = false;
         keyWasEdited = false;
+        const fixedType = ["concept", "myth"].includes(activeCategory);
+        configureTypeOptions(
+            fixedType
+                ? typeOptions.filter(([value]) => value === activeCategory)
+                : typeOptions,
+            fixedType
+        );
         typeSelect.value = activeCategory || "scenario_sv";
-        renderPayloadFields(typeSelect.value, { id: nextPayloadId(typeSelect.value) });
+        renderPayloadFields(typeSelect.value, {
+            id: nextPayloadId(typeSelect.value),
+            color: visualColors[0].value
+        });
         document.getElementById("tituloFormularioContenido").textContent = "Nuevo contenido";
         formError.classList.add("hidden");
         modal.classList.remove("hidden");
@@ -345,8 +487,11 @@
     function openEditForm(record) {
         form.reset();
         document.getElementById("contenidoId").value = String(record.id);
+        configureTypeOptions(
+            typeOptions.filter(([value]) => value === record.tipo),
+            true
+        );
         typeSelect.value = record.tipo;
-        typeSelect.disabled = true;
         document.getElementById("contenidoClave").value = record.clave;
         keyWasEdited = true;
         document.getElementById("contenidoOrden").value = String(record.orden);
@@ -534,6 +679,9 @@
         const payload = {};
         fieldDefinitions[type].forEach((definition) => {
             const control = payloadFields.querySelector(`[data-payload-field="${definition.name}"]`);
+            if (!control) {
+                throw new Error(`No se encontró el campo "${definition.label}".`);
+            }
             payload[definition.name] = serializeFieldValue(definition, control.value);
         });
 

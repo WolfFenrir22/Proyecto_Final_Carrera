@@ -7,34 +7,55 @@ require_once __DIR__ . '/../../../../src/http.php';
 apiRequireMethod('POST');
 $data = apiReadJson();
 
-$email = apiNormalizeEmail($data['correo'] ?? null);
+$identifier = $data['identificador'] ?? $data['correo'] ?? null;
 $password = $data['password'] ?? null;
 
-if ($email === null || !is_string($password) || $password === '') {
+if (
+    !is_string($identifier)
+    || trim($identifier) === ''
+    || mb_strlen(trim($identifier), 'UTF-8') > 254
+    || !is_string($password)
+    || $password === ''
+) {
     apiRespond(400, [
         'error' => [
             'code' => 'invalid_input',
-            'message' => 'Ingresá un correo y una contraseña válidos.',
+            'message' => 'Ingresá un correo o nombre de usuario y una contraseña válidos.',
         ],
     ]);
 }
 
+$identifier = trim($identifier);
+$email = apiNormalizeEmail($identifier);
+
 try {
     $connection = database();
-    $statement = $connection->prepare(
-        'SELECT id, nombre, correo, password_hash, rol
-         FROM usuarios
-         WHERE correo = :correo
-         LIMIT 1'
-    );
-    $statement->execute(['correo' => $email]);
-    $user = $statement->fetch();
+    if ($email !== null) {
+        $statement = $connection->prepare(
+            'SELECT id, nombre, correo, password_hash, rol
+             FROM usuarios
+             WHERE correo = :correo
+             LIMIT 1'
+        );
+        $statement->execute(['correo' => $email]);
+        $user = $statement->fetch() ?: null;
+    } else {
+        $statement = $connection->prepare(
+            'SELECT id, nombre, correo, password_hash, rol
+             FROM usuarios
+             WHERE nombre = :nombre
+             LIMIT 2'
+        );
+        $statement->execute(['nombre' => $identifier]);
+        $matchingUsers = $statement->fetchAll();
+        $user = count($matchingUsers) === 1 ? $matchingUsers[0] : null;
+    }
 
     if (!$user || !password_verify($password, $user['password_hash'])) {
         apiRespond(401, [
             'error' => [
                 'code' => 'invalid_credentials',
-                'message' => 'El correo o la contraseña no son correctos.',
+                'message' => 'El correo, nombre de usuario o contraseña no son correctos. Si hay nombres de usuario repetidos, ingresá con el correo.',
             ],
         ]);
     }

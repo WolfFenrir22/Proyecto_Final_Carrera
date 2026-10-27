@@ -27,6 +27,7 @@ try {
                 decision_usuario, decision_correcta, puntaje, aciertos, errores,
                 DATE_FORMAT(fecha_simulacion, "%Y-%m-%dT%H:%i:%sZ") AS fecha_simulacion
          FROM resultados_phishing WHERE id_usuario = :id_usuario
+           AND tipo_escenario <> "smishing_vishing"
          ORDER BY fecha_simulacion DESC, id DESC LIMIT 1'
     );
     $phishingQuery->execute(['id_usuario' => $session['id']]);
@@ -47,6 +48,11 @@ try {
             (SELECT COUNT(*) FROM resultados_phishing WHERE id_usuario = :phishing_count) AS simulaciones_realizadas,
             (SELECT COALESCE(AVG(puntaje), 0) FROM resultados_phishing WHERE id_usuario = :phishing_avg) AS promedio_simulaciones,
             (SELECT COALESCE(MAX(puntaje), 0) FROM resultados_phishing WHERE id_usuario = :phishing_max) AS mejor_puntaje_simulacion,
+            (SELECT COUNT(*) FROM resultados_phishing WHERE id_usuario = :phishing_only_count AND tipo_escenario <> "smishing_vishing") AS simulaciones_phishing_realizadas,
+            (SELECT COALESCE(AVG(puntaje), 0) FROM resultados_phishing WHERE id_usuario = :phishing_only_avg AND tipo_escenario <> "smishing_vishing") AS promedio_phishing,
+            (SELECT COALESCE(MAX(puntaje), 0) FROM resultados_phishing WHERE id_usuario = :phishing_only_max AND tipo_escenario <> "smishing_vishing") AS mejor_puntaje_phishing,
+            (SELECT COUNT(*) FROM resultados_phishing WHERE id_usuario = :sv_count AND tipo_escenario = "smishing_vishing") AS simulaciones_sv_realizadas,
+            (SELECT COALESCE(AVG(puntaje), 0) FROM resultados_phishing WHERE id_usuario = :sv_avg AND tipo_escenario = "smishing_vishing") AS promedio_sv,
             (SELECT COUNT(*) FROM resultados_trivia WHERE id_usuario = :trivia_count) AS trivias_realizadas,
             (SELECT COALESCE(AVG(porcentaje), 0) FROM resultados_trivia WHERE id_usuario = :trivia_avg) AS promedio_trivia,
             (SELECT COUNT(*) FROM recordatorios_backup WHERE id_usuario = :backup_count AND activo = 1) AS backups_activos'
@@ -55,6 +61,11 @@ try {
         'phishing_count' => $session['id'],
         'phishing_avg' => $session['id'],
         'phishing_max' => $session['id'],
+        'phishing_only_count' => $session['id'],
+        'phishing_only_avg' => $session['id'],
+        'phishing_only_max' => $session['id'],
+        'sv_count' => $session['id'],
+        'sv_avg' => $session['id'],
         'trivia_count' => $session['id'],
         'trivia_avg' => $session['id'],
         'backup_count' => $session['id'],
@@ -69,6 +80,11 @@ try {
             'simulacionesRealizadas' => (int) $statistics['simulaciones_realizadas'],
             'promedioSimulaciones' => (int) round((float) $statistics['promedio_simulaciones']),
             'mejorPuntajeSimulacion' => (int) $statistics['mejor_puntaje_simulacion'],
+            'simulacionesPhishingRealizadas' => (int) $statistics['simulaciones_phishing_realizadas'],
+            'promedioPhishing' => (int) round((float) $statistics['promedio_phishing']),
+            'mejorPuntajePhishing' => (int) $statistics['mejor_puntaje_phishing'],
+            'simulacionesSmishingVishingRealizadas' => (int) $statistics['simulaciones_sv_realizadas'],
+            'promedioSmishingVishing' => (int) round((float) $statistics['promedio_sv']),
             'triviasRealizadas' => (int) $statistics['trivias_realizadas'],
             'promedioTrivia' => (int) round((float) $statistics['promedio_trivia']),
             'backupsActivos' => (int) $statistics['backups_activos'],

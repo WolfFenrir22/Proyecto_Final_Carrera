@@ -59,16 +59,18 @@ Errores esperados: `400` datos inválidos, `409` correo ya registrado.
 
 ### `POST auth/login.php`
 
-Público. Verifica correo y contraseña, actualiza `ultimo_acceso` y crea una sesión.
+Público. Verifica correo electrónico o nombre de usuario y contraseña, actualiza `ultimo_acceso` y crea una sesión. Si el nombre de usuario no es único, se debe ingresar con el correo electrónico.
 
 Solicitud:
 
 ```json
 {
-  "correo": "ana@example.com",
+  "identificador": "ana@example.com",
   "password": "una contraseña válida"
 }
 ```
+
+`identificador` también puede contener el nombre de usuario. Para compatibilidad con clientes anteriores, se sigue aceptando el campo `correo`.
 
 Respuesta `200 OK`:
 
@@ -199,7 +201,7 @@ Lista los recordatorios activos del usuario autenticado:
 
 ### `POST backups.php`
 
-Crea un recordatorio. Recibe `nombre`, `ubicacion`, `frecuencia` (`diario`, `semanal` o `mensual`) y `ultimo_backup` ISO 8601. El servidor calcula la próxima fecha.
+Crea un recordatorio. Recibe `nombre`, `ubicacion`, `frecuencia` (`diario`, `semanal` o `mensual`) y `ultimo_backup` como fecha de calendario `YYYY-MM-DD` (también se aceptan fechas ISO 8601 por compatibilidad). El servidor calcula la próxima fecha sin desplazar el día elegido por conversión de zona horaria.
 
 ### `PATCH backups.php`
 
@@ -211,11 +213,11 @@ Recibe `respuestas_correctas`, `total_preguntas` y `nivel`. El servidor calcula 
 
 ### `POST resultados/phishing.php`
 
-Recibe `id_escenario`, `tipo_escenario`, `dificultad`, `decision_usuario`, `decision_correcta`, `puntaje`, `aciertos` y `errores`.
+Recibe `id_escenario`, `tipo_escenario`, `dificultad`, `decision_usuario`, `decision_correcta`, `puntaje`, `aciertos` y `errores`. El simulador de smishing/vishing usa este mismo endpoint y el valor `smishing_vishing` en `tipo_escenario` para guardar sus resultados junto con la actividad del usuario.
 
 ### `GET dashboard/resumen.php`
 
-Devuelve `proximoBackup`, `ultimoPhishing`, `ultimaTrivia` y `estadisticas` con la forma que consume la pantalla del dashboard. Todos los valores corresponden a la sesión autenticada.
+Devuelve `proximoBackup`, `ultimoPhishing`, `ultimaTrivia` y `estadisticas` con la forma que consume la pantalla del dashboard. Las estadísticas incluyen promedios y cantidades separadas para phishing y smishing/vishing, además del total de simulaciones y trivia. Todos los valores corresponden a la sesión autenticada.
 
 Respuesta `204 No Content`.
 

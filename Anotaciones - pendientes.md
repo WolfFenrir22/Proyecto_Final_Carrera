@@ -8,7 +8,7 @@
     * quitar tarjeta de "Respuesta rapida"
     * 
 |vista diagnostico|
-    * evaluador de contraseña agregar un boton que digar "guardar contraseña", el cual guarde la contraseña ingresada y lo coloque debajo de la tarjeta "recomendacion - La contraseña presenta una robustez alta. Recordá no reutilizarla en distintos servicios."
+    * evaluador de contraseña agregar un boton que diga "guardar contraseña", el cual guarde la contraseña ingresada y lo coloque debajo de la tarjeta "recomendacion - La contraseña presenta una robustez alta. Recordá no reutilizarla en distintos servicios."
     * Gestor de contraseñas agregar correo (sitio o proposito - correo - contraseña)
     * escaner de archivos mailiciosos podrian mostrar mas informacion? 
     * gestor de recordatorios de backups hay un error al colocar backup de hoy me lo coloca como ayer, es decir un dia antes

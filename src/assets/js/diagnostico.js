@@ -7,6 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const porcentajePassword = document.getElementById("porcentajePassword");
     const nivelPassword = document.getElementById("nivelPassword");
     const recomendacionPassword = document.getElementById("recomendacionPassword");
+    const btnGuardarPasswordEvaluada = document.getElementById(
+        "btnGuardarPasswordEvaluada"
+    );
+    const mensajePasswordEvaluada = document.getElementById(
+        "mensajePasswordEvaluada"
+    );
 
     // #################Referencias a los criterios de evaluación
     const criterioLongitud = document.getElementById("criterioLongitud");
@@ -294,6 +300,9 @@ mostrarUsuarioEnSesion();
     inputPassword.addEventListener("input", () => {
         const resultado = evaluarPassword(inputPassword.value);
         actualizarVista(resultado);
+        if (mensajePasswordEvaluada) {
+            mensajePasswordEvaluada.classList.add("hidden");
+        }
     });
 
     if (btnVerPassword && iconoVerPassword) {
@@ -312,6 +321,30 @@ mostrarUsuarioEnSesion();
 
     actualizarVista(evaluarPassword(""));
 }
+
+    if (btnGuardarPasswordEvaluada) {
+        btnGuardarPasswordEvaluada.addEventListener("click", () => {
+            const password = inputPassword?.value || "";
+            if (!password) {
+                if (mensajePasswordEvaluada) {
+                    mensajePasswordEvaluada.textContent =
+                        "Ingresá una contraseña antes de guardarla.";
+                    mensajePasswordEvaluada.classList.remove("hidden");
+                    mensajePasswordEvaluada.classList.add("text-error");
+                }
+                return;
+            }
+
+            guardarPasswordLocal("Contraseña evaluada", password, "");
+            renderizarGestorPasswords();
+            if (mensajePasswordEvaluada) {
+                mensajePasswordEvaluada.textContent =
+                    "Contraseña guardada en el gestor. Podés completar el sitio y correo desde allí.";
+                mensajePasswordEvaluada.classList.remove("hidden", "text-error");
+                mensajePasswordEvaluada.classList.add("text-secondary");
+            }
+        });
+    }
     //#################Fin de la sección relacionada con la evaluación de la contraseña #################
 
 
@@ -357,7 +390,12 @@ mostrarUsuarioEnSesion();
             return "Sin fecha";
         }
 
-        const fecha = new Date(fechaISO);
+        const fechaCalendario = String(fechaISO).slice(0, 10);
+        const fecha = new Date(`${fechaCalendario}T12:00:00`);
+        if (Number.isNaN(fecha.getTime())) {
+            console.error("No se pudo interpretar la fecha del recordatorio:", fechaISO);
+            return "Fecha no válida";
+        }
 
         return fecha.toLocaleDateString("es-AR", {
             day: "2-digit",
@@ -383,44 +421,57 @@ mostrarUsuarioEnSesion();
     }
 
     function obtenerEstadoBackup(proximoBackupISO) {
-    if (!proximoBackupISO) {
+        if (!proximoBackupISO) {
+            return {
+                texto: "SIN FECHA",
+                clases: "text-outline bg-surface-container dark:bg-[#263b62] dark:text-slate-300",
+                icono: "help"
+            };
+        }
+
+        const fechaProxima = String(proximoBackupISO).slice(0, 10);
+        const hoy = new Date();
+        const fechaHoy = [
+            hoy.getFullYear(),
+            String(hoy.getMonth() + 1).padStart(2, "0"),
+            String(hoy.getDate()).padStart(2, "0")
+        ].join("-");
+        const diferenciaDias = Math.round(
+            (Date.parse(`${fechaProxima}T12:00:00`) -
+                Date.parse(`${fechaHoy}T12:00:00`)) /
+                (1000 * 60 * 60 * 24)
+        );
+
+        if (Number.isNaN(diferenciaDias)) {
+            console.error("No se pudo interpretar la fecha próxima del backup:", proximoBackupISO);
+            return {
+                texto: "SIN FECHA",
+                clases: "text-outline bg-surface-container dark:bg-[#263b62] dark:text-slate-300",
+                icono: "help"
+            };
+        }
+
+        if (diferenciaDias < 0) {
+            return {
+                texto: "VENCIDO",
+                clases: "text-error bg-red-100 dark:bg-red-900/40 dark:text-red-300",
+                icono: "warning"
+            };
+        }
+
+        if (diferenciaDias <= 2) {
+            return {
+                texto: "PENDIENTE",
+                clases: "text-primary bg-blue-100 dark:bg-blue-900/40 dark:text-blue-300",
+                icono: "schedule"
+            };
+        }
+
         return {
-            texto: "SIN FECHA",
-            clases: "text-outline bg-surface-container",
-            icono: "help"
+            texto: "AL DÍA",
+            clases: "text-secondary bg-secondary-container dark:bg-emerald-900/40 dark:text-emerald-300",
+            icono: "check_circle"
         };
-    }
-
-    const hoy = new Date();
-    const proximoBackup = new Date(proximoBackupISO);
-
-    hoy.setHours(0, 0, 0, 0);
-    proximoBackup.setHours(0, 0, 0, 0);
-
-    const diferenciaMs = proximoBackup - hoy;
-    const diferenciaDias = Math.ceil(diferenciaMs / (1000 * 60 * 60 * 24));
-
-    if (diferenciaDias < 0) {
-        return {
-            texto: "VENCIDO",
-            clases: "text-error bg-red-100",
-            icono: "warning"
-        };
-    }
-
-    if (diferenciaDias <= 2) {
-        return {
-            texto: "PENDIENTE",
-            clases: "text-primary bg-blue-100",
-            icono: "schedule"
-        };
-    }
-
-    return {
-        texto: "AL DÍA",
-        clases: "text-secondary bg-secondary-container",
-        icono: "check_circle"
-    };
 }
 
     function obtenerTextoProximoBackup(proximoBackupISO) {
@@ -428,14 +479,18 @@ mostrarUsuarioEnSesion();
         return "Sin fecha programada";
     }
 
+    const fechaProxima = String(proximoBackupISO).slice(0, 10);
     const hoy = new Date();
-    const proximoBackup = new Date(proximoBackupISO);
-
-    hoy.setHours(0, 0, 0, 0);
-    proximoBackup.setHours(0, 0, 0, 0);
-
-    const diferenciaMs = proximoBackup - hoy;
-    const diferenciaDias = Math.ceil(diferenciaMs / (1000 * 60 * 60 * 24));
+    const fechaHoy = [
+        hoy.getFullYear(),
+        String(hoy.getMonth() + 1).padStart(2, "0"),
+        String(hoy.getDate()).padStart(2, "0")
+    ].join("-");
+    const diferenciaDias = Math.round(
+        (Date.parse(`${fechaProxima}T12:00:00`) -
+            Date.parse(`${fechaHoy}T12:00:00`)) /
+            (1000 * 60 * 60 * 24)
+    );
 
     if (diferenciaDias < 0) {
         return `Vencido hace ${Math.abs(diferenciaDias)} día/s`;
@@ -462,7 +517,7 @@ mostrarUsuarioEnSesion();
 
         if (recordatorios.length === 0) {
             listaBackups.innerHTML = `
-                <div class="bg-white/40 border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-8">
+                <div class="bg-white/40 dark:bg-[#1a3162] border-2 border-dashed border-outline-variant dark:border-blue-700/50 rounded-2xl flex flex-col items-center justify-center p-8">
                     <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-outline">
                         <span class="material-symbols-outlined text-3xl">
                             cloud_off
@@ -487,12 +542,12 @@ mostrarUsuarioEnSesion();
            // const textoProximoBackup = obtenerTextoProximoBackup(recordatorio.proximo_backup);
 
             item.className =
-                "bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between";
+                "bg-white dark:bg-[#1a3162] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-blue-700/50 flex flex-col justify-between text-slate-900 dark:text-white";
 
             item.innerHTML = `
                 <div>
                     <div class="flex justify-between items-start mb-4">
-                        <div class="bg-blue-50 p-2 rounded-lg text-primary">
+                        <div class="bg-blue-50 dark:bg-blue-900/40 p-2 rounded-lg text-primary dark:text-blue-300">
                             <span class="material-symbols-outlined">
                                 folder_copy
                             </span>
@@ -506,31 +561,31 @@ mostrarUsuarioEnSesion();
                         </span>
                     </div>
 
-                    <h4 class="font-bold text-on-background mb-1">
+                    <h4 class="font-bold text-slate-900 dark:text-white mb-1">
                         ${recordatorio.nombre}
                     </h4>
 
-                    <p class="text-caption text-outline mb-4">
+                    <p class="text-caption text-slate-600 dark:text-slate-300 mb-4">
                         ${recordatorio.ubicacion}
                     </p>
                 </div>
 
                 <div class="space-y-4">
                     <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm text-outline">
+                        <span class="material-symbols-outlined text-sm text-slate-500 dark:text-slate-400">
                             calendar_month
                         </span>
 
-                        <span class="text-xs text-on-surface">
+                        <span class="text-xs text-slate-700 dark:text-slate-200">
                             Frecuencia: ${obtenerTextoFrecuencia(recordatorio.frecuencia)}
                         </span>
                     </div>
 
-                    <div class="text-caption text-outline">
+                    <div class="text-caption text-slate-600 dark:text-slate-300">
                         Último respaldo: ${formatearFecha(recordatorio.ultimo_backup)}
                     </div>
 
-                    <p class="text-[11px] text-primary font-bold">
+                    <p class="text-[11px] text-primary dark:text-blue-300 font-bold">
                         Próximo respaldo: ${formatearFecha(recordatorio.proximo_backup)}
                     </p>
 
@@ -636,7 +691,7 @@ mostrarUsuarioEnSesion();
                 nombre,
                 ubicacion,
                 frecuencia,
-                ultimo_backup: new Date(ultimo).toISOString()
+                ultimo_backup: ultimo
             });
 
             formBackup.reset();
@@ -1123,6 +1178,7 @@ function iniciarCategoriasDiagnostico() {
 //#######################Funciones relacionadas con el Gestor de Contraseñas#################################
 const formGestorPasswords = document.getElementById("formGestorPasswords");
 const sitioPassword = document.getElementById("sitioPassword");
+const correoPassword = document.getElementById("correoPassword");
 const valorPassword = document.getElementById("valorPassword");
 const btnVerValorPassword = document.getElementById("btnVerValorPassword");
 const iconoVerValorPassword = document.getElementById("iconoVerValorPassword");
@@ -1157,7 +1213,7 @@ function obtenerPasswordsGuardadas() {
     return data ? JSON.parse(data) : [];
 }
 
-function guardarPasswordLocal(sitio, password) {
+function guardarPasswordLocal(sitio, password, correo = "") {
     const usuarioActual = obtenerUsuarioActivoDesdeSesion();
     const idUsuario = usuarioActual ? usuarioActual.id_usuario : "default";
     const clave = `hades_passwords_${idUsuario}`;
@@ -1166,6 +1222,7 @@ function guardarPasswordLocal(sitio, password) {
     passwords.push({
         id: Date.now(),
         sitio: sitio,
+        correo,
         valor: password,
         fecha: new Date().toISOString()
     });
@@ -1173,7 +1230,7 @@ function guardarPasswordLocal(sitio, password) {
     localStorage.setItem(clave, JSON.stringify(passwords));
 }
 
-function actualizarPasswordLocal(id, sitio, password) {
+function actualizarPasswordLocal(id, sitio, correo, password) {
     const usuarioActual = obtenerUsuarioActivoDesdeSesion();
     const idUsuario = usuarioActual ? usuarioActual.id_usuario : "default";
     const clave = `hades_passwords_${idUsuario}`;
@@ -1182,6 +1239,7 @@ function actualizarPasswordLocal(id, sitio, password) {
     const index = passwords.findIndex(p => p.id === id);
     if(index !== -1) {
         passwords[index].sitio = sitio;
+        passwords[index].correo = correo;
         passwords[index].valor = password;
         localStorage.setItem(clave, JSON.stringify(passwords));
     }
@@ -1246,12 +1304,11 @@ function renderizarGestorPasswords() {
                     </div>
                 </div>
 
-                <h4 class="font-bold text-slate-900 dark:text-white mb-1 truncate" title="${item.sitio}">
-                    ${item.sitio}
-                </h4>
+                <h4 class="passwordSite font-bold text-slate-900 dark:text-white mb-1 truncate"></h4>
+                <p class="passwordEmail text-caption text-slate-600 dark:text-slate-300 mb-3 truncate"></p>
 
                 <div class="flex items-center gap-2 mb-4 bg-slate-50 dark:bg-[#18284f] p-2 rounded-lg border border-slate-200 dark:border-blue-800/50">
-                    <input type="password" readonly value="${item.valor}" class="bg-transparent border-none focus:ring-0 text-slate-600 dark:text-slate-300 w-full text-sm font-mono" />
+                    <input type="password" readonly class="bg-transparent border-none focus:ring-0 text-slate-600 dark:text-slate-300 w-full text-sm font-mono" />
                     <button type="button" class="btnToggleVisibility text-slate-500 hover:text-primary dark:text-slate-400 transition-colors">
                         <span class="material-symbols-outlined text-sm">visibility</span>
                     </button>
@@ -1279,6 +1336,13 @@ function renderizarGestorPasswords() {
                 </button>
             </div>
         `;
+        div.querySelector(".passwordSite").textContent = item.sitio;
+        div.querySelector(".passwordSite").title = item.sitio;
+        div.querySelector(".passwordEmail").textContent =
+            item.correo || "Sin correo asociado";
+        div.querySelector('input[type="password"]').value = item.valor;
+        div.querySelector(".btnEditarPassword").dataset.id = item.id;
+        div.querySelector(".btnEliminarPassword").dataset.id = item.id;
         listaGestorPasswords.appendChild(div);
     });
 }
@@ -1308,17 +1372,20 @@ function iniciarModuloGestorPasswords() {
         ocultarMensajeGestorPassword();
 
         const sitio = sitioPassword.value.trim();
+        const correo = correoPassword.value.trim();
         const valor = valorPassword.value.trim();
 
         if (sitio.length === 0 || valor.length === 0) {
-            mostrarMensajeGestorPassword("Por favor, completa ambos campos.");
+            mostrarMensajeGestorPassword(
+                "Completá el sitio o propósito y la contraseña."
+            );
             return;
         }
 
         if (passwordEnEdicionId) {
-            actualizarPasswordLocal(passwordEnEdicionId, sitio, valor);
+            actualizarPasswordLocal(passwordEnEdicionId, sitio, correo, valor);
         } else {
-            guardarPasswordLocal(sitio, valor);
+            guardarPasswordLocal(sitio, valor, correo);
         }
         
         restablecerFormularioPassword();
@@ -1346,6 +1413,7 @@ function iniciarModuloGestorPasswords() {
                 const pass = passwords.find(p => p.id === id);
                 if (pass) {
                     sitioPassword.value = pass.sitio;
+                    correoPassword.value = pass.correo || "";
                     valorPassword.value = pass.valor;
                     valorPassword.type = "text";
                     if(iconoVerValorPassword) iconoVerValorPassword.textContent = "visibility_off";
