@@ -428,17 +428,42 @@ app.whenReady().then(() => {
         return await solicitarApiAutenticacionPost("auth/login.php", datos);
     });
 
-    ipcMain.handle("auth:abrirRecuperacion", async () => {
-        const apiUrl = new URL(AUTH_API_BASE_URL);
-
-        if (!["http:", "https:"].includes(apiUrl.protocol)) {
-            throw new Error("La URL de la API de HADES no es válida.");
+    ipcMain.handle("auth:abrirRecuperacion", async (event) => {
+        const window = BrowserWindow.fromWebContents(event.sender);
+        if (!window) {
+            throw new Error("No se encontró la ventana de HADES.");
         }
 
-        apiUrl.pathname = `${apiUrl.pathname.replace(/\/api\/v1\/?$/, "").replace(/\/$/, "")}/recuperar-password.html`;
-        apiUrl.search = "";
-        apiUrl.hash = "";
-        await shell.openExternal(apiUrl.toString());
+        await window.loadFile(
+            path.join(__dirname, "..", "src", "pages", "recuperar-password.html")
+        );
+    });
+
+    ipcMain.handle("auth:solicitarRecuperacion", async (_event, datos) => {
+        if (!datos || typeof datos !== "object" || typeof datos.correo !== "string") {
+            throw new Error("Ingresá una dirección de correo válida.");
+        }
+
+        return await solicitarApiAutenticacionPost(
+            "auth/solicitar_recuperacion.php",
+            datos
+        );
+    });
+
+    ipcMain.handle("auth:cambiarPasswordRecuperacion", async (_event, datos) => {
+        if (
+            !datos ||
+            typeof datos !== "object" ||
+            typeof datos.token !== "string" ||
+            typeof datos.password_nueva !== "string"
+        ) {
+            throw new Error("El enlace o la nueva contraseña no son válidos.");
+        }
+
+        return await solicitarApiAutenticacionPost(
+            "auth/cambiar_password.php",
+            datos
+        );
     });
 
     ipcMain.handle("auth:validarSesion", async (_event, token) => {

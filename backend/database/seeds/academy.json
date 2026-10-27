@@ -553,6 +553,7 @@
     "sort_order": 1,
     "payload": {
       "id": "pregunta_1",
+      "dificultad": "Básico",
       "pregunta": "¿Qué deberías hacer si recibís un enlace sospechoso por correo?",
       "opciones": [
         "Abrirlo rápido para verificar si es real.",
@@ -570,6 +571,7 @@
     "sort_order": 2,
     "payload": {
       "id": "pregunta_2",
+      "dificultad": "Básico",
       "pregunta": "¿Qué característica hace más segura a una contraseña?",
       "opciones": [
         "Que sea corta y fácil de recordar.",
@@ -587,6 +589,7 @@
     "sort_order": 3,
     "payload": {
       "id": "pregunta_3",
+      "dificultad": "Intermedio",
       "pregunta": "¿Para qué sirve la autenticación en dos pasos?",
       "opciones": [
         "Para reemplazar completamente la contraseña.",
@@ -604,6 +607,7 @@
     "sort_order": 4,
     "payload": {
       "id": "pregunta_4",
+      "dificultad": "Intermedio",
       "pregunta": "¿Qué deberías hacer ante un archivo adjunto inesperado?",
       "opciones": [
         "Abrirlo para ver de qué se trata.",
@@ -621,6 +625,7 @@
     "sort_order": 5,
     "payload": {
       "id": "pregunta_5",
+      "dificultad": "Avanzado",
       "pregunta": "¿Qué medida ayuda a recuperarse ante un ataque de ransomware?",
       "opciones": [
         "Tener copias de seguridad actualizadas.",
@@ -760,6 +765,91 @@
         "Luego practicá con simuladores.",
         "Repetí los tests para medir tu progreso.",
         "Aplicá las recomendaciones en tus cuentas reales."
+      ]
+    }
+  },
+  {
+    "type": "presentation",
+    "key": "robo_identidad",
+    "sort_order": 1,
+    "payload": {
+      "titulo": "Robo de Identidad Digital",
+      "descripcion": "Aprendé a reconocer y prevenir el robo de identidad digital.",
+      "imagenes": [
+        "../assets/img/presentaciones/robo_Identidad/1.png",
+        "../assets/img/presentaciones/robo_Identidad/2.png",
+        "../assets/img/presentaciones/robo_Identidad/3.png",
+        "../assets/img/presentaciones/robo_Identidad/4.png",
+        "../assets/img/presentaciones/robo_Identidad/5.png",
+        "../assets/img/presentaciones/robo_Identidad/6.png",
+        "../assets/img/presentaciones/robo_Identidad/7.png",
+        "../assets/img/presentaciones/robo_Identidad/8.png",
+        "../assets/img/presentaciones/robo_Identidad/9.png",
+        "../assets/img/presentaciones/robo_Identidad/10.png"
+      ]
+    }
+  },
+  {
+    "type": "presentation",
+    "key": "inteligencia_artificial",
+    "sort_order": 2,
+    "payload": {
+      "titulo": "Inteligencia Artificial",
+      "descripcion": "Conocé oportunidades y riesgos de la inteligencia artificial.",
+      "imagenes": [
+        "../assets/img/presentaciones/Inteligencia_Artificial/1.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/2.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/3.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/4.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/5.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/6.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/7.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/8.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/9.png",
+        "../assets/img/presentaciones/Inteligencia_Artificial/10.png"
+      ]
+    }
+  },
+  {
+    "type": "presentation",
+    "key": "tips_ciber",
+    "sort_order": 3,
+    "payload": {
+      "titulo": "Tips de Seguridad Digital",
+      "descripcion": "Revisá consejos prácticos para proteger tus cuentas y dispositivos.",
+      "imagenes": [
+        "../assets/img/presentaciones/Tips_Ciber/1.png",
+        "../assets/img/presentaciones/Tips_Ciber/2.png",
+        "../assets/img/presentaciones/Tips_Ciber/3.png",
+        "../assets/img/presentaciones/Tips_Ciber/4.png",
+        "../assets/img/presentaciones/Tips_Ciber/5.png",
+        "../assets/img/presentaciones/Tips_Ciber/6.png",
+        "../assets/img/presentaciones/Tips_Ciber/7.png",
+        "../assets/img/presentaciones/Tips_Ciber/8.png",
+        "../assets/img/presentaciones/Tips_Ciber/9.png",
+        "../assets/img/presentaciones/Tips_Ciber/10.png",
+        "../assets/img/presentaciones/Tips_Ciber/11.png"
+      ]
+    }
+  },
+  {
+    "type": "presentation",
+    "key": "ransomware",
+    "sort_order": 4,
+    "payload": {
+      "titulo": "Ransomware",
+      "descripcion": "Aprendé qué es el ransomware y cómo reducir el riesgo.",
+      "imagenes": [
+        "../assets/img/presentaciones/ransomware/1.png",
+        "../assets/img/presentaciones/ransomware/2.png",
+        "../assets/img/presentaciones/ransomware/3.png",
+        "../assets/img/presentaciones/ransomware/4.png",
+        "../assets/img/presentaciones/ransomware/5.png",
+        "../assets/img/presentaciones/ransomware/6.png",
+        "../assets/img/presentaciones/ransomware/7.png",
+        "../assets/img/presentaciones/ransomware/8.png",
+        "../assets/img/presentaciones/ransomware/9.png",
+        "../assets/img/presentaciones/ransomware/10.png"
       ]
     }
   }

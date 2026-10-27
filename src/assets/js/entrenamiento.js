@@ -1,4 +1,98 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const levelPicker = document.getElementById("modalSeleccionDificultad");
+    const levelPickerMessage = document.getElementById("mensajeSeleccionDificultad");
+    const difficultyByOption = {
+        facil: "Básico",
+        intermedio: "Intermedio",
+        dificil: "Avanzado"
+    };
+    let activeDifficulty = "";
+    let activityWaitingForDifficulty = "";
+
+    window.mostrarSelectorDificultad = (activity) => {
+        activityWaitingForDifficulty = activity;
+        levelPickerMessage.classList.add("hidden");
+        levelPicker.classList.remove("hidden");
+        levelPicker.querySelector("[data-dificultad]")?.focus();
+    };
+
+    function hideLevelPicker() {
+        levelPicker.classList.add("hidden");
+    }
+
+    function selectDifficulty(option) {
+        const difficulty = difficultyByOption[option];
+        if (!difficulty) return;
+
+        if (activityWaitingForDifficulty === "testNivel") {
+            const questions = preguntasTriviaSeguridad.filter(
+                (question) => question.dificultad === difficulty
+            );
+            if (!questions.length) {
+                levelPickerMessage.textContent = `Todavía no hay preguntas de trivia para el nivel ${difficulty}. Pedile al administrador que agregue contenido de esta dificultad.`;
+                levelPickerMessage.classList.remove("hidden");
+                return;
+            }
+
+            preguntasTriviaActivas = questions;
+            renderizarTriviaSeguridad(contenidoTestNivel, questions);
+            panelTestContenido.classList.remove("hidden");
+            hideLevelPicker();
+            panelTestContenido.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+        }
+
+        const scenarios = activityWaitingForDifficulty === "simPhishing"
+            ? escenariosPhishing
+            : activityWaitingForDifficulty === "simSmishing"
+                ? escenariosSV
+                : [];
+        if (!scenarios.length) {
+            levelPickerMessage.textContent = "No se pudieron cargar los contenidos de esta actividad. Volvé a intentarlo en unos instantes.";
+            levelPickerMessage.classList.remove("hidden");
+            return;
+        }
+        if (!scenarios.some((scenario) => scenario.dificultad === difficulty)) {
+            levelPickerMessage.textContent = `Todavía no hay escenarios de ${activityWaitingForDifficulty === "simPhishing" ? "phishing" : "smishing/vishing"} para el nivel ${difficulty}. Pedile al administrador que agregue contenido de esta dificultad.`;
+            levelPickerMessage.classList.remove("hidden");
+            return;
+        }
+
+        activeDifficulty = difficulty;
+        ultimoEscenarioId = null;
+        ultimoEscenarioSVId = null;
+        ["simPhishing", "simSmishing"].forEach((id) => {
+            document.getElementById(id).classList.toggle(
+                "hidden",
+                id !== activityWaitingForDifficulty
+            );
+        });
+        hideLevelPicker();
+        const selectedSimulator = document.getElementById(activityWaitingForDifficulty);
+        selectedSimulator.scrollIntoView({ behavior: "smooth", block: "start" });
+        const initialScenario = activityWaitingForDifficulty === "simPhishing"
+            ? obtenerEscenarioAleatorio()
+            : obtenerEscenarioAleatorioSV();
+        if (activityWaitingForDifficulty === "simPhishing") {
+            cargarEscenario(initialScenario);
+            actualizarResumenSesion();
+        } else {
+            cargarEscenarioSV(initialScenario);
+        }
+    }
+
+    document.getElementById("cerrarSeleccionDificultad").addEventListener(
+        "click",
+        hideLevelPicker
+    );
+    levelPicker.addEventListener("click", (event) => {
+        if (event.target === levelPicker) hideLevelPicker();
+        const choice = event.target instanceof Element
+            ? event.target.closest("[data-dificultad]")
+            : null;
+        if (choice) selectDifficulty(choice.dataset.dificultad);
+    });
+
     //#########Elementos del Simulador de Phishing############
     const phishingRemitente = document.getElementById("phishingRemitente");
     const phishingAsunto = document.getElementById("phishingAsunto");
@@ -175,28 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //======================================================
 
 //======================================================
-const presentaciones = [
-    {
-        titulo: "Robo de Identidad Digital",
-        carpeta: "robo_identidad",
-        total: 10
-    },
-    {
-        titulo: "Inteligencia Artificial",
-        carpeta: "inteligencia_artificial",
-        total: 10
-    },
-    {
-        titulo: "Tips de Seguridad Digital",
-        carpeta: "tips_ciber",
-        total: 11
-    },
-    {
-        titulo: "Ransomware",
-        carpeta: "ransomware",
-        total: 10
-    }
-];
+let presentaciones = [];
 //======================================================
 
 function mostrarUsuarioEnSesion() {
@@ -267,8 +340,15 @@ mostrarUsuarioEnSesion();
 
     function obtenerEscenarioAleatorio() {
         const escenariosDisponibles = escenariosPhishing.filter(
-            (escenario) => escenario.id !== ultimoEscenarioId
+            (escenario) =>
+                escenario.dificultad === activeDifficulty &&
+                escenario.id !== ultimoEscenarioId
         );
+        if (!escenariosDisponibles.length) {
+            return escenariosPhishing.find(
+                (escenario) => escenario.dificultad === activeDifficulty
+            );
+        }
 
         const indice = Math.floor(
             Math.random() * escenariosDisponibles.length
@@ -669,11 +749,6 @@ mostrarUsuarioEnSesion();
         return;
     }
 
-    const escenarioInicial = obtenerEscenarioAleatorio();
-
-    cargarEscenario(escenarioInicial);
-    actualizarResumenSesion();
-
     btnEvaluarPhishing.addEventListener("click", evaluarCasoActual);
 
     btnNuevoCasoPhishing.addEventListener("click", () => {
@@ -701,6 +776,7 @@ let conceptosCiberHigiene = [];
 let mitosRealidades = [];
 
     let preguntasTriviaSeguridad = [];
+    let preguntasTriviaActivas = [];
 
 function mostrarContenidoAcademia(claveContenido) {
     const contenido = contenidosAcademia[claveContenido];
@@ -850,7 +926,10 @@ function renderizarTarjetasMitos() {
     contenidoAcademia.appendChild(grilla);
 }
 
-function renderizarTriviaSeguridad(contenedorDestino = contenidoAcademia) {
+function renderizarTriviaSeguridad(
+    contenedorDestino = contenidoAcademia,
+    preguntas = preguntasTriviaSeguridad
+) {
     triviaEvaluada = false;
 
     if (!contenedorDestino) {
@@ -863,7 +942,8 @@ function renderizarTriviaSeguridad(contenedorDestino = contenidoAcademia) {
 
     contenedorTrivia.className = "space-y-5";
 
-    preguntasTriviaSeguridad.forEach((pregunta, indicePregunta) => {
+    preguntasTriviaActivas = preguntas;
+    preguntas.forEach((pregunta, indicePregunta) => {
         const bloquePregunta = document.createElement("div");
 
         bloquePregunta.className =
@@ -965,7 +1045,7 @@ function evaluarTriviaSeguridad() {
     let preguntasSinResponder = 0;
     const detalle = [];
 
-    preguntasTriviaSeguridad.forEach((pregunta) => {
+    preguntasTriviaActivas.forEach((pregunta) => {
         const respuestaSeleccionada = document.querySelector(
             `input[name="${pregunta.id}"]:checked`
         );
@@ -1000,7 +1080,7 @@ function evaluarTriviaSeguridad() {
 
     ocultarMensaje();
 
-    const totalPreguntas = preguntasTriviaSeguridad.length;
+    const totalPreguntas = preguntasTriviaActivas.length;
     const porcentaje = Math.round(
         (respuestasCorrectas / totalPreguntas) * 100
     );
@@ -1282,17 +1362,8 @@ function iniciarAcademiaDigital() {
     }
 
     if (btnTestNivel) {
-    btnTestNivel.addEventListener("click", () => {
-            if (!panelTestContenido || !contenidoTestNivel) {
-                return;
-            }
-
-            renderizarTriviaSeguridad(contenidoTestNivel);
-            panelTestContenido.classList.remove("hidden");
-            panelTestContenido.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+        btnTestNivel.addEventListener("click", () => {
+            window.mostrarSelectorDificultad("testNivel");
         });
     }
 
@@ -1317,34 +1388,37 @@ function iniciarAcademiaDigital() {
 
 //============ PRESENTACIONES DE INFOGRAFIA =========================
 function cargarPresentaciones() {
+    const container = document.getElementById("listaPresentaciones");
+    container.replaceChildren();
 
-    const contenedor =
-        document.getElementById("listaPresentaciones");
-
-    contenedor.innerHTML = "";
+    if (presentaciones.length === 0) {
+        const emptyState = document.createElement("p");
+        emptyState.className = "rounded-xl bg-blue-50 p-4 text-sm text-slate-700 dark:bg-[#142244] dark:text-slate-300";
+        emptyState.textContent = "Todavía no hay diapositivas educativas publicadas.";
+        container.appendChild(emptyState);
+        return;
+    }
 
     presentaciones.forEach((presentacion) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "w-full rounded-xl border border-[#d2e3fc] p-4 text-left transition hover:bg-blue-50 dark:border-blue-900/40 dark:hover:bg-[#142244]";
 
-        const tarjeta = document.createElement("button");
+        const title = document.createElement("span");
+        title.className = "block font-bold";
+        title.textContent = presentacion.titulo;
 
-        tarjeta.className =
-            "border rounded-xl p-4 hover:bg-blue-50 text-left";
+        const description = document.createElement("span");
+        description.className = "mt-1 block text-sm text-slate-600 dark:text-slate-300";
+        description.textContent = presentacion.descripcion || "";
 
-        tarjeta.innerHTML = `
-            <div class="text-4xl mb-2">📁</div>
-            <div class="font-bold">
-                ${presentacion.titulo}
-            </div>
-            <div class="text-sm text-gray-500">
-                ${presentacion.total} diapositivas
-            </div>
-        `;
+        const count = document.createElement("span");
+        count.className = "mt-2 block text-xs text-slate-500 dark:text-slate-400";
+        count.textContent = `${presentacion.imagenes.length} diapositivas`;
 
-        tarjeta.addEventListener("click", () => {
-            abrirPresentacion(presentacion);
-        });
-
-        contenedor.appendChild(tarjeta);
+        card.append(title, description, count);
+        card.addEventListener("click", () => abrirPresentacion(presentacion));
+        container.appendChild(card);
     });
 }
 
@@ -1362,14 +1436,8 @@ function abrirPresentacion(presentacion) {
 }
 
 function actualizarDiapositiva() {
-
-    const imagen =
-        document.getElementById("imagenPresentacion");
-
-    imagen.src =
-        `../assets/img/presentaciones/${
-            presentacionActual.carpeta
-        }/${diapositivaActual}.png`;
+    document.getElementById("imagenPresentacion").src =
+        presentacionActual.imagenes[diapositivaActual - 1];
 }
 
 document
@@ -1377,8 +1445,8 @@ document
     .addEventListener("click", () => {
 
         if (
-            diapositivaActual <
-            presentacionActual.total
+            presentacionActual &&
+            diapositivaActual < presentacionActual.imagenes.length
         ) {
             diapositivaActual++;
             actualizarDiapositiva();
@@ -1389,7 +1457,7 @@ document
     .getElementById("btnAnteriorDiapositiva")
     .addEventListener("click", () => {
 
-        if (diapositivaActual > 1) {
+        if (presentacionActual && diapositivaActual > 1) {
             diapositivaActual--;
             actualizarDiapositiva();
         }
@@ -1456,7 +1524,11 @@ document
     }
 
     function obtenerEscenarioAleatorioSV() {
-        const disponibles = escenariosSV.filter((esc) => esc.id !== ultimoEscenarioSVId);
+        const escenariosDelNivel = escenariosSV.filter(
+            (escenario) => escenario.dificultad === activeDifficulty
+        );
+        const disponibles = escenariosDelNivel.filter((esc) => esc.id !== ultimoEscenarioSVId);
+        if (!disponibles.length) return escenariosDelNivel[0];
         return disponibles[Math.floor(Math.random() * disponibles.length)];
     }
 
@@ -1543,7 +1615,6 @@ document
         btnEvaluarSV.addEventListener("click", evaluarCasoSV);
         btnNuevoCasoSV.addEventListener("click", () => cargarEscenarioSV(obtenerEscenarioAleatorioSV()));
         
-        cargarEscenarioSV(obtenerEscenarioAleatorioSV());
     }
     // =========================================================================
 
@@ -1584,6 +1655,27 @@ document
                     "El servidor no devolvió todos los contenidos necesarios."
                 );
             }
+            if (!Array.isArray(contenido.presentation)) {
+                throw new Error(
+                    "El servidor no devolvió una lista válida de diapositivas educativas."
+                );
+            }
+            if (
+                contenido.presentation.some(
+                    (presentation) =>
+                        !presentation ||
+                        typeof presentation.titulo !== "string" ||
+                        !Array.isArray(presentation.imagenes) ||
+                        presentation.imagenes.length === 0 ||
+                        presentation.imagenes.some(
+                            (image) => typeof image !== "string" || image.trim() === ""
+                        )
+                )
+            ) {
+                throw new Error(
+                    "El servidor devolvió una presentación sin título o con rutas de imágenes inválidas."
+                );
+            }
 
             for (const clave of [
                 "ciberHigiene",
@@ -1605,6 +1697,7 @@ document
             mitosRealidades = contenido.myth;
             preguntasTriviaSeguridad = contenido.trivia;
             contenidosAcademia = contenido.section;
+            presentaciones = contenido.presentation;
 
             iniciarAcademiaDigital();
             iniciarSimuladorPhishing();

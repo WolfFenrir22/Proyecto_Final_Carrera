@@ -22,6 +22,7 @@ try {
         'myth' => [],
         'trivia' => [],
         'section' => [],
+        'presentation' => [],
     ];
 
     foreach ($statement->fetchAll() as $row) {

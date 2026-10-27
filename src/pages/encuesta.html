@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HADES | Opinión de HADES</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = { darkMode: "class" };
+        (() => {
+            const savedTheme = localStorage.getItem("hades_theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.documentElement.classList.toggle(
+                "dark",
+                savedTheme === "dark" || (!savedTheme && prefersDark)
+            );
+        })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="../assets/css/app.css" rel="stylesheet">
+</head>
+<body class="min-h-screen text-slate-900 dark:text-white" style="visibility:hidden">
+    <header class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-[#94bdf2] bg-[#c4defc]/95 px-4 py-3 shadow-sm backdrop-blur-md dark:border-blue-900/60 dark:bg-[#0e1e3e]/95 sm:px-8">
+        <a href="dashboard.html" class="flex items-center gap-3 rounded-lg text-lg font-extrabold tracking-tight text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:text-white dark:focus:ring-blue-900">
+            <img src="../assets/img/logo_final.png" alt="Logo de HADES" class="h-9 w-9 object-contain">
+            <span>HADES</span>
+        </a>
+        <div class="flex items-center gap-3">
+            <button id="btnThemeToggle" type="button" class="inline-flex items-center gap-2 rounded-xl border border-[#94bdf2] bg-white px-3 py-2 text-sm font-bold text-slate-900 shadow-sm hover:bg-blue-50 dark:border-blue-700/60 dark:bg-[#1a3162] dark:text-white dark:hover:bg-[#23467d]" title="Cambiar tema">
+                <span id="iconoThemeToggle" class="material-symbols-outlined text-[18px]">dark_mode</span>
+                <span id="textoThemeToggle" class="hidden sm:inline">Modo Oscuro</span>
+            </button>
+            <a href="dashboard.html" class="inline-flex items-center gap-2 rounded-xl bg-blue-700 px-3 py-2 text-sm font-bold text-white hover:bg-blue-800 sm:px-4" aria-label="Volver al dashboard">
+                <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+                <span class="hidden sm:inline">Dashboard</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-4xl space-y-6 px-4 py-8 sm:px-6 sm:py-12">
+        <section class="rounded-2xl border border-[#a8cdfc] bg-white p-6 shadow-sm dark:border-blue-800/60 dark:bg-[#14254b] sm:p-8">
+            <div class="mb-7 flex items-start gap-4">
+                <span class="material-symbols-outlined rounded-xl bg-violet-100 p-3 text-violet-700 dark:bg-violet-900/60 dark:text-violet-200" aria-hidden="true">rate_review</span>
+                <div>
+                    <p class="mb-1 text-sm font-bold uppercase tracking-widest text-blue-700 dark:text-blue-300">Tu experiencia</p>
+                    <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white sm:text-3xl">¿Qué opinas de HADES?</h1>
+                    <p class="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-200">Tu opinión nos ayuda a mejorar. Indicá cuánto estás de acuerdo con cada afirmación.</p>
+                </div>
+            </div>
+
+            <div class="mb-6 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-950 dark:border-blue-700 dark:bg-[#0b1730] dark:text-blue-100">
+                <p class="font-bold">Escala de valoración</p>
+                <div class="mt-2 flex flex-wrap justify-between gap-x-4 gap-y-1">
+                    <span><strong>1</strong> · Totalmente en desacuerdo</span>
+                    <span><strong>5</strong> · Totalmente de acuerdo</span>
+                </div>
+            </div>
+
+            <form id="formularioEncuesta">
+                <div id="encuestaPreguntas" class="space-y-4"></div>
+                <p id="mensajeEncuesta" role="status" class="mt-5 hidden rounded-xl p-4 text-sm"></p>
+                <div class="mt-6 flex flex-wrap items-center gap-3">
+                    <button id="guardarEncuesta" type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-60 dark:focus:ring-blue-900">
+                        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">save</span>
+                        <span id="textoGuardarEncuesta">Guardar mi valoración</span>
+                    </button>
+                    <a href="dashboard.html" class="rounded-xl px-5 py-3 font-bold text-slate-700 hover:bg-blue-50 dark:text-slate-200 dark:hover:bg-[#1a3162]">Volver al dashboard</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/session.js"></script>
+    <script src="../assets/js/encuesta.js"></script>
+</body>
+</html>

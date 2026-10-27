@@ -36,6 +36,7 @@ $allowedTypes = [
     'myth',
     'trivia',
     'section',
+    'presentation',
 ];
 
 try {

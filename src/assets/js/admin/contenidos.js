@@ -5,8 +5,47 @@
         concept: "Concepto",
         myth: "Mito y realidad",
         trivia: "Pregunta de trivia",
-        section: "Sección"
+        section: "Sección",
+        presentation: "Diapositivas educativas"
     };
+    const contentCategories = [
+        {
+            type: "scenario_sv",
+            title: "Smishing / vishing",
+            description: "Administrá mensajes y llamadas simuladas.",
+            icon: "sms"
+        },
+        {
+            type: "scenario_phishing",
+            title: "Phishing",
+            description: "Administrá correos y casos de phishing.",
+            icon: "mark_email_unread"
+        },
+        {
+            type: "concept",
+            title: "Conceptos",
+            description: "Gestioná conceptos y recomendaciones educativas.",
+            icon: "lightbulb"
+        },
+        {
+            type: "myth",
+            title: "Mitos y realidades",
+            description: "Revisá creencias y explicaciones de seguridad.",
+            icon: "fact_check"
+        },
+        {
+            type: "trivia",
+            title: "Preguntas de trivia",
+            description: "Organizá las preguntas de evaluación.",
+            icon: "quiz"
+        },
+        {
+            type: "presentation",
+            title: "Diapositivas educativas",
+            description: "Administrá presentaciones y sus imágenes.",
+            icon: "slideshow"
+        }
+    ];
     const fieldDefinitions = {
         scenario_sv: [
             { name: "id", label: "ID del escenario", type: "number", required: true },
@@ -57,10 +96,16 @@
         ],
         trivia: [
             { name: "id", label: "Identificador", type: "text", required: true, help: "Sin espacios; se usa para identificar la pregunta." },
+            { name: "dificultad", label: "Dificultad", type: "select", options: ["Básico", "Intermedio", "Avanzado"], required: true },
             { name: "pregunta", label: "Pregunta", type: "textarea", required: true, fullWidth: true },
             { name: "opciones", label: "Opciones de respuesta", type: "list", required: true, help: "Escribí una opción por línea. Se necesitan al menos dos." , fullWidth: true },
             { name: "respuestaCorrecta", label: "Número de la respuesta correcta", type: "number", required: true, help: "La primera opción es 0, la segunda es 1 y así sucesivamente." },
             { name: "explicacion", label: "Explicación de la respuesta", type: "textarea", required: true, fullWidth: true }
+        ],
+        presentation: [
+            { name: "titulo", label: "Título de la presentación", type: "text", required: true, fullWidth: true },
+            { name: "descripcion", label: "Descripción", type: "textarea", required: true, fullWidth: true },
+            { name: "imagenes", label: "Imágenes de las diapositivas", type: "list", required: true, fullWidth: true, help: "Ingresá una ruta relativa del proyecto o URL por línea, en el orden en que deben mostrarse. Ejemplo: ../assets/img/presentaciones/tema/1.png" }
         ],
         section: [
             { name: "categoria", label: "Categoría", type: "text", required: true },
@@ -78,14 +123,21 @@
     const form = document.getElementById("formularioContenido");
     const formError = document.getElementById("errorFormularioContenido");
     const saveButton = document.getElementById("guardarContenido");
-    const filter = document.getElementById("filtroTipoContenido");
+    const categories = document.getElementById("categoriasContenidoAdmin");
+    const categoryView = document.getElementById("vistaCategoriaContenido");
+    const categoryTitle = document.getElementById("tituloCategoriaContenido");
+    const difficultyFilter = document.getElementById("filtroDificultadContenido");
+    const difficultyFilterContainer = document.getElementById("filtroDificultadContenedor");
     const typeSelect = document.getElementById("contenidoTipo");
+    const typeFieldContainer = document.getElementById("contenidoTipoContenedor");
+    const keyFieldContainer = document.getElementById("contenidoClaveContenedor");
     const payloadFields = document.getElementById("camposContenido");
     const contentKey = document.getElementById("contenidoClave");
     const helpFields = document.getElementById("ayudaCamposContenido");
     let token = null;
     let records = [];
     let keyWasEdited = false;
+    let activeCategory = null;
 
     document.getElementById("cerrarSesionAdminMobile")?.addEventListener("click", () => {
         document.getElementById("cerrarSesionAdmin")?.click();
@@ -126,6 +178,7 @@
             concept: "id",
             myth: "id",
             trivia: "id",
+            presentation: "titulo",
             section: "titulo"
         }[typeSelect.value];
         const field = payloadFields.querySelector(`[data-payload-field="${firstField}"]`);
@@ -198,12 +251,16 @@
 
     function renderPayloadFields(type, payload = {}) {
         payloadFields.replaceChildren();
+        const isPresentation = type === "presentation";
+        typeFieldContainer.classList.toggle("hidden", isPresentation);
+        keyFieldContainer.classList.toggle("hidden", isPresentation);
         helpFields.textContent = {
             scenario_sv: "Completá el mensaje y las señales que deberá reconocer la persona.",
             scenario_phishing: "Armá el correo simulado y asociá cada señal con su explicación.",
             concept: "Describí el concepto y una acción práctica para aplicar.",
             myth: "Presentá la creencia, su realidad y cómo actuar correctamente.",
             trivia: "Agregá las opciones en orden e indicá el índice de la correcta (empezando desde 0).",
+            presentation: "Completá la información y agregá una ruta o URL por cada diapositiva, respetando el orden.",
             section: "Configurá la sección de la academia y sus bloques o recomendaciones."
         }[type];
 
@@ -217,6 +274,13 @@
 
             if (definition.type === "select") {
                 control = document.createElement("select");
+                if (definition.name === "dificultad" && !initialValue) {
+                    const placeholder = document.createElement("option");
+                    placeholder.value = "";
+                    placeholder.disabled = true;
+                    placeholder.textContent = "Elegí una dificultad";
+                    control.appendChild(placeholder);
+                }
                 definition.options.forEach((option) => {
                     const optionElement = document.createElement("option");
                     optionElement.value = option;
@@ -270,7 +334,7 @@
         document.getElementById("contenidoActivo").value = "true";
         typeSelect.disabled = false;
         keyWasEdited = false;
-        typeSelect.value = "scenario_phishing";
+        typeSelect.value = activeCategory || "scenario_sv";
         renderPayloadFields(typeSelect.value, { id: nextPayloadId(typeSelect.value) });
         document.getElementById("tituloFormularioContenido").textContent = "Nuevo contenido";
         formError.classList.add("hidden");
@@ -306,11 +370,77 @@
         return button;
     }
 
+    function renderCategories() {
+        categories.replaceChildren();
+        contentCategories.forEach((category) => {
+            const count = records.filter((record) => record.tipo === category.type).length;
+            const card = document.createElement("button");
+            card.type = "button";
+            card.className = "group rounded-2xl border border-[#a2b8d2] bg-[#e7eef7] p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-blue-500 hover:shadow-lg dark:border-[#2b4e80] dark:bg-[#14254b] dark:hover:border-blue-400";
+            card.setAttribute("aria-label", `${category.title}: ${count} contenidos`);
+
+            const icon = document.createElement("span");
+            icon.className = "mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-200 text-blue-900 dark:bg-blue-900/60 dark:text-blue-200";
+            const iconGlyph = document.createElement("span");
+            iconGlyph.className = "material-symbols-outlined text-2xl";
+            iconGlyph.textContent = category.icon;
+            icon.appendChild(iconGlyph);
+
+            const title = document.createElement("span");
+            title.className = "block text-lg font-extrabold text-slate-900 dark:text-white";
+            title.textContent = category.title;
+
+            const description = document.createElement("span");
+            description.className = "mt-2 block min-h-10 text-sm text-slate-700 dark:text-slate-300";
+            description.textContent = category.description;
+
+            const total = document.createElement("span");
+            total.className = "mt-5 inline-flex rounded-full bg-blue-200 px-3 py-1 text-xs font-bold text-blue-950 dark:bg-blue-950/60 dark:text-blue-200";
+            total.textContent = `${count} ${count === 1 ? "contenido" : "contenidos"}`;
+
+            card.append(icon, title, description, total);
+            card.addEventListener("click", () => selectCategory(category.type));
+            categories.appendChild(card);
+        });
+    }
+
+    function selectCategory(type) {
+        const category = contentCategories.find((item) => item.type === type)
+            || (type === "section" ? { title: "Secciones de la academia" } : null);
+        if (!category) return;
+
+        activeCategory = type;
+        categoryTitle.textContent = category.title;
+        difficultyFilter.value = "";
+        categories.classList.add("hidden");
+        categoryView.classList.remove("hidden");
+        renderRecords();
+    }
+
+    function showCategories() {
+        activeCategory = null;
+        categoryView.classList.add("hidden");
+        categories.classList.remove("hidden");
+        difficultyFilter.value = "";
+    }
+
     function renderRecords() {
-        const selectedType = filter.value;
-        const filtered = records.filter((record) => !selectedType || record.tipo === selectedType);
+        const selectedDifficulty = difficultyFilter.value;
+        const hasDifficultyFilter = ["scenario_sv", "scenario_phishing", "trivia"].includes(activeCategory);
+        difficultyFilterContainer.classList.toggle("hidden", !hasDifficultyFilter);
+        const difficultyValues = {
+            facil: "Básico",
+            intermedio: "Intermedio",
+            dificil: "Avanzado"
+        };
+        const filtered = records.filter((record) => {
+            if (record.tipo !== activeCategory) return false;
+            if (!hasDifficultyFilter || !selectedDifficulty) return true;
+            if (selectedDifficulty === "sin-nivel") return !record.payload.dificultad;
+            return record.payload.dificultad === difficultyValues[selectedDifficulty];
+        });
         document.getElementById("contadorContenido").textContent =
-            `${filtered.length} de ${records.length} contenidos`;
+            `${filtered.length} ${filtered.length === 1 ? "contenido" : "contenidos"}`;
         list.replaceChildren();
 
         if (!filtered.length) {
@@ -336,18 +466,32 @@
             const key = document.createElement("p");
             key.className = "mt-1 break-all font-mono text-xs text-slate-600 dark:text-slate-300";
             key.textContent = record.clave;
-            titleBlock.append(type, title, key);
+            titleBlock.append(type, title);
+            if (record.clave !== title.textContent) {
+                titleBlock.appendChild(key);
+            }
+            if (["scenario_sv", "scenario_phishing", "trivia"].includes(record.tipo)) {
+                const difficulty = document.createElement("p");
+                difficulty.className = "mt-2 inline-flex rounded-full bg-indigo-200 px-2.5 py-1 text-xs font-bold text-indigo-950 dark:bg-indigo-950/60 dark:text-indigo-200";
+                const labels = {
+                    "Básico": "Fácil",
+                    "Intermedio": "Intermedio",
+                    "Avanzado": "Difícil"
+                };
+                difficulty.textContent = labels[record.payload.dificultad] || "Sin nivel asignado";
+                titleBlock.appendChild(difficulty);
+            }
             const status = document.createElement("span");
             status.className = `shrink-0 rounded-full px-3 py-1 text-xs font-bold ${
                 record.activo
-                    ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-200"
-                    : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                    ? "bg-emerald-200 text-emerald-950 dark:bg-emerald-950/50 dark:text-emerald-200"
+                    : "bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-300"
             }`;
             status.textContent = record.activo ? "Publicado" : "Borrador";
             header.append(titleBlock, status);
 
             const preview = document.createElement("p");
-            preview.className = "mb-4 line-clamp-3 min-h-12 whitespace-pre-line rounded-xl bg-[#f0f7ff] p-3 text-sm text-slate-700 dark:bg-[#0e1e3e] dark:text-slate-200";
+            preview.className = "mb-4 line-clamp-3 min-h-12 whitespace-pre-line rounded-xl bg-[#dce6f1] p-3 text-sm text-slate-800 dark:bg-[#0e1e3e] dark:text-slate-200";
             preview.textContent = record.payload.descripcion
                 || record.payload.pregunta
                 || record.payload.mensajePrincipal
@@ -358,14 +502,14 @@
             const actions = document.createElement("div");
             actions.className = "flex flex-wrap gap-2 border-t border-[#d1e5fa] pt-4 dark:border-[#2b4e80]";
             actions.append(
-                actionButton("Editar", "edit", "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/70", () => openEditForm(record)),
+                actionButton("Editar", "edit", "bg-blue-200 text-blue-950 hover:bg-blue-300 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/70", () => openEditForm(record)),
                 actionButton(
                     record.activo ? "Pasar a borrador" : "Publicar",
                     record.activo ? "visibility_off" : "publish",
-                    "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:text-emerald-200 dark:hover:bg-emerald-900/70",
+                    "bg-emerald-200 text-emerald-950 hover:bg-emerald-300 dark:bg-emerald-950/50 dark:text-emerald-200 dark:hover:bg-emerald-900/70",
                     () => updateRecord(record, { activo: !record.activo })
                 ),
-                actionButton("Eliminar", "delete", "bg-red-50 text-red-700 hover:bg-red-100 dark:bg-red-950/50 dark:text-red-200 dark:hover:bg-red-900/70", () => deleteRecord(record))
+                actionButton("Eliminar", "delete", "bg-red-200 text-red-950 hover:bg-red-300 dark:bg-red-950/50 dark:text-red-200 dark:hover:bg-red-900/70", () => deleteRecord(record))
             );
             card.append(header, preview, actions);
             list.appendChild(card);
@@ -376,6 +520,7 @@
         try {
             const data = await window.hadesAPI.administrarContenidoRemoto("GET", { token });
             records = data.contenidos;
+            renderCategories();
             renderRecords();
             message.classList.add("hidden");
         } catch (error) {
@@ -397,6 +542,9 @@
         }
         if (type === "trivia" && payload.respuestaCorrecta >= payload.opciones.length) {
             throw new Error("La respuesta correcta debe señalar una de las opciones ingresadas.");
+        }
+        if (type === "presentation" && payload.imagenes.length === 0) {
+            throw new Error("La presentación debe incluir al menos una imagen de diapositiva.");
         }
 
         const key = contentKey.value.trim() || slugify(`${type}_${currentKeySource()}`);
@@ -448,10 +596,11 @@
         }
     }
 
-    document.getElementById("nuevoContenido").addEventListener("click", openCreateForm);
+    document.getElementById("nuevoContenidoCategoria").addEventListener("click", openCreateForm);
+    document.getElementById("volverCategoriasContenido").addEventListener("click", showCategories);
     document.getElementById("cerrarModalContenido").addEventListener("click", hideModal);
     document.getElementById("cancelarContenido").addEventListener("click", hideModal);
-    filter.addEventListener("change", renderRecords);
+    difficultyFilter.addEventListener("change", renderRecords);
     typeSelect.addEventListener("change", () => renderPayloadFields(typeSelect.value));
     contentKey.addEventListener("input", () => {
         keyWasEdited = contentKey.value.trim() !== "";

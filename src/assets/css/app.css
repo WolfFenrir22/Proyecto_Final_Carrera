@@ -21,6 +21,132 @@ html.dark body {
     color: #ffffff;
 }
 
+body.hades-admin-view {
+    background-color: #dceafb;
+    background-image:
+        radial-gradient(ellipse at 12% 8%, rgba(37, 99, 235, 0.14), transparent 32rem),
+        radial-gradient(ellipse at 88% 88%, rgba(16, 185, 129, 0.09), transparent 30rem);
+}
+
+html:not(.dark) body.hades-admin-view {
+    background-color: #c9d8e9;
+    background-image:
+        radial-gradient(ellipse at 12% 8%, rgba(37, 99, 235, 0.09), transparent 32rem),
+        radial-gradient(ellipse at 88% 88%, rgba(16, 185, 129, 0.06), transparent 30rem);
+    color: #17263b;
+}
+
+html.dark body.hades-admin-view {
+    background-color: #050a17;
+    background-image:
+        radial-gradient(ellipse at 12% 8%, rgba(37, 99, 235, 0.16), transparent 34rem),
+        radial-gradient(ellipse at 88% 88%, rgba(16, 185, 129, 0.09), transparent 30rem);
+}
+
+html:not(.dark) body.hades-admin-view aside {
+    background-color: #9eb4cc;
+    border-color: #7893b1;
+}
+
+html:not(.dark) body.hades-admin-view aside > a {
+    color: #1e2d42;
+}
+
+html:not(.dark) body.hades-admin-view aside nav a:not([aria-current="page"]) {
+    color: #293d55;
+}
+
+html:not(.dark) body.hades-admin-view aside nav a:not([aria-current="page"]):hover {
+    background-color: #829dbb;
+}
+
+html:not(.dark) body.hades-admin-view aside [data-admin-name] {
+    color: #1e2d42;
+}
+
+html:not(.dark) body.hades-admin-view aside .text-slate-600,
+html:not(.dark) body.hades-admin-view aside .text-slate-400,
+html:not(.dark) body.hades-admin-view aside .text-slate-500 {
+    color: #435770;
+}
+
+html:not(.dark) body.hades-admin-view aside button {
+    color: #243951;
+}
+
+body.hades-admin-view aside {
+    background-color: #c4dcf7;
+    border-color: #8eb6e9;
+}
+
+html.dark body.hades-admin-view aside {
+    background-color: #0e1e3e;
+    border-color: #1e3d73;
+}
+
+body.hades-admin-view [class*="rounded-2xl"][class*="bg-white"],
+body.hades-admin-view [class*="rounded-xl"][class*="bg-white"] {
+    border-color: #a7c7eb;
+}
+
+html:not(.dark) body.hades-admin-view [class*="rounded-2xl"][class*="bg-white"],
+html:not(.dark) body.hades-admin-view [class*="rounded-xl"][class*="bg-white"] {
+    background-color: #e7eef7;
+    border-color: #a2b8d2;
+}
+
+html:not(.dark) body.hades-admin-view main h1,
+html:not(.dark) body.hades-admin-view main h2,
+html:not(.dark) body.hades-admin-view main h3,
+html:not(.dark) body.hades-admin-view main label {
+    color: #17263b;
+}
+
+html:not(.dark) body.hades-admin-view #categoriasContenidoAdmin > button {
+    background-color: #edf2f8;
+}
+
+html:not(.dark) body.hades-admin-view #categoriasContenidoAdmin > button > span {
+    color: #43536a;
+}
+
+html:not(.dark) body.hades-admin-view #categoriasContenidoAdmin > button > span.text-slate-900 {
+    color: #17263b;
+}
+
+html:not(.dark) body.hades-admin-view #categoriasContenidoAdmin > button > span.bg-blue-200 {
+    background-color: #d7e4f3;
+    color: #1e3a5f;
+}
+
+html:not(.dark) body.hades-admin-view main #btnThemeToggle {
+    color: #17263b;
+}
+
+html:not(.dark) body.hades-admin-view main .text-slate-300,
+html:not(.dark) body.hades-admin-view main .text-slate-500,
+html:not(.dark) body.hades-admin-view main .text-slate-600,
+html:not(.dark) body.hades-admin-view main .text-slate-700 {
+    color: #43536a;
+}
+
+html:not(.dark) body.hades-admin-view main select,
+html:not(.dark) body.hades-admin-view main input,
+html:not(.dark) body.hades-admin-view main textarea {
+    background-color: #dce6f1;
+    color: #17263b;
+}
+
+html:not(.dark) body.hades-admin-view main thead {
+    background-color: #d8e3ef;
+    color: #35465d;
+}
+
+html.dark body.hades-admin-view [class*="rounded-2xl"][class*="dark:bg-"],
+html.dark body.hades-admin-view [class*="rounded-xl"][class*="dark:bg-"] {
+    border-color: #2b4e80;
+}
+
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     vertical-align: middle;

@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HADES | Analíticas</title>
     <script>
-        tailwind = { config: { darkMode: "class" } };
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = { darkMode: "class" };
         (() => {
             const savedTheme = localStorage.getItem("hades_theme");
             const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -26,23 +27,31 @@
         .bar-track { height: 8rem; }
     </style>
 </head>
-<body class="min-h-screen bg-[#e9f1fa] text-slate-900 dark:bg-[#050a17] dark:text-white" style="visibility:hidden">
+<body class="hades-admin-view min-h-screen bg-[#e9f1fa] text-slate-900 dark:bg-[#050a17] dark:text-white" style="visibility:hidden">
     <div class="min-h-screen md:flex">
         <aside class="flex w-full flex-col border-b border-[#94bdf2] bg-[#d1e5fa] p-5 text-slate-900 dark:border-blue-900/60 dark:bg-[#0e1e3e] dark:text-white md:fixed md:inset-y-0 md:w-64 md:border-b-0 md:border-r">
             <a class="mb-10 flex items-center gap-3 text-xl font-extrabold" href="analiticas.html">
-                HADES <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">ADMIN</span>
+                <img src="../../assets/img/logo_final.png" alt="" class="h-10 w-10 shrink-0 object-contain">
+                <span>HADES <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">ADMIN</span></span>
             </a>
             <nav class="flex gap-2 md:flex-col">
                 <a href="analiticas.html" aria-current="page" class="flex items-center gap-3 rounded-xl bg-blue-700 px-4 py-3 font-bold text-white">
-                    <span class="material-symbols-outlined">query_stats</span> Analíticas
+                    <span class="material-symbols-outlined">query_stats</span> Estadísticas
                 </a>
                 <a href="contenidos.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-800 hover:bg-[#bedbfc] dark:text-slate-300 dark:hover:bg-blue-900/40">
-                    <span class="material-symbols-outlined">library_books</span> Contenidos
+                    <span class="material-symbols-outlined">library_books</span> Gestión
                 </a>
             </nav>
             <div class="mt-auto hidden border-t border-[#94bdf2] pt-5 dark:border-blue-900/60 md:block">
-                <p class="truncate text-sm font-bold" data-admin-name></p>
-                <p class="mb-4 text-xs text-slate-600 dark:text-slate-400">Administrador</p>
+                <div class="mb-4 flex min-w-0 items-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 ring-2 ring-blue-200 dark:bg-blue-900/60 dark:text-blue-200 dark:ring-blue-700" role="img" aria-label="Perfil de administrador">
+                        <span class="material-symbols-outlined animate-pulse" aria-hidden="true">account_circle</span>
+                    </span>
+                    <div class="min-w-0">
+                        <p class="truncate text-sm font-bold" data-admin-name></p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Administrador</p>
+                    </div>
+                </div>
                 <button id="cerrarSesionAdmin" class="w-full rounded-xl border border-[#94bdf2] px-4 py-2 text-left text-sm hover:bg-[#bedbfc] dark:border-blue-800 dark:hover:bg-blue-900/40">Cerrar sesión</button>
             </div>
         </aside>
@@ -50,7 +59,6 @@
         <main class="min-w-0 flex-1 p-5 md:ml-64 md:p-10">
             <header class="mb-8 flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-start gap-3">
-                    <img src="../../assets/img/logo_final.png" alt="Logo de HADES" class="h-12 w-12 shrink-0 object-contain">
                     <div>
                         <p class="mb-1 text-sm font-bold uppercase tracking-widest text-blue-700">Panel administrativo</p>
                         <h1 class="text-3xl font-extrabold">Datos analíticos</h1>
@@ -120,7 +128,15 @@
                 </div>
             </section>
             <div class="mt-6 md:hidden">
-                <p class="mb-3 truncate text-sm font-bold" data-admin-name></p>
+                <div class="mb-3 flex items-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 ring-2 ring-blue-200 dark:bg-blue-900/60 dark:text-blue-200 dark:ring-blue-700" role="img" aria-label="Perfil de administrador">
+                        <span class="material-symbols-outlined animate-pulse" aria-hidden="true">account_circle</span>
+                    </span>
+                    <div class="min-w-0">
+                        <p class="truncate text-sm font-bold" data-admin-name></p>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Administrador</p>
+                    </div>
+                </div>
                 <button id="cerrarSesionAdminMobile" class="rounded-xl border border-[#94bdf2] px-4 py-2 text-sm font-bold hover:bg-[#bedbfc] dark:border-blue-800 dark:hover:bg-blue-900/40">Cerrar sesión</button>
             </div>
         </main>

@@ -34,4 +34,4 @@ Estas tablas describen información de versiones anteriores y se documentan solo
 - `GET dashboard/resumen.php`: consulta actividad y recordatorios remotos.
 - `GET academia/contenido.php`: obtiene el contenido publicado de la academia desde MySQL.
 
-El contenido compartido de entrenamiento se carga por separado mediante `backend/database/seeds/academy.json` y `backend/database/seeds/import_academy.php`. Incluye escenarios, conceptos, mitos, preguntas de trivia y secciones.
+El contenido compartido de entrenamiento se carga por separado mediante `backend/database/seeds/academy.json` y `backend/database/seeds/import_academy.php`. Incluye escenarios, conceptos, mitos, preguntas de trivia, secciones y presentaciones educativas. Las presentaciones se administran desde el CRUD y sus rutas de diapositivas se sirven desde los recursos de la aplicación o desde URLs configuradas.

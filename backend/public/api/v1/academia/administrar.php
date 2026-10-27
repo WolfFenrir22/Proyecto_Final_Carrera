@@ -27,6 +27,7 @@ function apiAcademyContentTypes(): array
         'myth',
         'trivia',
         'section',
+        'presentation',
     ];
 }
 

@@ -14,6 +14,12 @@ contextBridge.exposeInMainWorld("hadesAPI", {
     abrirRecuperacionPassword: () =>
         ipcRenderer.invoke("auth:abrirRecuperacion"),
 
+    solicitarRecuperacionPassword: (datos) =>
+        ipcRenderer.invoke("auth:solicitarRecuperacion", datos),
+
+    cambiarPasswordRecuperacion: (datos) =>
+        ipcRenderer.invoke("auth:cambiarPasswordRecuperacion", datos),
+
     validarSesionRemota: (token) =>
         ipcRenderer.invoke("auth:validarSesion", token),
 

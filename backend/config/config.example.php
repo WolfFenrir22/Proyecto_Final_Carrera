@@ -15,6 +15,7 @@ return [
     'smtp' => [
         'host' => 'smtp.gmail.com',
         'port' => 465,
+        'encryption' => 'ssl',
         'username' => '',
         'password' => '',
         'from_email' => '',
