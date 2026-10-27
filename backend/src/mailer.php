@@ -65,8 +65,18 @@ function enviarCorreoRecuperacion(string $recipient, string $token): void
 
     $urlParts = parse_url($resetUrl);
 
-    if (!in_array($urlParts['scheme'] ?? '', ['http', 'https'], true)) {
-        throw new RuntimeException('La URL de recuperación debe usar HTTP o HTTPS.');
+    $isAppLink = ($urlParts['scheme'] ?? '') === 'hades'
+        && ($urlParts['host'] ?? '') === 'recuperar-password'
+        && !isset($urlParts['user'])
+        && !isset($urlParts['pass'])
+        && !isset($urlParts['port'])
+        && !isset($urlParts['path'])
+        && !isset($urlParts['query'])
+        && !isset($urlParts['fragment']);
+    $isWebLink = in_array($urlParts['scheme'] ?? '', ['http', 'https'], true);
+
+    if (!$isAppLink && !$isWebLink) {
+        throw new RuntimeException('La URL de recuperación debe usar HTTP/HTTPS o hades://recuperar-password.');
     }
 
     $resetLink = $resetUrl . '#' . http_build_query(['token' => $token]);
@@ -88,10 +98,11 @@ function enviarCorreoRecuperacion(string $recipient, string $token): void
     $mail->Subject = 'Recuperación de contraseña de HADES';
     $escapedLink = htmlspecialchars($resetLink, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     $mail->Body = '<p>Recibimos una solicitud para cambiar tu contraseña de HADES.</p>'
-        . '<p><a href="' . $escapedLink . '">Crear una nueva contraseña</a></p>'
+        . '<p>Abrí este enlace desde un dispositivo con HADES instalado y verificá tu respuesta de seguridad:</p>'
+        . '<p><a href="' . $escapedLink . '">Verificar identidad y cambiar contraseña</a></p>'
         . '<p>El enlace vence en ' . (int) ($recovery['token_lifetime_minutes'] ?? 30)
         . ' minutos y solo puede utilizarse una vez. Si no solicitaste este cambio, ignorá este correo.</p>';
-    $mail->AltBody = "Para cambiar tu contraseña de HADES, abrí este enlace:\n"
+    $mail->AltBody = "Para cambiar tu contraseña de HADES, abrí este enlace desde un dispositivo con HADES instalado y verificá tu respuesta de seguridad:\n"
         . $resetLink . "\nEl enlace es de un solo uso y tiene una duración limitada.";
     $mail->send();
 }

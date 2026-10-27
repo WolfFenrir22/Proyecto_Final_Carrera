@@ -30,6 +30,7 @@ try {
          WHERE token_hash = :token_hash
            AND usado_en IS NULL
            AND fecha_expiracion > UTC_TIMESTAMP()
+           AND verificado_en > UTC_TIMESTAMP() - INTERVAL 10 MINUTE
          LIMIT 1
          FOR UPDATE'
     );

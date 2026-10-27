@@ -1,6 +1,7 @@
 const apiBaseUrl = new URL("./api/v1/", window.location.href);
 const token = new URLSearchParams(window.location.hash.slice(1)).get("token");
 const requestForm = document.getElementById("solicitudForm");
+const verificationForm = document.getElementById("verificacionForm");
 const changeForm = document.getElementById("cambioForm");
 const title = document.getElementById("titulo");
 const description = document.getElementById("descripcion");
@@ -9,9 +10,10 @@ const statusMessage = document.getElementById("estado");
 if (token) {
     window.history.replaceState(null, "", window.location.pathname);
     requestForm.hidden = true;
-    changeForm.hidden = false;
-    title.textContent = "Crear nueva contraseña";
-    description.textContent = "El enlace es de un solo uso y tiene una duración limitada.";
+    verificationForm.hidden = false;
+    verificationForm.classList.remove("hidden");
+    title.textContent = "Verificar identidad";
+    description.textContent = "Antes de cambiar tu contraseña, respondé la pregunta de seguridad de tu cuenta.";
 }
 
 async function sendRequest(path, payload) {
@@ -52,6 +54,33 @@ function setSubmitting(form, submitting, idleLabel, busyLabel) {
     button.disabled = submitting;
     button.textContent = submitting ? busyLabel : idleLabel;
 }
+
+verificationForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    statusMessage.textContent = "";
+    const answer = document.getElementById("respuestaRecuperacion").value.trim();
+    if (!answer || new TextEncoder().encode(answer).length > 72) {
+        statusMessage.textContent = "Ingresá una respuesta válida de hasta 72 bytes.";
+        return;
+    }
+
+    setSubmitting(verificationForm, true, "Verificar respuesta", "Verificando...");
+    try {
+        await sendRequest("auth/verificar_respuesta_recuperacion.php", {
+            token,
+            respuesta_recuperacion: answer
+        });
+        verificationForm.hidden = true;
+        changeForm.hidden = false;
+        changeForm.classList.remove("hidden");
+        title.textContent = "Crear nueva contraseña";
+        description.textContent = "Respuesta verificada. El enlace habilita el cambio durante 10 minutos.";
+    } catch (error) {
+        statusMessage.textContent = error.message;
+    } finally {
+        setSubmitting(verificationForm, false, "Verificar respuesta", "Verificando...");
+    }
+});
 
 requestForm.addEventListener("submit", async (event) => {
     event.preventDefault();

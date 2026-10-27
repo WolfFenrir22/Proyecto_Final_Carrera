@@ -35,7 +35,8 @@ Solicitud:
 {
   "nombre": "Ana",
   "correo": "ana@example.com",
-  "password": "una contraseña válida"
+  "password": "una contraseña válida",
+  "respuesta_recuperacion": "respuesta secreta"
 }
 ```
 
@@ -120,11 +121,15 @@ Público. Recibe `{ "correo": "ana@example.com" }`. Para no revelar si la cuenta
 }
 ```
 
-Para una cuenta existente, genera un token aleatorio de un solo uso, almacena solo su SHA-256 en `tokens_recuperacion`, aplica una expiración corta configurada por el servidor y envía el enlace por correo. El token viaja en el fragmento `#token=...` del enlace para que no se envíe en la solicitud HTTP ni en los logs de acceso. No registrar el token en logs.
+Para una cuenta existente que tenga una respuesta de recuperación configurada, genera un token aleatorio de un solo uso, almacena solo su SHA-256 en `tokens_recuperacion`, aplica una expiración corta configurada por el servidor y envía el enlace por correo. Para abrir la pantalla dentro de Electron, el enlace usa el protocolo `hades://recuperar-password#token=...`. El token viaja en el fragmento para que no se envíe en la solicitud HTTP ni en los logs de acceso. No registrar el token en logs. Las cuentas sin respuesta configurada no reciben un enlace; deben guardar una desde la configuración mientras tengan una sesión válida.
+
+### `POST auth/verificar_respuesta_recuperacion.php`
+
+Público. Recibe `{ "token": "...", "respuesta_recuperacion": "respuesta secreta" }`. Normaliza la respuesta sin distinguir mayúsculas y minúsculas, compara su hash almacenado y permite como máximo cinco intentos por enlace. Ante un acierto marca el token como verificado; el cambio de contraseña queda habilitado durante diez minutos.
 
 ### `POST auth/cambiar_password.php`
 
-Público, autorizado por un token de recuperación válido. Valida que el hash del token corresponda a un registro no usado y no vencido, actualiza la contraseña y marca el token como usado. La actualización del hash y el consumo del token se realizan en una transacción. También revoca las sesiones existentes del usuario.
+Público, autorizado por un token vigente y con la respuesta de recuperación verificada en los últimos diez minutos. Valida que el hash del token corresponda a un registro no usado y no vencido, actualiza la contraseña y marca el token como usado. La actualización del hash y el consumo del token se realizan en una transacción. También revoca las sesiones existentes del usuario.
 
 Solicitud:
 
@@ -148,6 +153,10 @@ Respuesta `200 OK`: `{ "usuario": { "id": 42, "nombre": "Ana Pérez", "correo": 
 ### `PATCH perfil/password.php`
 
 Requiere sesión. Recibe `{ "password_actual": "...", "password_nueva": "..." }`. Verifica la contraseña actual, actualiza su hash y revoca las demás sesiones, conservando activa la sesión usada para el cambio. La política de contraseña es la misma que en registro.
+
+### `PATCH perfil/respuesta_recuperacion.php`
+
+Requiere sesión. Recibe `{ "password_actual": "...", "respuesta_recuperacion": "respuesta secreta" }`. Verifica la contraseña actual y guarda el hash de la respuesta normalizada para mayúsculas/minúsculas. Se usa para habilitar la recuperación en cuentas creadas antes de incorporar esta pregunta.
 
 ## Resultados, backups y dashboard
 

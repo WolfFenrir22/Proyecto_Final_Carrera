@@ -9,7 +9,7 @@ return [
         'password' => '',
     ],
     'recovery' => [
-        'reset_url' => 'http://localhost/hades/recuperar-password.html',
+        'reset_url' => 'hades://recuperar-password',
         'token_lifetime_minutes' => 30,
     ],
     'smtp' => [

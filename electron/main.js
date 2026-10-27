@@ -4,6 +4,75 @@ const path = require("path");
 const fs = require("fs");
 const { Blob } = require("buffer");
 
+const RECOVERY_PAGE_PATH = path.join(
+    __dirname,
+    "..",
+    "src",
+    "pages",
+    "recuperar-password.html"
+);
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
+let mainWindow = null;
+let pendingRecoveryToken = null;
+
+if (process.defaultApp && process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient(
+        "hades",
+        process.execPath,
+        [path.resolve(process.argv[1])]
+    );
+} else {
+    app.setAsDefaultProtocolClient("hades");
+}
+
+function openRecoveryLink(link) {
+    let parsedLink;
+    try {
+        parsedLink = new URL(link);
+    } catch {
+        return;
+    }
+
+    const token = new URLSearchParams(parsedLink.hash.slice(1)).get("token");
+    if (
+        parsedLink.protocol !== "hades:" ||
+        parsedLink.hostname !== "recuperar-password" ||
+        !token ||
+        !/^[A-Za-z0-9_-]{43}$/.test(token)
+    ) {
+        return;
+    }
+
+    pendingRecoveryToken = token;
+    if (!mainWindow || mainWindow.isDestroyed()) {
+        return;
+    }
+
+    pendingRecoveryToken = null;
+    mainWindow.loadFile(RECOVERY_PAGE_PATH, {
+        hash: new URLSearchParams({ token }).toString()
+    });
+    mainWindow.show();
+    mainWindow.focus();
+}
+
+app.on("open-url", (event, link) => {
+    event.preventDefault();
+    openRecoveryLink(link);
+});
+
+app.on("second-instance", (_event, commandLine) => {
+    const recoveryLink = commandLine.find((argument) =>
+        argument.startsWith("hades://")
+    );
+    if (recoveryLink) {
+        openRecoveryLink(recoveryLink);
+    } else if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.show();
+        mainWindow.focus();
+    }
+});
+
 const VT_API_KEY = process.env.VT_API_KEY || "fb3c9ba0dc065e1eb3268832a8932fc44dd8bc09d8be929a7516a245d625bc2b"; // Public default for demo, but highly restricted. In a real app we leave empty or prompt the user.
 const AUTH_API_BASE_URL =
     process.env.HADES_API_URL || "http://localhost/hades/api/v1";
@@ -362,7 +431,7 @@ async function esperarAnalisisVirusTotal(analysisId, apiKey) {
  * Crea la ventana principal de Electron.
  */
 function createWindow() {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1280,
         height: 820,
         minWidth: 760,
@@ -397,21 +466,28 @@ function createWindow() {
         }
     });
 
-    mainWindow.loadFile(
-        path.join(
-            __dirname,
-            "..",
-            "src",
-            "pages",
-            "bienvenida.html"
-        )
-    );
+    const recoveryToken = pendingRecoveryToken;
+    pendingRecoveryToken = null;
+    if (recoveryToken) {
+        mainWindow.loadFile(RECOVERY_PAGE_PATH, {
+            hash: new URLSearchParams({ token: recoveryToken }).toString()
+        });
+    } else {
+        mainWindow.loadFile(
+            path.join(__dirname, "..", "src", "pages", "bienvenida.html")
+        );
+    }
 
     // Activar temporalmente para revisar errores:
     // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
+    if (!hasSingleInstanceLock) {
+        app.quit();
+        return;
+    }
+
     ipcMain.handle("auth:registrar", async (_event, datos) => {
         if (!datos || typeof datos !== "object") {
             throw new Error("Los datos de registro no son válidos.");
@@ -434,9 +510,7 @@ app.whenReady().then(() => {
             throw new Error("No se encontró la ventana de HADES.");
         }
 
-        await window.loadFile(
-            path.join(__dirname, "..", "src", "pages", "recuperar-password.html")
-        );
+        await window.loadFile(RECOVERY_PAGE_PATH);
     });
 
     ipcMain.handle("auth:solicitarRecuperacion", async (_event, datos) => {
@@ -462,6 +536,22 @@ app.whenReady().then(() => {
 
         return await solicitarApiAutenticacionPost(
             "auth/cambiar_password.php",
+            datos
+        );
+    });
+
+    ipcMain.handle("auth:verificarRespuestaRecuperacion", async (_event, datos) => {
+        if (
+            !datos ||
+            typeof datos !== "object" ||
+            typeof datos.token !== "string" ||
+            typeof datos.respuesta_recuperacion !== "string"
+        ) {
+            throw new Error("El enlace o la respuesta no son válidos.");
+        }
+
+        return await solicitarApiAutenticacionPost(
+            "auth/verificar_respuesta_recuperacion.php",
             datos
         );
     });
@@ -524,6 +614,27 @@ app.whenReady().then(() => {
             {
                 password_actual: datos.passwordActual,
                 password_nueva: datos.passwordNueva
+            }
+        );
+    });
+
+    ipcMain.handle("perfil:actualizarRespuestaRecuperacion", async (_event, datos) => {
+        if (
+            !datos ||
+            typeof datos !== "object" ||
+            typeof datos.token !== "string" ||
+            typeof datos.passwordActual !== "string" ||
+            typeof datos.respuestaRecuperacion !== "string"
+        ) {
+            throw new Error("Los datos para guardar la respuesta de recuperación no son válidos.");
+        }
+
+        return await solicitarApiPerfil(
+            "perfil/respuesta_recuperacion.php",
+            datos.token,
+            {
+                password_actual: datos.passwordActual,
+                respuesta_recuperacion: datos.respuestaRecuperacion
             }
         );
     });
@@ -619,6 +730,13 @@ app.whenReady().then(() => {
         
         return result.filePaths[0];
     });
+
+    const startupRecoveryLink = process.argv.find((argument) =>
+        argument.startsWith("hades://")
+    );
+    if (startupRecoveryLink) {
+        openRecoveryLink(startupRecoveryLink);
+    }
 
     createWindow();
 

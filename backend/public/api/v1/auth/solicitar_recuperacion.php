@@ -25,7 +25,7 @@ $genericResponse = [
 try {
     $connection = database();
     $statement = $connection->prepare(
-        'SELECT id, correo
+        'SELECT id, correo, respuesta_recuperacion_hash
          FROM usuarios
          WHERE correo = :correo
          LIMIT 1'
@@ -33,7 +33,7 @@ try {
     $statement->execute(['correo' => $email]);
     $user = $statement->fetch();
 
-    if ($user) {
+    if ($user && is_string($user['respuesta_recuperacion_hash'])) {
         $rateLimit = $connection->prepare(
             'SELECT COUNT(*)
              FROM tokens_recuperacion
@@ -81,8 +81,11 @@ try {
 
             try {
                 enviarCorreoRecuperacion($user['correo'], $token);
-            } catch (Throwable) {
-                error_log('HADES password recovery email delivery failed.');
+            } catch (Throwable $error) {
+                error_log(sprintf(
+                    'HADES password recovery email delivery failed: %s',
+                    $error->getMessage()
+                ));
                 $invalidateToken = $connection->prepare(
                     'UPDATE tokens_recuperacion
                      SET usado_en = UTC_TIMESTAMP()

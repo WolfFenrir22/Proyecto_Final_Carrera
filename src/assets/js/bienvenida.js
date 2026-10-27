@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formularioLogin = document.getElementById("formularioLogin");
     const loginCorreo = document.getElementById("loginCorreo");
     const loginPassword = document.getElementById("loginPassword");
+    const toggleLoginPassword = document.getElementById("toggleLoginPassword");
     const mensajeErrorLogin = document.getElementById("mensajeErrorLogin");
     const btnRecuperarPassword = document.getElementById("btnRecuperarPassword");
 
@@ -15,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "registroNombreUsuario"
     );
     const registroCorreo = document.getElementById("registroCorreo");
+    const registroRespuestaRecuperacion = document.getElementById(
+        "registroRespuestaRecuperacion"
+    );
     const registroPassword = document.getElementById("registroPassword");
     const registroPasswordConfirmacion = document.getElementById(
         "registroPasswordConfirmacion"
@@ -169,6 +173,19 @@ document.addEventListener("DOMContentLoaded", () => {
     btnModoLogin.addEventListener("click", activarModoLogin);
     btnModoRegistro.addEventListener("click", activarModoRegistro);
 
+    toggleLoginPassword.addEventListener("click", () => {
+        const visible = loginPassword.type === "password";
+        loginPassword.type = visible ? "text" : "password";
+        toggleLoginPassword.setAttribute("aria-pressed", String(visible));
+        toggleLoginPassword.setAttribute(
+            "aria-label",
+            visible ? "Ocultar contraseña" : "Mostrar contraseña"
+        );
+        toggleLoginPassword.firstElementChild.textContent = visible
+            ? "visibility_off"
+            : "visibility";
+    });
+
     btnRecuperarPassword.addEventListener("click", async () => {
         limpiarMensajes();
 
@@ -229,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const nombre = registroNombreUsuario.value.trim();
         const correo = registroCorreo.value.trim();
+        const respuestaRecuperacion = registroRespuestaRecuperacion.value.trim();
         const password = registroPassword.value;
         const passwordConfirmacion = registroPasswordConfirmacion.value;
 
@@ -241,6 +259,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!registroCorreo.validity.valid || !correo) {
             mostrarMensajeRegistro("Ingresá una dirección de correo válida.");
+            return;
+        }
+
+        if (
+            !respuestaRecuperacion ||
+            new TextEncoder().encode(respuestaRecuperacion).length > 72
+        ) {
+            mostrarMensajeRegistro(
+                "Ingresá una respuesta de recuperación de hasta 72 bytes."
+            );
             return;
         }
 
@@ -264,7 +292,8 @@ document.addEventListener("DOMContentLoaded", () => {
             await window.hadesAPI.registrarUsuarioRemoto({
                 nombre,
                 correo,
-                password
+                password,
+                respuesta_recuperacion: respuestaRecuperacion
             });
             registroCompletado = true;
 

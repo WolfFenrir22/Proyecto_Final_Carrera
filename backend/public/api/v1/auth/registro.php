@@ -10,6 +10,7 @@ $data = apiReadJson();
 $name = $data['nombre'] ?? null;
 $email = apiNormalizeEmail($data['correo'] ?? null);
 $password = $data['password'] ?? null;
+$recoveryAnswer = apiNormalizeRecoveryAnswer($data['respuesta_recuperacion'] ?? null);
 
 if (
     !is_string($name)
@@ -17,11 +18,12 @@ if (
     || mb_strlen(trim($name), 'UTF-8') > 40
     || $email === null
     || !apiValidatePassword($password)
+    || $recoveryAnswer === null
 ) {
     apiRespond(400, [
         'error' => [
             'code' => 'invalid_input',
-            'message' => 'Revisá el nombre, el correo y la contraseña. La contraseña debe tener entre 12 y 72 bytes.',
+            'message' => 'Revisá el nombre, el correo, la respuesta de recuperación y la contraseña. La contraseña debe tener entre 12 y 72 bytes.',
         ],
     ]);
 }
@@ -30,13 +32,15 @@ $name = trim($name);
 
 try {
     $statement = database()->prepare(
-        'INSERT INTO usuarios (nombre, correo, password_hash, rol)
-         VALUES (:nombre, :correo, :password_hash, :rol)'
+        'INSERT INTO usuarios
+            (nombre, correo, password_hash, respuesta_recuperacion_hash, rol)
+         VALUES (:nombre, :correo, :password_hash, :respuesta_recuperacion_hash, :rol)'
     );
     $statement->execute([
         'nombre' => $name,
         'correo' => $email,
         'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+        'respuesta_recuperacion_hash' => password_hash($recoveryAnswer, PASSWORD_DEFAULT),
         'rol' => 'Doméstico',
     ]);
 

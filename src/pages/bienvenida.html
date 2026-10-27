@@ -283,15 +283,26 @@
                 Contraseña
             </label>
 
-            <input
-                id="loginPassword"
-                type="password"
-                maxlength="100"
-                placeholder="Ingresá tu contraseña"
-                class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
-                autocomplete="current-password"
-                required
-            />
+            <div class="relative">
+                <input
+                    id="loginPassword"
+                    type="password"
+                    maxlength="100"
+                    placeholder="Ingresá tu contraseña"
+                    class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 pr-14 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                    autocomplete="current-password"
+                    required
+                />
+                <button
+                    id="toggleLoginPassword"
+                    type="button"
+                    class="absolute inset-y-0 right-0 flex items-center px-4 text-white/70 hover:text-white"
+                    aria-label="Mostrar contraseña"
+                    aria-pressed="false"
+                >
+                    <span class="material-symbols-outlined" aria-hidden="true">visibility</span>
+                </button>
+            </div>
         </div>
 
         <p
@@ -364,6 +375,28 @@
                     autocomplete="email"
                     required
                 />
+            </div>
+
+            <div class="text-left">
+                <label
+                    for="registroRespuestaRecuperacion"
+                    class="block font-label-md text-label-md text-white mb-2"
+                >
+                    Personaje favorito o nombre de tu primera mascota
+                </label>
+
+                <input
+                    id="registroRespuestaRecuperacion"
+                    type="text"
+                    maxlength="72"
+                    placeholder="Tu respuesta secreta"
+                    class="w-full rounded-xl border border-white/20 bg-white/10 px-5 py-4 text-white placeholder:text-white/40 focus:border-secondary-fixed focus:ring-2 focus:ring-secondary-fixed/40 outline-none"
+                    autocomplete="off"
+                    required
+                />
+                <p class="mt-2 text-xs text-white/60">
+                    Guardala en un lugar seguro; la necesitarás para recuperar la cuenta.
+                </p>
             </div>
 
             <div class="text-left">
@@ -457,9 +490,9 @@
 
     <!-- Footer -->
     <footer class="welcome-footer relative z-20 w-full px-margin-mobile py-4 text-center lg:fixed lg:bottom-0 lg:left-0 lg:w-1/2">
-        <p class="font-caption text-caption text-white/50">
+      <!--  <p class="font-caption text-caption text-white/50">
             © 2026 HADES(Herramienta de Ayuda y Divulgación para la Educación en Seguridad Digital). Proyecto Final de Carrera.
-        </p>
+        </p>-->
     </footer>
 
     <script src="../assets/js/theme.js"></script>

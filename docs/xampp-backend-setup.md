@@ -53,8 +53,9 @@ Si responde con `503`, consultá el log de errores de Apache/PHP en XAMPP para v
 - La migración `backend/database/migrations/004_usability_survey.sql`, importada después de la migración de academia.
 - La migración `backend/database/migrations/005_content_difficulty.sql`, importada después de la migración de encuesta.
 - La migración `backend/database/migrations/006_educational_presentations.sql`, importada después de las anteriores.
+- La migración `backend/database/migrations/007_recovery_security_answer.sql`, importada después de las anteriores.
 
-La migración `002` crea las tablas de recordatorios y resultados de trivia/phishing; `003` crea la tabla de contenido de la academia; `004` crea el almacenamiento de las valoraciones de usabilidad de HADES; `005` asigna niveles iniciales a las preguntas de trivia existentes; `006` habilita el nuevo tipo de diapositivas educativas. Los niveles que ve el usuario se corresponden con Básico = Fácil, Intermedio = Intermedio y Avanzado = Difícil. La encuesta invierte las preguntas 2, 4, 7, 8 y 10, y normaliza el total a una escala de 0 a 100. Cada usuario doméstico conserva una respuesta, que puede actualizar desde su dashboard.
+La migración `002` crea las tablas de recordatorios y resultados de trivia/phishing; `003` crea la tabla de contenido de la academia; `004` crea el almacenamiento de las valoraciones de usabilidad de HADES; `005` asigna niveles iniciales a las preguntas de trivia existentes; `006` habilita el nuevo tipo de diapositivas educativas; `007` agrega las respuestas hash y los controles de intentos para la recuperación de contraseña. Los niveles que ve el usuario se corresponden con Básico = Fácil, Intermedio = Intermedio y Avanzado = Difícil. La encuesta invierte las preguntas 2, 4, 7, 8 y 10, y normaliza el total a una escala de 0 a 100. Cada usuario doméstico conserva una respuesta, que puede actualizar desde su dashboard.
 
 ## Contenido de la academia
 
@@ -86,12 +87,14 @@ WHERE correo = 'tu-correo@example.com';
 2. Ejecutá `composer install` desde la carpeta `backend`; esto instala PHPMailer en `backend/vendor`, que no se versiona.
 3. La configuración local `backend/config/config.php` debe conservar la base de datos y tener las secciones `recovery` y `smtp` siguiendo `backend/config/config.example.php`. Para Gmail, usá `smtp.gmail.com`, puerto `465`, cifrado `ssl` y la misma dirección para usuario y remitente. `config.php` está excluido de Git; no compartas ni subas la contraseña SMTP.
 4. Para una cuenta Gmail, configurá la verificación en dos pasos y usá una contraseña de aplicación; el SMTP de Gmail normalmente usa `smtp.gmail.com`, puerto `465` con SMTPS. No uses la contraseña normal de Gmail.
-5. Pegá la contraseña de aplicación en `smtp.password` únicamente en tu `backend/config/config.php` local. En local, dejá `recovery.reset_url` como `http://localhost/hades/recuperar-password.html`. Para publicar, reemplazala por la URL HTTPS del sitio público.
+5. Pegá en `smtp.password` únicamente en tu `backend/config/config.php` local los 16 caracteres de la contraseña de aplicación, sin los espacios visuales que Google agrega al mostrarla. Para abrir la recuperación dentro de Electron, configurá `recovery.reset_url` como `hades://recuperar-password`.
 
-El endpoint responde con el mismo mensaje para correos existentes y no existentes. Si falla el envío SMTP, invalida el token generado y registra el fallo en el log del servidor sin revelar la existencia de la cuenta.
+El endpoint responde con el mismo mensaje para correos existentes y no existentes. Si falla el envío SMTP, invalida el token generado y registra el motivo en el log de errores de Apache/PHP de XAMPP, sin revelar la existencia de la cuenta. Si no llega el correo, revisá ese log, la carpeta de spam, que la dirección esté registrada y que PHP tenga habilitada la extensión `openssl`; no habilites el debug SMTP en una API pública.
 
 También se pueden definir los valores SMTP como variables de entorno de Apache: `HADES_SMTP_HOST`, `HADES_SMTP_PORT`, `HADES_SMTP_ENCRYPTION` (`ssl` o `tls`), `HADES_SMTP_USERNAME`, `HADES_SMTP_PASSWORD`, `HADES_SMTP_FROM_EMAIL`, `HADES_SMTP_FROM_NAME`, `HADES_RECOVERY_RESET_URL` y `HADES_RECOVERY_TOKEN_LIFETIME_MINUTES`. Estos valores tienen prioridad sobre la configuración local. No guardes contraseñas en archivos versionados.
 
-El botón **Olvidé mi contraseña** de la aplicación abre ahora una pantalla local de Electron, y sus solicitudes se envían a la API configurada en `HADES_API_URL`. El enlace del correo sigue apuntando a `recovery.reset_url`, que debe ser accesible desde el dispositivo donde se abra el correo y servir `backend/public/recuperar-password.html`.
+El botón **Olvidé mi contraseña** abre una pantalla local de Electron. El enlace `hades://recuperar-password#token=...` del correo también abre esa pantalla en la aplicación; iniciá HADES al menos una vez después de actualizar para registrar el protocolo `hades` en Windows. El usuario debe tener HADES instalado en el dispositivo donde abra el correo. Si se configura una URL web en vez del protocolo de la aplicación, la página pública debe implementar el mismo paso de verificación.
+
+Al registrarse se guarda un hash de la respuesta de recuperación. Las cuentas antiguas deben iniciar sesión, configurar su respuesta desde **Configuración** y luego podrán usar la recuperación. Para proteger la cuenta, el enlace exige verificar la respuesta antes de habilitar el cambio; hay un máximo de cinco intentos por enlace y la verificación habilita el cambio durante diez minutos.
 
 El alias `/hades` sirve únicamente `backend/public`; los archivos de configuración y código interno quedan fuera del directorio público.

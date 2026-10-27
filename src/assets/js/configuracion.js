@@ -20,6 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     const mensajePassword = document.getElementById("mensajePassword");
 
+    const formRespuestaRecuperacion = document.getElementById(
+        "formRespuestaRecuperacion"
+    );
+    const mensajeRespuestaRecuperacion = document.getElementById(
+        "mensajeRespuestaRecuperacion"
+    );
+
     const formApiKeys = document.getElementById("formApiKeys");
     const apiKeyVirusTotal = document.getElementById("apiKeyVirusTotal");
     const apiKeyHIBP = document.getElementById("apiKeyHIBP");
@@ -313,6 +320,65 @@ document.addEventListener("DOMContentLoaded", () => {
                     "No se pudo actualizar la contraseña."
             ),
         );
+        }
+    });
+
+    formRespuestaRecuperacion.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        ocultarMensaje(mensajeRespuestaRecuperacion);
+
+        if (!usuarioActual) {
+            mostrarMensaje(
+                mensajeRespuestaRecuperacion,
+                "No se encontró una sesión activa."
+            );
+            return;
+        }
+
+        const passwordActualRecuperacion = document.getElementById(
+            "passwordActualRecuperacion"
+        ).value;
+        const respuesta = document.getElementById(
+            "respuestaRecuperacionCuenta"
+        ).value.trim();
+
+        if (!passwordActualRecuperacion) {
+            mostrarMensaje(
+                mensajeRespuestaRecuperacion,
+                "Ingresá tu contraseña actual."
+            );
+            return;
+        }
+
+        if (!respuesta || new TextEncoder().encode(respuesta).length > 72) {
+            mostrarMensaje(
+                mensajeRespuestaRecuperacion,
+                "Ingresá una respuesta de hasta 72 bytes."
+            );
+            return;
+        }
+
+        try {
+            const result =
+                await window.hadesAPI.actualizarRespuestaRecuperacionRemota({
+                    token: usuarioActual.token,
+                    passwordActual: passwordActualRecuperacion,
+                    respuestaRecuperacion: respuesta
+                });
+            formRespuestaRecuperacion.reset();
+            mostrarMensaje(
+                mensajeRespuestaRecuperacion,
+                result.message,
+                "exito"
+            );
+        } catch (error) {
+            mostrarMensaje(
+                mensajeRespuestaRecuperacion,
+                limpiarMensajeError(
+                    error.message ||
+                        "No se pudo guardar la respuesta de recuperación."
+                )
+            );
         }
     });
 

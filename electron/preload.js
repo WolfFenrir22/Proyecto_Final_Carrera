@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld("hadesAPI", {
     cambiarPasswordRecuperacion: (datos) =>
         ipcRenderer.invoke("auth:cambiarPasswordRecuperacion", datos),
 
+    verificarRespuestaRecuperacion: (datos) =>
+        ipcRenderer.invoke("auth:verificarRespuestaRecuperacion", datos),
+
     validarSesionRemota: (token) =>
         ipcRenderer.invoke("auth:validarSesion", token),
 
@@ -31,6 +34,9 @@ contextBridge.exposeInMainWorld("hadesAPI", {
 
     actualizarPasswordRemoto: (datos) =>
         ipcRenderer.invoke("perfil:actualizarPassword", datos),
+
+    actualizarRespuestaRecuperacionRemota: (datos) =>
+        ipcRenderer.invoke("perfil:actualizarRespuestaRecuperacion", datos),
 
     listarBackupsRemotos: (token) =>
         ipcRenderer.invoke("backup:remoto:listar", token),

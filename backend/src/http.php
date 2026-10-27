@@ -110,6 +110,21 @@ function apiValidatePassword(mixed $password): bool
         && mb_strlen($password, 'UTF-8') >= 12;
 }
 
+function apiNormalizeRecoveryAnswer(mixed $answer): ?string
+{
+    if (!is_string($answer)) {
+        return null;
+    }
+
+    $answer = mb_strtolower(trim($answer), 'UTF-8');
+
+    if ($answer === '' || strlen($answer) > 72 || mb_strlen($answer, 'UTF-8') > 72) {
+        return null;
+    }
+
+    return $answer;
+}
+
 function apiBearerToken(): ?string
 {
     $authorization = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
